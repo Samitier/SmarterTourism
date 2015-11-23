@@ -1,0 +1,42 @@
+<header>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="/" class="brand-logo"><img style="width:95px;margin:10px;" src="/img/main-logo-s.png"></a>
+            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+
+            <ul class="right hide-on-med-and-down">
+                <li ng-repeat="option in navMenuCtrl.menuOptions">
+                    <a ng-href="{{option.url}}">{{option.name}}</a>
+                </li>
+                <li>
+                    <a class="dropdown-button" href="#" data-activates="dropdown-nav">
+                        El teu perfil <i class="material-icons right">arrow_drop_down</i>
+                    </a>
+                    <ul id="dropdown-nav" class="dropdown-content">
+                        <li><a href="#!">Les meves comandes</a></li>
+                        <li><a href="#!">El meu perfil</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#!">Tancar sessió</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="side-nav" id="mobile-demo">
+                <li ng-repeat="option in navMenuCtrl.menuOptions">
+                    <a ng-href="{{option.url}}">{{option.name}}</a>
+                </li>
+                <li>
+                    <a class="dropdown-button" href="#" data-activates="dropdown-nav-mobile">
+                        El teu perfil <i class="material-icons right">arrow_drop_down</i>
+                    </a>
+                    <ul id="dropdown-nav-mobile" class="dropdown-content">
+                        <li><a href="#!">Les meves comandes</a></li>
+                        <li><a href="#!">El meu perfil</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#!">Tancar sessió</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>

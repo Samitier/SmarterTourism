@@ -2,17 +2,34 @@
 
 // Declare app level module which depends on views, and components
 angular.module('SmarterTourism', [
-    'ngRoute'
+    'ngRoute',
+    'app-directives',
+    'app-controllers'
 ]).
 config(['$routeProvider','$locationProvider', function($routeProvider, $locationProvider) {
-    $routeProvider.when("/",{templateUrl: '/templates/home.html'})
+    $routeProvider
+        .when("/",{
+            templateUrl: '/views/home.html',
+            controller: 'homeController',
+            controllerAs: 'homeCtrl'
+        })
 
-        .when("/crear-paquet",{templateUrl: '/templates/crear-paquet.html'})
-        .when("/els-nostres-paquets",{templateUrl: '/templates/els-nostres-paquets.html'})
-        .when("/buscar-activitats",{templateUrl: '/templates/buscar-activitats.html'})
-
-
+        .when("/crear-paquet",{
+            templateUrl: '/views/crear-paquet.html',
+            controller: 'createPackController',
+            controllerAs: 'crearPackCtrl'
+        })
+        .when("/els-nostres-paquets",{
+            templateUrl: '/views/els-nostres-paquets.html',
+            controller: 'ourPacksController',
+            controllerAs: 'ourPacksCtrl'
+        })
+        .when("/buscar-activitats",{
+            templateUrl: '/views/buscar-activitats.html',
+            controller: 'searchActivitiesCtrl',
+            controllerAs: 'searchActivitiesCtrl'
+        })
         .otherwise({redirectTo: '/'});
-    $locationProvider.html5Mode(true);
 
+    $locationProvider.html5Mode(true);
 }]);
