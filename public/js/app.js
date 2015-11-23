@@ -6,7 +6,13 @@ angular.module('SmarterTourism', [
 ]).
 config(['$routeProvider','$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider.when("/",{templateUrl: '/templates/home.html'})
-    .otherwise({redirectTo: '/'});
+
+        .when("/crear-paquet",{templateUrl: '/templates/crear-paquet.html'})
+        .when("/els-nostres-paquets",{templateUrl: '/templates/els-nostres-paquets.html'})
+        .when("/buscar-activitats",{templateUrl: '/templates/buscar-activitats.html'})
+
+
+        .otherwise({redirectTo: '/'});
     $locationProvider.html5Mode(true);
 
 }]);
