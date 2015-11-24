@@ -4,7 +4,8 @@
 angular.module('SmarterTourism', [
     'ngRoute',
     'app-directives',
-    'app-controllers'
+    'app-controllers',
+    'app-services'
 ]).
 config(['$routeProvider','$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
