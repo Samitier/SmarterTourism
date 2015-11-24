@@ -15,20 +15,27 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
         })
 
         .when("/crear-paquet",{
-            templateUrl: '/views/crear-paquet.html',
+            templateUrl: '/views/create-pack.html',
             controller: 'createPackController',
             controllerAs: 'crearPackCtrl'
         })
         .when("/els-nostres-paquets",{
-            templateUrl: '/views/els-nostres-paquets.html',
+            templateUrl: '/views/our-packs.html',
             controller: 'ourPacksController',
             controllerAs: 'ourPacksCtrl'
         })
         .when("/buscar-activitats",{
-            templateUrl: '/views/buscar-activitats.html',
+            templateUrl: '/views/search-activities.html',
             controller: 'searchActivitiesCtrl',
             controllerAs: 'searchActivitiesCtrl'
         })
+
+        .when("/paquet/:id",{
+            templateUrl: '/views/detail-pack.html',
+            controller: 'detailPackController',
+            controllerAs: 'detailPackCtrl'
+        })
+
         .otherwise({redirectTo: '/'});
 
     $locationProvider.html5Mode(true);

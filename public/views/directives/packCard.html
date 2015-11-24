@@ -1,0 +1,16 @@
+<div class="card hoverable">
+    <a ng-href="/paquet/{{pack.id}}">
+    <div class="card-image waves-effect waves-block waves-light">
+        <img class="pack-card-image" ng-src="/img/{{pack.image}}">
+        <div class="more-packet-info">
+            <p class="right-align">
+                A partir de {{pack.price}}€,
+                {{pack.numDays}} <span ng-if="pack.numDays==1">dia</span><span ng-if="pack.numDays!=1">dies</span>
+            </p>
+        </div>
+    </div>
+    <div class="card-content packet-card">
+        <span class="card-title activator grey-text text-darken-4">{{pack.title}}</span>
+        <p>El {{pack.date}}</p>
+    </div></a>
+</div>

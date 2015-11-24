@@ -2,6 +2,9 @@
 
 angular.module('app-directives', [])
 
+    /*
+    The main menu of the application
+     */
     .directive('navMenu', function() {
         return {
             restrict: 'E',
@@ -14,7 +17,6 @@ angular.module('app-directives', [])
                 ];
             },
             link:function(scope, elem) {
-                console.dir(elem);
                 $(elem).find(".button-collapse").sideNav();
                 $(elem).find(".dropdown-button").dropdown();
             },
@@ -22,6 +24,9 @@ angular.module('app-directives', [])
         };
     })
 
+    /*
+     The main footer of the application
+     */
     .directive('footerMenu', function() {
         return {
             restrict: 'E',
@@ -29,5 +34,34 @@ angular.module('app-directives', [])
             controller: function() {
             },
             controllerAs: 'footerMenuCtrl'
+        };
+    })
+
+    /*
+     The pack card, with info with the packet info
+     */
+    .directive('packCard', function() {
+        return {
+            restrict: 'E',
+            templateUrl: '/views/directives/packCard.html',
+            controller: function () {
+            },
+            controllerAs: 'packCardCtrl',
+            scope:{
+                pack:"=info"
+            }
+        };
+    })
+
+    /*
+     The paginator, wich handles pagination
+     */
+    .directive('ptPaginator', function() {
+        return {
+            restrict: 'E',
+            templateUrl: '/views/directives/pt-paginator.html',
+            controller: function () {
+            },
+            controllerAs: 'ptPaginatorCtrl'
         };
     });

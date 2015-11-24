@@ -11,3 +11,34 @@ body {
 main {
     flex: 1 0 auto;
 }
+
+div.packet-card {
+    padding:15px!important;
+}
+
+.packet-card span.card-title {
+    /*font-size: 20px;
+    font-weight: 400;*/
+    display:block;
+    line-height: 27px!important;
+    height: 54px;
+    overflow: hidden;
+}
+
+div.more-packet-info {
+    width:100%;
+    position:absolute;
+    bottom:0;
+    right:0;
+    background-color:rgba(0,0,0,0.4);
+}
+
+.more-packet-info p{
+    padding:7px 15px 7px 15px;
+    line-height:0px;
+    color:#FFFFFF;
+}
+
+img.pack-card-image {
+    max-height: 290px;
+}
