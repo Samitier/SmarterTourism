@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "postinstall":"npm install ./public",
+    "postinstall":"cd ./public; npm install; cd ../;",
     "start": "node ./bin/www"
   },
   "dependencies": {
