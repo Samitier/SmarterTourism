@@ -59,9 +59,37 @@ angular.module('app-directives', [])
     .directive('ptPaginator', function() {
         return {
             restrict: 'E',
-            templateUrl: '/views/directives/pt-paginator.html',
+            templateUrl: '/views/directives/ptPaginator.html',
             controller: function () {
             },
             controllerAs: 'ptPaginatorCtrl'
         };
-    });
+    })
+
+    /*
+     The pack card, with info with the packet info
+     */
+    .directive('ptSlider', function() {
+        return {
+            restrict: 'E',
+            templateUrl: '/views/directives/ptSlider.html',
+            controller: function () {
+            },
+            controllerAs: 'packCardCtrl',
+            scope:{
+                fullwidth:"=",
+                sliderHeight:"=",
+                images:"="
+            },
+            link:function(scope, elem) {
+                console.log(scope);
+                $(document).ready(function() {
+                    $(elem).children().slider({
+                        full_width: scope.fullwidth,
+                        indicators: false,
+                        height: scope.sliderHeight
+                    });
+                });
+            }
+        };
+    })
