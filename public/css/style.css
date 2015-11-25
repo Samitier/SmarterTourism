@@ -42,3 +42,14 @@ div.more-packet-info {
 img.pack-card-image {
     max-height: 290px;
 }
+
+@media only screen and (min-width : 993px){
+    .container{
+        width:77%;
+    }
+}
+
+#googleMap {
+    width:100%;
+    height:300px;
+}

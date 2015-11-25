@@ -82,14 +82,33 @@ angular.module('app-directives', [])
                 images:"="
             },
             link:function(scope, elem) {
-                console.log(scope);
-                $(document).ready(function() {
-                    $(elem).children().slider({
+                $(elem).children().slider({
                         full_width: scope.fullwidth,
                         indicators: false,
                         height: scope.sliderHeight
                     });
-                });
             }
         };
     })
+
+    /*
+     A google maps map
+     */
+    .directive('googlemap', function() {
+        return {
+            restrict: 'E',
+            template: "<div id='googleMap'></div>",
+            scope:{
+            },
+            link:function(scope, elem) {
+                var mapOptions = {
+                    center: new google.maps.LatLng(44.5403, -78.5463),
+                    zoom: 8,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                var element = $(elem).children("#googleMap")[0];
+                var map = new google.maps.Map(element, mapOptions);
+            }
+        };
+    });
+
