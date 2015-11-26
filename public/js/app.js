@@ -7,6 +7,7 @@ angular.module('SmarterTourism', [
     'app-controllers',
     'app-services'
 ]).
+
 config(['$routeProvider','$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
         .when("/",{
@@ -32,6 +33,12 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
         })
 
         .when("/paquet/:id",{
+            templateUrl: '/views/detail-pack.html',
+            controller: 'detailPackController',
+            controllerAs: 'detailPackCtrl'
+        })
+
+        .when("/checkout/:id",{
             templateUrl: '/views/detail-pack.html',
             controller: 'detailPackController',
             controllerAs: 'detailPackCtrl'

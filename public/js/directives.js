@@ -78,6 +78,19 @@ angular.module('app-directives', [])
             templateUrl: '/views/directives/priceCard.html',
             scope:{
                 order:"="
+            },
+            link: function(scope, element) {
+                var stickyRelocate = function () {
+                    var window_top = $(window).scrollTop();
+                    var div_top = $(element).offset().top;
+                    if (window_top > div_top) {
+                        $(element).children().addClass('stick');
+                    } else {
+                        $(element).children().removeClass('stick');
+                    }
+                };
+                stickyRelocate();
+                $(window).scroll(stickyRelocate);
             }
         };
     })

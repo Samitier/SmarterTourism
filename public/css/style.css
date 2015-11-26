@@ -82,3 +82,8 @@ div.more-packet-info {
 .comment-list > li > span {
     font-size:19px;
 }
+
+.stick {
+    position: fixed;
+    top: 5px;
+}
