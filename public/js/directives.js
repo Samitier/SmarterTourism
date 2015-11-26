@@ -48,7 +48,36 @@ angular.module('app-directives', [])
             },
             controllerAs: 'packCardCtrl',
             scope:{
-                pack:"=info"
+                pack:"="
+            }
+        };
+    })
+
+    /*
+     The activity card, with info with the activity info
+     */
+    .directive('activityCard', function() {
+        return {
+            restrict: 'E',
+            templateUrl: '/views/directives/activityCard.html',
+            controller: function () {
+            },
+            controllerAs: 'activityCardCtrl',
+            scope:{
+                activity:"="
+            }
+        };
+    })
+
+    /*
+     A price card that shows the total price of a pack and a button to buy it
+     */
+    .directive('priceCard', function() {
+        return {
+            restrict: 'E',
+            templateUrl: '/views/directives/priceCard.html',
+            scope:{
+                order:"="
             }
         };
     })
@@ -99,16 +128,34 @@ angular.module('app-directives', [])
             restrict: 'E',
             template: "<div id='googleMap'></div>",
             scope:{
+                coords:"="
             },
             link:function(scope, elem) {
                 var mapOptions = {
-                    center: new google.maps.LatLng(44.5403, -78.5463),
-                    zoom: 8,
+                    center: new google.maps.LatLng(scope.coords[0],scope.coords[1]),
+                    zoom: 15,
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 };
                 var element = $(elem).children("#googleMap")[0];
                 var map = new google.maps.Map(element, mapOptions);
             }
         };
-    });
+    })
+
+
+    /*
+     A datepicker input
+     */
+    .directive('ptDatepicker', function() {
+        return {
+            restrict: 'C',
+            link:function(scope, elem) {
+                elem.pickadate({
+                    selectMonths: true, // Creates a dropdown to control month
+                    selectYears: 15 // Creates a dropdown of 15 years to control year
+                });
+            }
+        };
+    })
+    ;
 
