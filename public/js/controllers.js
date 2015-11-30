@@ -2,8 +2,15 @@
 
 angular.module('app-controllers', ["ngRoute"])
 
-    .controller('homeController', function() {
+    .controller('homeController', function(SmarterAPI, CheckoutOrder, $scope, $location) {
+        this.activities= SmarterAPI.getActivities();
+        this.packs= SmarterAPI.getPacks();
 
+        this.createPack = function() {
+            $scope.order.price=0;
+            CheckoutOrder.setOrder($scope.order);
+            $location.path('/crear-paquet');
+        }
     })
 
     .controller('createPackController', function() {
@@ -37,4 +44,12 @@ angular.module('app-controllers', ["ngRoute"])
         this.activity = SmarterAPI.getPack($routeParams.id-1);
         //we create an order for the user
         this.order = {total_price:this.activity.price};
+    })
+
+    .controller('yourOrdersController', function() {
+
+    })
+
+    .controller('yourProfileController', function() {
+
     });

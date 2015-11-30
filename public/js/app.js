@@ -64,6 +64,20 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
             controllerAs: 'checkoutCtrl'
         })
 
+        .when("/comandes",{
+            title: "Les teves comandes",
+            templateUrl: '/views/yourOrders.html',
+            controller: 'yourOrdersController',
+            controllerAs: 'yourOrdersCtrl'
+    })
+
+        .when("/perfil",{
+            title: "El teu perfil",
+            templateUrl: '/views/yourProfile.html',
+            controller: 'yourProfileController',
+            controllerAs: 'yourProfileCtrl'
+        })
+
         .otherwise({redirectTo: '/'});
 
     $locationProvider.html5Mode(true);
