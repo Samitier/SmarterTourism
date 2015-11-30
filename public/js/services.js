@@ -30,12 +30,30 @@ angular.module('app-services', ['ngCookies'])
         {id:"7",title:"Visita Cerveses Ausesken i la Font Sostenible", price:4,numDays:1, date:"25 de Desembre", featured:false, image:"placeholder-paquets.jpg"}
     ];
 
+    service.activities = [
+        {id:1, image:"placeholder-paquets.jpg", name:"Esmorzar a Can Serra", seller:"Celler Can Serra", price:23},
+        {id:2, image:"placeholder-paquets.jpg", name:"Tast de Cerveses Auesken", seller:"Cerveseria Auesken", price:3},
+        {id:3, image:"placeholder-paquets.jpg", name:"Activitat d'Exemple", seller:"Proveïdor exemple", price:13},
+        {id:4, image:"placeholder-paquets.jpg", name:"Una altre activitat d'Exemple", seller:"Proveïdor exemple", price:13},
+        {id:6, image:"placeholder-paquets.jpg", name:"Més Activitats d'Exemple", seller:"Proveïdor exemple", price:13},
+        {id:6, image:"placeholder-paquets.jpg", name:"Activitat destacada d'Exemple", seller:"Proveïdor exemple", price:13, featured:true},
+
+    ];
+
     service.getPacks = function() {
         return this.packs;
     };
 
     service.getPack = function(id) {
         return this.packs[id];
+    };
+
+    service.getActivities = function() {
+        return this.activities;
+    }
+
+    service.getActivity = function(id) {
+        return this.activities[id];
     };
 
     return service;

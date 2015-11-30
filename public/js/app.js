@@ -43,6 +43,13 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
             controllerAs: 'detailPackCtrl'
         })
 
+        .when("/activitat/:id",{
+            title: "Les nostres activitats",
+            templateUrl: '/views/detail-activity.html',
+            controller: 'detailActivityController',
+            controllerAs: 'detailActivityCtrl'
+        })
+
         .when("/extres",{
             title: "Complementa el teu paquet",
             templateUrl: '/views/order-extras.html',

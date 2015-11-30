@@ -27,10 +27,14 @@ angular.module('app-controllers', ["ngRoute"])
 
     .controller('orderExtrasController', function(CheckoutOrder) {
         this.order = CheckoutOrder.getOrder();
-
     })
 
-    .controller('searchActivitiesCtrl', function() {
-        this.order = CheckoutOrder.getOrder();
+    .controller('searchActivitiesCtrl', function(SmarterAPI) {
+        this.activities= SmarterAPI.getActivities();
+    })
 
+    .controller('detailActivityController', function($routeParams, SmarterAPI) {
+        this.activity = SmarterAPI.getPack($routeParams.id-1);
+        //we create an order for the user
+        this.order = {total_price:this.activity.price};
     });

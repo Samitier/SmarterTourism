@@ -78,16 +78,12 @@ angular.module('app-directives', [])
             templateUrl: '/views/directives/priceCard.html',
             scope:{
                 order:"=",
-                isFixedPack:"=",
+                isClientPack:"=",
                 cardAction:"="
             },
             controller: function(CheckoutOrder, $location, $scope) {
                 this.goToCheckout = function() {
-                    CheckoutOrder.setOrder({
-                        price:20,
-                        date:this.date,
-                        passengers:this.numPersons
-                    });
+                    CheckoutOrder.setOrder($scope.order);
                     if($scope.cardAction == "extras") $location.path('/extres');
                     else if($scope.cardAction == "checkout") $location.path('/checkout');
                 };
