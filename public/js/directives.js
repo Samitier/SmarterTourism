@@ -77,8 +77,22 @@ angular.module('app-directives', [])
             restrict: 'E',
             templateUrl: '/views/directives/priceCard.html',
             scope:{
-                order:"="
+                order:"=",
+                isFixedPack:"=",
+                cardAction:"="
             },
+            controller: function(CheckoutOrder, $location, $scope) {
+                this.goToCheckout = function() {
+                    CheckoutOrder.setOrder({
+                        price:20,
+                        date:this.date,
+                        passengers:this.numPersons
+                    });
+                    if($scope.cardAction == "extras") $location.path('/extres');
+                    else if($scope.cardAction == "checkout") $location.path('/checkout');
+                };
+            },
+            controllerAs: "priceCardCtrl",
             link: function(scope, element) {
                 var stickyRelocate = function () {
                     var window_top = $(window).scrollTop();

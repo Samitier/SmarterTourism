@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('app-services', [])
+angular.module('app-services', ['ngCookies'])
 
-.factory("SmarterAPI", function stApiService() {
+.factory("SmarterAPI", function SmarterApiService() {
     var service={};
 
     service.packs = [
@@ -39,4 +39,18 @@ angular.module('app-services', [])
     };
 
     return service;
-});
+})
+
+
+.factory("CheckoutOrder", ["$cookies", function CheckoutOrderService($cookies) {
+    var service = {};
+
+    service.setOrder = function(order) {
+        $cookies.putObject('order', order);
+    };
+
+    service.getOrder = function() {
+        return $cookies.getObject('order');
+    };
+    return service;
+}]);

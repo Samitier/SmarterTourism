@@ -20,6 +20,17 @@ angular.module('app-controllers', ["ngRoute"])
         this.order = {total_price:this.pack.price};
     })
 
+    .controller('checkoutController', function(CheckoutOrder) {
+        this.order = CheckoutOrder.getOrder();
+
+    })
+
+    .controller('orderExtrasController', function(CheckoutOrder) {
+        this.order = CheckoutOrder.getOrder();
+
+    })
+
     .controller('searchActivitiesCtrl', function() {
+        this.order = CheckoutOrder.getOrder();
 
     });

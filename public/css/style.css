@@ -87,3 +87,21 @@ div.more-packet-info {
     position: fixed;
     top: 5px;
 }
+
+.ng-valid .ng-dirty {
+    border-bottom: 1px solid #4CAF50;
+    box-shadow: 0 1px 0 0 #4CAF50;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.card-action button {
+    color:#ffab40;
+}
