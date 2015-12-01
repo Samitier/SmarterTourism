@@ -27,8 +27,10 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         this.order = {total_price:this.pack.price, pack:this.pack.id};
     })
 
-    .controller('checkoutController', function(CheckoutOrder) {
+    .controller('checkoutController', function(CheckoutOrder, SmarterAPI) {
         this.order = CheckoutOrder.getOrder();
+        if(this.order.pack) {this.product = SmarterAPI.getPack(this.order.pack-1);}
+        else if (this.order.activity) this.product = SmarterAPI.getActivity(this.order.activity-1);
     })
 
     .controller('orderDetailsController', function(CheckoutOrder, SmarterAPI) {
