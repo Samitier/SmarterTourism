@@ -50,11 +50,11 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
             controllerAs: 'detailActivityCtrl'
         })
 
-        .when("/extres",{
+        .when("/detalls-comanda",{
             title: "Complementa el teu paquet",
-            templateUrl: '/views/order-extras.html',
-            controller: 'orderExtrasController',
-            controllerAs: 'orderExtrasCtrl'
+            templateUrl: '/views/order-details.html',
+            controller: 'orderDetailsController',
+            controllerAs: 'orderDetailsCtrl'
         })
 
         .when("/checkout",{

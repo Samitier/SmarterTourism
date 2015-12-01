@@ -54,7 +54,7 @@ angular.module('app-directives', [])
     })
 
     /*
-     The activity card, with info with the activity info
+     The activity card, with "activity" with the activity info
      */
     .directive('activityCard', function() {
         return {
@@ -68,6 +68,28 @@ angular.module('app-directives', [])
             }
         };
     })
+
+    /*
+     The activity variation card, with "variation" with the variation info
+     */
+    .directive('activityVariationCard', function() {
+        return {
+            restrict: 'E',
+            templateUrl: '/views/directives/activityVariationCard.html',
+            controller: function () {
+            },
+            controllerAs: 'activityVariationCardCtrl',
+            scope:{
+                variation:"="
+            },
+            link: function(scope, elem){
+              $(elem).children().first().click(function() {
+                    $(elem).children().last().openModal();
+                });
+            }
+        };
+    })
+
 
     /*
      A price card that shows the total price of a pack and a button to buy it
@@ -84,7 +106,7 @@ angular.module('app-directives', [])
             controller: function(CheckoutOrder, $location, $scope) {
                 this.goToCheckout = function() {
                     CheckoutOrder.setOrder($scope.order);
-                    if($scope.cardAction == "extras") $location.path('/extres');
+                    if($scope.cardAction == "extras") $location.path('/detalls-comanda');
                     else if($scope.cardAction == "checkout") $location.path('/checkout');
                 };
             },

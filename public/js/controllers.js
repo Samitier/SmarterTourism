@@ -24,16 +24,17 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
     .controller('detailPackController', function($routeParams, SmarterAPI) {
         this.pack = SmarterAPI.getPack($routeParams.id-1);
         //we create an order for the user
-        this.order = {total_price:this.pack.price};
+        this.order = {total_price:this.pack.price, pack:this.pack.id};
     })
 
     .controller('checkoutController', function(CheckoutOrder) {
         this.order = CheckoutOrder.getOrder();
-
     })
 
-    .controller('orderExtrasController', function(CheckoutOrder) {
+    .controller('orderDetailsController', function(CheckoutOrder, SmarterAPI) {
         this.order = CheckoutOrder.getOrder();
+        if(this.order.pack) {this.product = SmarterAPI.getPack(this.order.pack-1);}
+        else if (this.order.activity) this.product = SmarterAPI.getActivity(this.order.activity-1);
     })
 
     .controller('searchActivitiesCtrl', function(SmarterAPI) {
@@ -41,9 +42,9 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
     })
 
     .controller('detailActivityController', function($routeParams, SmarterAPI) {
-        this.activity = SmarterAPI.getPack($routeParams.id-1);
+        this.activity = SmarterAPI.getActivity($routeParams.id-1);
         //we create an order for the user
-        this.order = {total_price:this.activity.price};
+        this.order = {total_price:this.activity.price, activity:this.activity.id};
     })
 
     .controller('yourOrdersController', function() {
