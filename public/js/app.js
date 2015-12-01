@@ -83,8 +83,9 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
     $locationProvider.html5Mode(true);
 }])
 
-.run(['$rootScope', function($rootScope) {
+.run(['$rootScope', "$window", function($rootScope, $window) {
     $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
         $rootScope.title = current.$$route.title;
+        $window.scrollTo(0,0);    //scroll to top of page after each route change
     });
 }]);

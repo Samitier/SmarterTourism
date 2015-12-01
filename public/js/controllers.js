@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app-controllers', ["ngRoute"])
+angular.module('app-controllers', ["ngRoute", "ngAnimate"])
 
     .controller('homeController', function(SmarterAPI, CheckoutOrder, $scope, $location) {
         this.activities= SmarterAPI.getActivities();
