@@ -1,12 +1,17 @@
-<form name="priceCardForm" ng-submit="priceCardForm.$valid && priceCardCtrl.goToCheckout()" novalidate>
+<form name="priceCardForm" ng-submit="priceCardForm.$valid && priceCardCtrl.sendForm()" novalidate>
     <div class="card blue-grey darken-1" style="margin:0px; max-width:243px;">
         <div class="card-content white-text">
-            <span class="card-title" ng-if="!isClientPack">Fes la teva reserva!</span>
-            <span class="card-title" ng-if="isClientPack">El teu paquet</span>
-            <p>Preu total (per persona): <span>{{order.total_price}}€</span></p>
-            <div ng-if="!isClientPack">
+            <div ng-if="showForm">
+                <span class="card-title" >Fes la teva reserva!</span>
+                <p>Preu total (per persona): <span>{{order.total_price}}€</span></p>
+            </div>
+            <div ng-if="!showForm">
+                <span class="card-title">El teu paquet:<br></span>
+                <p><br>Preu total (per persona): <span>{{order.total_price}}€</span></p>
+            </div>
+            <div ng-if="showForm">
                 <div class="input-field col s12" style="margin-top:35px">
-                    <input ng-model="order.date" id="dataInici" type='text' class='datepicker pt-datepicker' required>
+                    <input ng-model="priceCardForm.initDate" id="dataInici" type='text' class='datepicker pt-datepicker' required>
                     <label for="dataInici">Dia</label>
                 </div>
                 <!--

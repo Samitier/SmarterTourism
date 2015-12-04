@@ -98,6 +98,7 @@ angular.module('app-services', ['ngCookies'])
 
 
 .factory("CheckoutOrder", ["$cookies", function CheckoutOrderService($cookies) {
+
     var service = {};
 
     service.setOrder = function(order) {
@@ -107,5 +108,36 @@ angular.module('app-services', ['ngCookies'])
     service.getOrder = function() {
         return $cookies.getObject('order');
     };
+
+    /*
+    Creates an order from a pack. Stores it as a cookie and returns it.
+     */
+    service.createOrderFromPack = function(pack) {
+        var order = [{id: pack.id, title: pack.title, price: pack.price}];
+        pack.activities.forEach(function (day) {
+            day.activities.forEach(function (activity) {
+                order.push({id: activity.id, title: activity.title, price: 0});
+            });
+        });
+        $cookies.putObject('order', order);
+        return order;
+    };
+
+    /*
+     Creates an order from an activity. Stores it as a cookie and returns it.
+     */
+    service.createOrderFromActivity = function(activity) {
+        var order = [{id: activity.id, title: activity.title, price: activity.price}];
+        $cookies.putObject('order', order);
+        return order;
+    };
+
+    /*
+    Sets a departure date for each activity of an order
+     */
+    service.setOrderDate = function(pack, orderDate) {
+        return pack;
+    }
+
     return service;
 }]);

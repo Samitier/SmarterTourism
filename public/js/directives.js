@@ -100,15 +100,13 @@ angular.module('app-directives', [])
             templateUrl: '/views/directives/priceCard.html',
             scope:{
                 order:"=",
-                isClientPack:"=",
-                cardAction:"="
+                showForm:"=",
+                cardAction:"&",
             },
-            controller: function(CheckoutOrder, $location, $scope) {
-                this.goToCheckout = function() {
-                    CheckoutOrder.setOrder($scope.order);
-                    if($scope.cardAction == "extras") $location.path('/detalls-comanda');
-                    else if($scope.cardAction == "checkout") $location.path('/checkout');
-                };
+            controller: function($scope) {
+                this.sendForm = function() {
+                    $scope.cardAction({param:$scope.priceCardForm.initDate});
+                }
             },
             controllerAs: "priceCardCtrl",
             link: function(scope, element) {
