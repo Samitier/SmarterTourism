@@ -7,27 +7,27 @@ angular.module('app-services', ['ngCookies'])
 
     service.activities = [
         {id:1, image:"placeholder-paquets.jpg", title:"Esmorzar a Can Serra", seller:"Celler Can Serra", price:23, variations:[
-            {id:1,title:"variació 1", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25},
-            {id:2,title:"variació 2", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25},
-            {id:3,title:"variació 3", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25},
+            {id:1,title:"variació esmorzar 1", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25},
+            {id:2,title:"variació esmorzar 2", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25},
+            {id:3,title:"variació esmorzar 3", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25},
         ], extras:[
-            {id:4,title:"variació 1", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25},
-            {id:5,title:"variació 2", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25}
+            {id:4,title:"extra esmorzar 1", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25},
+            {id:5,title:"extra esmorzar 2", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25}
         ]},
         {id:2, image:"placeholder-paquets.jpg", title:"Tast de Cerveses Auesken", seller:"Cerveseria Auesken", price:3, variations:[
-            {id:6,title:"variació 1", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25},
-            {id:7,title:"variació 2", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25},
+            {id:6,title:"variació tast 1", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25},
+            {id:7,title:"variació tast 2", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25},
         ], extras:[
-            {id:8,title:"variació 1", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25},
-            {id:9,title:"variació 2", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25}
+            {id:8,title:"extra tast 1", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25},
+            {id:9,title:"extra tast 2", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25}
         ]},
         {id:3, image:"placeholder-paquets.jpg", title:"Activitat d'Exemple", seller:"Proveïdor exemple", price:13, variations:[
-            {id:10,title:"variació 1", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25},
-            {id:11,title:"variació 3", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25},
-            {id:12,title:"variació 4", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25}
+            {id:10,title:"variacio exemple 1", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25},
+            {id:11,title:"variació exemple 3", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25},
+            {id:12,title:"variació exemple 4", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25}
         ], extras:[
-            {id:13,title:"variació 1", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25},
-            {id:14,title:"variació 2", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25}
+            {id:13,title:"extra exemple 1", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25},
+            {id:14,title:"extra exemple 2", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25}
         ]},
         {id:4, image:"placeholder-paquets.jpg", title:"Una altre activitat d'Exemple", seller:"Proveïdor exemple", price:13, variations: [
             {id:15,title:"variació 1", description:"Això és una descripcio d'exemple", image:"placeholder-paquets.jpg", priceIncr:25},
@@ -113,7 +113,7 @@ angular.module('app-services', ['ngCookies'])
     Creates an order from a pack. Stores it as a cookie and returns it.
      */
     service.createOrderFromPack = function(pack) {
-        var order = [{id: pack.id, title: pack.title, price: pack.price}];
+        var order = [{id: pack.id, title: pack.title, price: pack.price, isPack:true}];
         pack.activities.forEach(function (day) {
             day.activities.forEach(function (activity) {
                 order.push({id: activity.id, title: activity.title, price: 0});
@@ -125,7 +125,7 @@ angular.module('app-services', ['ngCookies'])
 
     /*
      Creates an order from an activity. Stores it as a cookie and returns it.
-     */
+    */
     service.createOrderFromActivity = function(activity) {
         var order = [{id: activity.id, title: activity.title, price: activity.price}];
         $cookies.putObject('order', order);
