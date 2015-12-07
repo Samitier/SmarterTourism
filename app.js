@@ -24,4 +24,13 @@ app.use(function(req, res) {
     res.sendFile(__dirname + '/public/index.html');
 });
 
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    if(app.get('env') === 'development') console.log(err);
+    res.send({
+        message: err.message,
+        error: err
+    });
+});
+
 module.exports = app;
