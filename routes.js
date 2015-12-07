@@ -8,11 +8,22 @@ router.get('/', function(req, res, next) {
 });
 
 /* Acivities */
-router.get('/activities', ctrl.activities.getAll);
-router.post('/activities', ctrl.activities.create);
-router.get('/activities/:id', ctrl.activities.getSingle);
-router.put('/activities/:id', ctrl.activities.update);
-router.delete('/activities/:id', ctrl.activities.delete);
+router.route('/activities')
+        .get(ctrl.activities.getAll)
+        .post(ctrl.activities.create);
+router.route('/activities/:id')
+        .get(ctrl.activities.getSingle)
+        .put(ctrl.activities.update)
+        .delete(ctrl.activities.delete);
+
+/* Packs */
+router.route('/packs')
+        .get(ctrl.packs.getAll)
+        .post(ctrl.packs.create);
+router.route('/packs/:id')
+        .get(ctrl.packs.getSingle)
+        .put(ctrl.packs.update)
+        .delete(ctrl.packs.delete);
 
 /* Not found, for every other route */
 router.all('*', function(req, res) {res.send({ error: {"code":"404", "name":'Resource not found'}});});
