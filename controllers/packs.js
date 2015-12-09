@@ -15,10 +15,12 @@ module.exports.create = function(req, res, next) {
 };
 
 module.exports.getSingle = function(req, res, next) {
-    Pack.findById(req.params.id, function (err, obj) {
-        if (err) return next(err);
-        res.json(obj);
-    });
+    Pack.findById(req.params.id)
+        .populate('activitiesByPeriod.activities')
+        .exec(function (err, obj) {
+            if (err) return next(err);
+            res.json(obj);
+        });
 };
 
 module.exports.update = function(req, res, next) {

@@ -36,8 +36,6 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         this.init = function() {
             SmarterAPI.getPack($routeParams.id).then(function(resp){
                 $scope.pack = resp;
-                //faltaria agafar les dades de les activitats
-                $scope.activities=[];
                 //we create an order for the user
                 $scope.order = CheckoutOrder.createOrderFromPack($scope.pack);
             });
@@ -53,12 +51,6 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
 
     .controller('checkoutController', function(CheckoutOrder, SmarterAPI, $location) {
         this.init = function() {
-            this.order = CheckoutOrder.getOrder();
-            if (this.order.pack) {
-                this.product = SmarterAPI.getPack(this.order.pack);
-                CheckoutOrder.createOrderFromPack(this.product, this.order.date);
-            }
-            else if (this.order.activity) this.product = SmarterAPI.getActivity(this.order.activity - 1);
         };
 
         this.sendAction = function() {
@@ -69,16 +61,15 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         this.init();
     })
 
-    .controller('orderDetailsController', function(CheckoutOrder, SmarterAPI, $location) {
+    .controller('orderDetailsController', function($scope, CheckoutOrder, SmarterAPI, $location) {
         this.init = function() {
             this.order = CheckoutOrder.getOrder();
             //we grab the order products info
-            this.products=[];
+            $scope.products=[];
 
             for(var i=0; i<this.order.length; ++i) {
                 if(this.order[i].isPack) continue;
-                var product = SmarterAPI.getActivity(this.order[i].id-1);
-                this.products[product.id] = product;
+                SmarterAPI.getActivity(this.order[i].id).then(function(resp){ $scope.products[resp._id] = resp;});
             }
         };
 

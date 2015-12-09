@@ -11,9 +11,11 @@ var PackSchema = new mongoose.Schema({
     price: Number,
     featured: Boolean,
     date: Date,
-    activities: [
-        {day: String, activities:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Activity' }]}
-    ]
+    activities:[],
+    activitiesByPeriod: {
+        periods: [Date],
+        activities:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Activity' }]
+    }
 });
 
 module.exports = mongoose.model('Pack', PackSchema);

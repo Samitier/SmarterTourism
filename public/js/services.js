@@ -52,10 +52,8 @@ angular.module('app-services', ['ngCookies'])
      */
     service.createOrderFromPack = function(pack) {
         var order = [{id: pack._id, title: pack.title, price: pack.price, isPack:true}];
-        pack.activities.forEach(function (day) {
-            day.activities.forEach(function (activity) {
-                order.push({id: activity._id, title: activity.title, price: 0});
-            });
+        pack.activitiesByPeriod.activities.forEach(function (activity) {
+            order.push({id: activity._id, title: activity.title, price: 0});
         });
         $cookies.putObject('order', order);
         return order;

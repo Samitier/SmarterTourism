@@ -105,9 +105,7 @@ angular.module('app-directives', [])
             },
             controller: function($scope) {
                 this.sendForm = function() {
-                    console.log($scope.priceCardForm.initDate);
                     var date = new Date($scope.priceCardForm.initDate);
-                    console.log(date);
                     $scope.cardAction({param:date});
                 }
             },
