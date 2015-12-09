@@ -1,5 +1,5 @@
 <div class="card hoverable">
-    <a ng-href="/paquet/{{pack.id}}">
+    <a ng-href="/paquet/{{pack._id}}">
     <div class="card-image waves-effect waves-block waves-light" style="max-height: 290px;">
         <img class="grow" ng-src="/img/{{pack.image}}">
         <div class="more-packet-info">
@@ -11,6 +11,6 @@
     </div>
     <div class="card-content packet-card">
         <span class="card-title activator grey-text text-darken-4">{{pack.title}}</span>
-        <p>El {{pack.date}}</p>
+        <p>El {{pack.date | date:"dd/MM/yyyy"}}</p>
     </div></a>
 </div>

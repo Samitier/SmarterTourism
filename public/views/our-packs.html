@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col m4" ng-repeat="pack in ourPacksCtrl.packs" ng-if="pack.featured">
+        <div class="col m4" ng-repeat="pack in packs | limitTo:3" ng-if="pack.featured">
             <pack-card pack='pack'></pack-card>
         </div>
     </div>
@@ -19,7 +19,7 @@
             <br><br>
             <h3>Tots els paquets:</h3>
         </div>
-        <div class="col m4" ng-repeat="pack in ourPacksCtrl.packs" ng-if="!pack.featured">
+        <div class="col m4" ng-repeat="pack in packs | orderBy:'title'">
             <pack-card pack='pack'></pack-card>
         </div>
         <pt-paginator></pt-paginator>

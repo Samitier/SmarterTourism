@@ -1,27 +1,27 @@
 var mongoose = require('mongoose');
 
 var Variation = new mongoose.Schema({
-    title: String,
-    description: String,
+    title: {type:String, required:true, unique:true},
+    description: {type:String, required:true},
     image: String,
     priceIncr: Number
 });
 
 var Extra = new mongoose.Schema({
-    title: String,
-    description: String,
+    title: {type:String, required:true, unique:true},
+    description: {type:String, required:true},
     image: String,
     priceIncr: Number
 });
 
 var ActivitySchema = new mongoose.Schema({
-    title: String,
-    description: String,
+    title: {type:String, required:true, unique:true},
+    description: {type:String, required:true},
     image: String,
-    seller: String, //referencia
+    seller: String, //referencia a User
     price: Number,
     variations: [Variation],
-    extras: [Extra], //embedded obj
+    extras: [Extra],
 });
 
 module.exports = mongoose.model('Activity', ActivitySchema);

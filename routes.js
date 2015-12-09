@@ -25,6 +25,16 @@ router.route('/packs/:id')
         .put(ctrl.packs.update)
         .delete(ctrl.packs.delete);
 
+/* Users */
+router.route('/users')
+    .get(ctrl.users.getAll)
+    .post(ctrl.users.create);
+router.route('/users/:id')
+    .get(ctrl.users.getSingle)
+    .put(ctrl.users.update)
+    .delete(ctrl.users.delete);
+
+
 /* Not found, for every other route */
 router.all('*', function(req, res) {res.send({ error: {"code":"404", "name":'Resource not found'}});});
 

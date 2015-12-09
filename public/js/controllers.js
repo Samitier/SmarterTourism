@@ -5,8 +5,8 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
     .controller('homeController', function(SmarterAPI, CheckoutOrder, $scope, $location) {
 
         this.init = function() {
-            this.activities= SmarterAPI.getActivities();
-            this.packs= SmarterAPI.getPacks();
+            SmarterAPI.getActivities().then(function(resp){ $scope.activities = resp;});
+            SmarterAPI.getPacks().then(function(resp){ $scope.packs = resp;});
         };
 
         this.createPack = function() {
@@ -22,21 +22,25 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
 
     })
 
-    .controller('ourPacksController', function(SmarterAPI) {
+    .controller('ourPacksController', function(SmarterAPI, $scope) {
 
         this.init = function() {
-            this.packs= SmarterAPI.getPacks();
+            SmarterAPI.getPacks().then(function(resp){ $scope.packs = resp;});
         };
 
         this.init();
     })
 
-    .controller('detailPackController', function(CheckoutOrder, $routeParams, SmarterAPI, $location) {
+    .controller('detailPackController', function(CheckoutOrder, $routeParams, SmarterAPI, $location, $scope) {
 
         this.init = function() {
-            this.pack = SmarterAPI.getPack($routeParams.id-1);
-            //we create an order for the user
-            this.order = CheckoutOrder.createOrderFromPack(this.pack);
+            SmarterAPI.getPack($routeParams.id).then(function(resp){
+                $scope.pack = resp;
+                //faltaria agafar les dades de les activitats
+                $scope.activities=[];
+                //we create an order for the user
+                $scope.order = CheckoutOrder.createOrderFromPack($scope.pack);
+            });
         };
 
         this.sendAction = function(orderDate) {
@@ -51,7 +55,7 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         this.init = function() {
             this.order = CheckoutOrder.getOrder();
             if (this.order.pack) {
-                this.product = SmarterAPI.getPack(this.order.pack - 1);
+                this.product = SmarterAPI.getPack(this.order.pack);
                 CheckoutOrder.createOrderFromPack(this.product, this.order.date);
             }
             else if (this.order.activity) this.product = SmarterAPI.getActivity(this.order.activity - 1);
@@ -70,14 +74,12 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
             this.order = CheckoutOrder.getOrder();
             //we grab the order products info
             this.products=[];
-            console.log(this.order);
 
             for(var i=0; i<this.order.length; ++i) {
                 if(this.order[i].isPack) continue;
                 var product = SmarterAPI.getActivity(this.order[i].id-1);
                 this.products[product.id] = product;
             }
-            console.log(this.products);
         };
 
         this.sendAction = function() {
@@ -88,20 +90,24 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         this.init();
     })
 
-    .controller('searchActivitiesCtrl', function(SmarterAPI) {
+    .controller('searchActivitiesCtrl', function(SmarterAPI, $scope) {
 
         this.init = function() {
-            this.activities = SmarterAPI.getActivities();
+            SmarterAPI.getActivities().then(function(data) {
+                $scope.activities = data;
+            });
         };
 
         this.init();
     })
 
-    .controller('detailActivityController', function($routeParams, SmarterAPI, $location, CheckoutOrder) {
+    .controller('detailActivityController', function($routeParams, SmarterAPI, $location, CheckoutOrder, $scope) {
         this.init = function() {
-            this.activity = SmarterAPI.getActivity($routeParams.id - 1);
-            //we create an order for the user
-            this.order = CheckoutOrder.createOrderFromActivity(this.activity);
+            SmarterAPI.getActivity($routeParams.id).then(function(data) {
+                $scope.activity = data;
+                //we create an order for the user
+                $scope.order = CheckoutOrder.createOrderFromActivity($scope.activity);
+            });
         };
 
         this.sendAction = function(orderDate) {

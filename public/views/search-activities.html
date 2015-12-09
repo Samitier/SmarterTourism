@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col m2" ng-repeat="activity in searchActivitiesCtrl.activities" ng-if="activity.featured">
+        <div class="col m2" ng-repeat="activity in activities | limitTo:3" ng-if="activity.featured">
             <activity-card activity='activity'></activity-card>
         </div>
     </div>
@@ -19,7 +19,7 @@
             <br><br>
             <h3>Totes les activitats:</h3>
         </div>
-        <div class="col m2" ng-repeat="activity in searchActivitiesCtrl.activities" ng-if="!pack.featured">
+        <div class="col m2" ng-repeat="activity in activities | orderBy:'title'">
             <activity-card activity='activity'></activity-card>
         </div>
         <pt-paginator></pt-paginator>
