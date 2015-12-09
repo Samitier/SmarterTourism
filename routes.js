@@ -34,6 +34,9 @@ router.route('/users/:id')
     .put(ctrl.users.update)
     .delete(ctrl.users.delete);
 
+router.post('/authenticate', ctrl.authenticate.login);
+router.post('/logout', ctrl.authenticate.logout);
+router.post('/signin', ctrl.authenticate.createAccount);
 
 /* Not found, for every other route */
 router.all('*', function(req, res) {res.send({ error: {"code":"404", "name":'Resource not found'}});});
