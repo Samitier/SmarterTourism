@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
+var pjson = require('./package.json');
 var ctrl = require('./controllers');
 
 /* GET API info. */
 router.get('/', function(req, res, next) {
-    res.end('This is the web API for Smarter Tourism');
+    res.end('Welcome to the web API for Smarter Tourism v' +pjson.version);
 });
 
 /* Acivities */
@@ -27,19 +28,19 @@ router.route('/packs/:id')
 
 /* Users */
 router.route('/users')
-    .get(ctrl.users.getAll)
+    .get(ctrl.auth.authenticate, ctrl.users.getAll)
     .post(ctrl.users.create);
 router.route('/users/:id')
     .get(ctrl.users.getSingle)
     .put(ctrl.users.update)
     .delete(ctrl.users.delete);
 
-router.post('/authenticate', ctrl.authenticate.login);
-router.post('/logout', ctrl.authenticate.logout);
-router.post('/signin', ctrl.authenticate.createAccount);
+/*Authentication*/
+router.post('/login', ctrl.auth.login);
+router.post('/signin', ctrl.auth.signin);
 
 /* Not found, for every other route */
-router.all('*', function(req, res) {res.send({ error: {"code":"404", "name":'Resource not found'}});});
+router.all('*', function(req, res) {res.status(404).send({ error: {"code":"404", "name":'Resource not found'}});});
 
 module.exports = router;
 
