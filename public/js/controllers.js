@@ -109,6 +109,19 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         this.init();
     })
 
+    .controller('loginController', function($scope, APIAuth, $location, $rootScope) {
+        this.sendForm = function() {
+            APIAuth.login({email:$scope.loginForm.userMail, password: $scope.loginForm.userPassword}).then(function(success) {
+                if(success) $location.path($rootScope.previousPage);
+                //else mostrar error
+            });
+        }
+    })
+
+    .controller('signInController', function() {
+
+    })
+
     .controller('yourOrdersController', function() {
 
     })

@@ -15,6 +15,7 @@ module.exports.login = function(req,res,next) {
             res.json({
                 success: true,
                 message: 'Authentication completed.',
+                user:user.name,
                 token: token
             });
         }
@@ -32,7 +33,7 @@ module.exports.signin = function(req,res,next) {
         if (err) return next(err);
         var token = jwt.sign({_id:obj._id, name:obj.name, email:obj.email},
             process.env.SECRET, {expiresIn: process.env.TOKENEXPIRATION});
-        res.json({success: true, message: obj, token: token});
+        res.json({success: true, user: obj.name, token: token});
     });
 }
 
@@ -41,7 +42,7 @@ module.exports.authenticate = function(req,res,next) {
     if (token) {
         jwt.verify(token, process.env.SECRET, function(err, decoded) {
             if (err) {
-                return res.json({ success: false, message: 'Permission denied.' });
+                return res.status(403).send({ error: {"code":"403", "name":'Access denied. Invalid token.'}});
             }
             else {
                 req.decoded = decoded;
@@ -50,6 +51,6 @@ module.exports.authenticate = function(req,res,next) {
         });
     }
     else {
-        return res.status(403).send({ error: {"code":"403", "name":'Resource not found'}});
+        return res.status(401).send({ error: {"code":"401", "name":'This resource needs authentication'}});
     }
 }

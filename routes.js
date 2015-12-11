@@ -1,7 +1,8 @@
 var express = require('express');
-var router = express.Router();
 var pjson = require('./package.json');
 var ctrl = require('./controllers');
+
+var router = express.Router();
 
 /* GET API info. */
 router.get('/', function(req, res, next) {
@@ -11,29 +12,29 @@ router.get('/', function(req, res, next) {
 /* Acivities */
 router.route('/activities')
         .get(ctrl.activities.getAll)
-        .post(ctrl.activities.create);
+        .post(ctrl.auth.authenticate,ctrl.activities.create);
 router.route('/activities/:id')
         .get(ctrl.activities.getSingle)
-        .put(ctrl.activities.update)
-        .delete(ctrl.activities.delete);
+        .put(ctrl.auth.authenticate,ctrl.activities.update)
+        .delete(ctrl.auth.authenticate,ctrl.activities.delete);
 
 /* Packs */
 router.route('/packs')
         .get(ctrl.packs.getAll)
-        .post(ctrl.packs.create);
+        .post(ctrl.auth.authenticate,ctrl.packs.create);
 router.route('/packs/:id')
         .get(ctrl.packs.getSingle)
-        .put(ctrl.packs.update)
-        .delete(ctrl.packs.delete);
+        .put(ctrl.auth.authenticate,ctrl.packs.update)
+        .delete(ctrl.auth.authenticate,ctrl.packs.delete);
 
 /* Users */
 router.route('/users')
     .get(ctrl.auth.authenticate, ctrl.users.getAll)
-    .post(ctrl.users.create);
+    .post(ctrl.auth.authenticate,ctrl.users.create);
 router.route('/users/:id')
-    .get(ctrl.users.getSingle)
-    .put(ctrl.users.update)
-    .delete(ctrl.users.delete);
+    .get(ctrl.auth.authenticate,ctrl.users.getSingle)
+    .put(ctrl.auth.authenticate,ctrl.users.update)
+    .delete(ctrl.auth.authenticate,ctrl.users.delete);
 
 /*Authentication*/
 router.post('/login', ctrl.auth.login);

@@ -1,0 +1,24 @@
+<li ng-if="!username" class="main-navbar-buttons hide-on-med-and-down">
+    <a href="/signin" class="waves-effect waves-light btn amber accent-4">Registrar-se</a>
+</li>
+<li ng-if="!username" class="main-navbar-buttons hide-on-med-and-down">
+    <a style="margin-left: 0rem;" class="waves-effect waves-light btn cyan darken-1" href="/login">Entrar</a>
+</li>
+<li ng-if="!username" class="hide-on-large-only">
+    <a href="/signin">Registrar-se</a>
+</li>
+<li ng-if="!username" class="hide-on-large-only">
+    <a href="/login">Entrar</a>
+</li>
+<li ng-if="username">
+        <a class="dropdown-button" href="#">
+            <i class="material-icons">account_circle</i> {{username}} <i class="material-icons right">arrow_drop_down</i>
+        </a>
+        <ul class="dropdown-content">
+            <li><a href="/comandes">Les meves comandes</a></li>
+            <li><a href="/perfil"><i class="material-icons">settings</i> El meu perfil</a></li>
+            <li class="divider"></li>
+            <li><a href="#!"><i class="material-icons">exit_to_app</i> Tancar sessió</a></li>
+        </ul>
+    </div>
+</li>

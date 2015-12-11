@@ -17,12 +17,34 @@ angular.module('app-directives', [])
                 ];
             },
             link:function(scope, elem) {
-                $(elem).find(".button-collapse").sideNav();
-                $(elem).find(".dropdown-button").dropdown();
+                $(elem).find(".button-collapse").first().sideNav();
             },
             controllerAs: 'navMenuCtrl'
         };
     })
+
+    /*
+     The menu for logged users & login/logout
+     */
+    .directive('userMenu', function() {
+        return {
+            restrict: 'E',
+            templateUrl: '/views/directives/userMenu.html',
+            controller: function($scope, APIAuth) {
+                $scope.username = APIAuth.getUsername();
+            },
+            scope: {
+              dropdownId:"@"
+            },
+            link:function(scope, elem) {
+                $(elem).find('.modal-triggeru').leanModal();
+                $(elem).find("ul").first().attr({id:scope.dropdownId});
+                $(elem).find(".dropdown-button").first().attr({"data-activates":scope.dropdownId}).dropdown();
+            },
+            controllerAs: 'userMenuCtrl'
+        };
+    })
+
 
     /*
      The main footer of the application

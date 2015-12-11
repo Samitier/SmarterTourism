@@ -73,7 +73,42 @@ angular.module('app-services', ['ngCookies'])
      */
     service.setOrderDate = function(pack, orderDate) {
         return pack;
-    }
+    };
+
+    return service;
+}])
+
+
+.factory("APIAuth", ["$cookies","$http", function APIAuthService($cookies, $http) {
+
+    var service = {};
+
+    var apiURI = "/api/";
+
+    service.login = function(data) {
+        return $http.post(apiURI + "login", data).then(function (resp) {
+            if(resp.data.success) {
+                $cookies.putObject('user', {name: resp.data.user, token: resp.data.token});
+                return true;
+            }
+            return false;
+        });
+    };
+
+    service.logOut = function() {
+
+    };
+
+    service.signIn = function(user) {
+
+    };
+
+    service.getUsername = function() {
+        var user = $cookies.getObject('user');
+        console.log(user);
+        if(user) return user.name;
+        else return user;
+    };
 
     return service;
 }]);
