@@ -88,7 +88,12 @@ angular.module('app-services', ['ngCookies'])
     service.login = function(data) {
         return $http.post(apiURI + "login", data).then(function (resp) {
             if(resp.data.success) {
-                $cookies.putObject('user', {name: resp.data.user, token: resp.data.token});
+                if(data.remember) {
+                    var expireDate = new Date();
+                    expireDate = new Date(expireDate.getTime()+14*24*60*60*1000);
+                    $cookies.putObject('user', {name: resp.data.user, token: resp.data.token},{'expires': expireDate});
+                }
+                else $cookies.putObject('user', {name: resp.data.user, token: resp.data.token});
                 return true;
             }
             return false;

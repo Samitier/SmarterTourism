@@ -115,7 +115,9 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         };
 
         this.sendForm = function() {
-            APIAuth.login({email:$scope.loginForm.userMail, password: $scope.loginForm.userPassword}).then(function(success) {
+            APIAuth.login({email:$scope.loginForm.userMail, password: $scope.loginForm.userPassword,
+                                                                        remember:$scope.loginForm.remember}).
+            then(function(success) {
                 if(success) {
                     $location.path($rootScope.previousPage);
                 }
