@@ -30,15 +30,17 @@ angular.module('app-directives', [])
         return {
             restrict: 'E',
             templateUrl: '/views/directives/userMenu.html',
-            controller: function($scope, APIAuth) {
-                $scope.username = APIAuth.getUsername();
+            controller: function(APIAuth) {
+                this.logout = function() {
+                    APIAuth.logOut();
+                }
             },
             scope: {
-              dropdownId:"@"
+                dropdownId:"@",
+                username:"="
             },
             link:function(scope, elem) {
-                $(elem).find('.modal-triggeru').leanModal();
-                $(elem).find("ul").first().attr({id:scope.dropdownId});
+                $(elem).find(".dropdown-content").first().attr({id:scope.dropdownId});
                 $(elem).find(".dropdown-button").first().attr({"data-activates":scope.dropdownId}).dropdown();
             },
             controllerAs: 'userMenuCtrl'

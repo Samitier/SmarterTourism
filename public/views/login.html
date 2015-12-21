@@ -12,6 +12,12 @@
                 <input  ng-model="loginForm.userPassword" id="password" type="password" class="validate" required>
                 <label for="password">Password</label>
             </div>
+            <div class="col s12">
+                <p>
+                    <input ng-model="loginForm.remember" type="checkbox" id="remember" />
+                    <label for="remember">Recorda'm</label>
+                </p>
+            </div>
             <div class="input-field col s12">
                 <button ng-class="{disabled:!loginForm.$valid}" class="waves-effect waves-light btn" type="submit" name="action">
                     Continuar

@@ -95,8 +95,13 @@ angular.module('app-services', ['ngCookies'])
         });
     };
 
-    service.logOut = function() {
+    service.isLoggedIn = function() {
+        var user = $cookies.getObject('user');
+        return (user!=null);
+    };
 
+    service.logOut = function() {
+        $cookies.remove("user");
     };
 
     service.signIn = function(user) {
@@ -105,7 +110,6 @@ angular.module('app-services', ['ngCookies'])
 
     service.getUsername = function() {
         var user = $cookies.getObject('user');
-        console.log(user);
         if(user) return user.name;
         else return user;
     };

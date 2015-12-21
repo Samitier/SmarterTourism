@@ -8,14 +8,14 @@
                 <li ng-repeat="option in navMenuCtrl.menuOptions">
                     <a ng-href="{{option.url}}">{{option.name}}</a>
                 </li>
-                <user-menu dropdown-id="desktop-dropdown"></user-menu>
+                <user-menu dropdown-id="desktop-dropdown" username="$root.userAuthenticated"></user-menu>
             </ul>
 
             <ul class="side-nav" id="mobile-demo">
                 <li ng-repeat="option in navMenuCtrl.menuOptions">
                     <a ng-href="{{option.url}}">{{option.name}}</a>
                 </li>
-                <user-menu dropdown-id="mobile-dropdown"></user-menu>
+                <user-menu dropdown-id="mobile-dropdown" username="$root.userAuthenticated"></user-menu>
             </ul>
         </div>
     </nav>

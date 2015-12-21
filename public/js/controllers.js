@@ -110,16 +110,27 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
     })
 
     .controller('loginController', function($scope, APIAuth, $location, $rootScope) {
+        this.init = function() {
+            if(APIAuth.isLoggedIn()) $location.path("/");
+        };
+
         this.sendForm = function() {
             APIAuth.login({email:$scope.loginForm.userMail, password: $scope.loginForm.userPassword}).then(function(success) {
-                if(success) $location.path($rootScope.previousPage);
-                //else mostrar error
+                if(success) {
+                    $location.path($rootScope.previousPage);
+                }
+                else Materialize.toast('Les dades introduïdes són errònies!', 4000);
             });
         }
+
+        this.init();
     })
 
-    .controller('signInController', function() {
-
+    .controller('signInController', function($location) {
+        this.init = function() {
+            if(APIAuth.isLoggedIn()) $location.path("/");
+        };
+        this.init();
     })
 
     .controller('yourOrdersController', function() {

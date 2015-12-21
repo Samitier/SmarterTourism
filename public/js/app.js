@@ -68,28 +68,32 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
             title: "Login",
             templateUrl: '/views/login.html',
             controller: 'loginController',
-            controllerAs: 'loginCtrl'
+            controllerAs: 'loginCtrl',
+            needsNoLogin: true
         })
 
         .when("/signin",{
             title: "Registrar-se",
             templateUrl: '/views/signin.html',
             controller: 'signInController',
-            controllerAs: 'signInCtrl'
+            controllerAs: 'signInCtrl',
+            needsNoLogin: true
         })
 
         .when("/comandes",{
             title: "Les teves comandes",
             templateUrl: '/views/yourOrders.html',
             controller: 'yourOrdersController',
-            controllerAs: 'yourOrdersCtrl'
-    })
+            controllerAs: 'yourOrdersCtrl',
+            needsLogin:true
+        })
 
         .when("/perfil",{
             title: "El teu perfil",
             templateUrl: '/views/yourProfile.html',
             controller: 'yourProfileController',
-            controllerAs: 'yourProfileCtrl'
+            controllerAs: 'yourProfileCtrl',
+            needsLogin:true
         })
 
         .otherwise({redirectTo: '/'});
@@ -97,11 +101,20 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
     $locationProvider.html5Mode(true);
 }])
 
-.run(['$rootScope', "$window", function($rootScope, $window) {
+.run(['$rootScope', "$window","APIAuth", '$location', function($rootScope, $window, APIAuth, $location) {
+
     $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
         $rootScope.title = current.$$route.title;
         $window.scrollTo(0,0);    //scroll to top of page after each route change
         if(previous) $rootScope.previousPage = previous.$$route.originalPath;
         else $rootScope.previousPage ="/";
+    });
+
+    $rootScope.$on('$routeChangeStart', function (event, next) {
+        $rootScope.userAuthenticated = APIAuth.getUsername();
+        if (!$rootScope.userAuthenticated && next.needsLogin)
+            $location.path('/login');
+        else if ($rootScope.userAuthenticated && next.needsNoLogin)
+            $location.path('/');
     });
 }]);
