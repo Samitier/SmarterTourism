@@ -126,7 +126,7 @@ angular.module('app-services', ['ngCookies'])
     };
 
     service.signIn = function(user) {
-        return $http.post(apiURI + "signin", data).then(function (resp) {
+        return $http.post(apiURI + "signin", user).then(function (resp) {
             if(resp.data.success) {
                 $cookies.putObject('user', {name: resp.data.user, token: resp.data.token});
                 $http.defaults.headers.common['st-access-token'] = resp.data.token;

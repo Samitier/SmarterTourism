@@ -127,18 +127,17 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         this.init();
     })
 
-    .controller('signInController', function($location) {
+    .controller('signInController', function(APIAuth, $scope) {
         this.init = function() {
+            $scope.isLogged=false;
         };
 
         this.sendForm = function() {
-            APIAuth.login({email:$scope.loginForm.userMail, password: $scope.loginForm.userPassword,
-                remember:$scope.loginForm.remember}).
+            APIAuth.signIn({email:$scope.signinForm.userMail, password: $scope.signinForm.userPassword,
+                name:$scope.signinForm.userName}).
             then(function(success) {
-                if(success) {
-                    $location.path($rootScope.previousPage);
-                }
-                else Materialize.toast('Les dades introduïdes són errònies!', 4000);
+                if(success) $scope.isLogged=true;
+                else Materialize.toast('Ja existeix un compte amb aquesta direcció de correu!', 4000);
             });
         };
 
