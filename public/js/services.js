@@ -2,10 +2,13 @@
 
 angular.module('app-services', ['ngCookies'])
 
-.factory("SmarterAPI", function SmarterApiService($http) {
+.factory("SmarterAPI", function SmarterApiService($http, APIAuth) {
     var service={};
 
     var apiURI = "/api/";
+
+    var token = APIAuth.getUserToken();
+    if(token) $http.defaults.headers.common['st-access-token'] = token;
 
     service.getPacks = function() {
         return $http.get(apiURI + "packs").then(function(resp) {
@@ -27,6 +30,18 @@ angular.module('app-services', ['ngCookies'])
 
     service.getActivity = function(id) {
         return $http.get(apiURI + "activities/" + id).then(function(resp) {
+            return resp.data;
+        });
+    };
+
+    service.getProfile = function() {
+        return $http.get(apiURI + "profile").then(function(resp) {
+            return resp.data;
+        });
+    };
+
+    service.setProfile = function(data) {
+        return $http.put(apiURI + "profile", data).then(function(resp) {
             return resp.data;
         });
     };
@@ -94,6 +109,7 @@ angular.module('app-services', ['ngCookies'])
                     $cookies.putObject('user', {name: resp.data.user, token: resp.data.token},{'expires': expireDate});
                 }
                 else $cookies.putObject('user', {name: resp.data.user, token: resp.data.token});
+                $http.defaults.headers.common['st-access-token'] = resp.data.token;
                 return true;
             }
             return false;
@@ -110,12 +126,25 @@ angular.module('app-services', ['ngCookies'])
     };
 
     service.signIn = function(user) {
-
+        return $http.post(apiURI + "signin", data).then(function (resp) {
+            if(resp.data.success) {
+                $cookies.putObject('user', {name: resp.data.user, token: resp.data.token});
+                $http.defaults.headers.common['st-access-token'] = resp.data.token;
+                return true;
+            }
+            return false;
+        });
     };
 
     service.getUsername = function() {
         var user = $cookies.getObject('user');
         if(user) return user.name;
+        else return user;
+    };
+
+    service.getUserToken = function() {
+        var user = $cookies.getObject('user');
+        if(user) return user.token;
         else return user;
     };
 

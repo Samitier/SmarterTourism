@@ -102,6 +102,8 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
 }])
 
 .run(['$rootScope', "$window","APIAuth", '$location', function($rootScope, $window, APIAuth, $location) {
+    $rootScope.title ="";
+    $rootScope.previousPage ="/";
 
     $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
         $rootScope.title = current.$$route.title;

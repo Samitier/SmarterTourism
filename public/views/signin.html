@@ -1,10 +1,37 @@
-<div class="container">
-    <div class="row">
-        <div class="col s12 left-align">
-            <h2>Registrar-se</h2>
+<div style="background:url('/img/parallax2.jpg');height:800px;opacity:0.8;">
+    <div class="container">
+        <div class="row">
+            <div class="hide-on-small-only" style="height: 2em"></div>
+            <div class="col m3"><br> </div>
+            <div class="col m6 z-depth-1 cyan lighten-5" style="padding:20px;border-radius:5px;">
+                <h4 class="center-align">Dona't d'alta a Smarter Tourism</h4>
+                <form name="signinForm" ng-submit="signinForm.$valid && signInCtrl.sendForm()" novalidate>
+                    <div class="input-field col s12">
+                        <input ng-model="signinForm.userMail" id="email" type="email" class="validate" required>
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input  ng-model="signinForm.userName" id="name" type="password" class="validate" required>
+                        <label for="name">Nom Complet</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input  ng-model="signinForm.userPassword" id="password" type="password" class="validate" required>
+                        <label for="password">Contrasenya</label>
+                    </div>
+                    <div class="col s12">
+                        <p>
+                            <input ng-model="signinForm.remember" type="checkbox" id="remember" />
+                            <label for="remember">Recorda'm</label>
+                        </p>
+                    </div>
+                    <div class="input-field col s12">
+                        <button ng-class="{disabled:!signinForm.$valid}" class="waves-effect waves-light btn right" type="submit" name="action">
+                            Continuar
+                        </button><br><br>
+                        <p class="right right-align">Ja tens compte? <a href="/login">Entra-hi!</a></p>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-    <div class="row">
-    </div>
-</div>
+    </div></div>
 

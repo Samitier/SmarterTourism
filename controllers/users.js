@@ -34,3 +34,14 @@ module.exports.delete = function(req, res, next) {
         res.json(obj);
     });
 };
+
+module.exports.getProfile = function(req ,res, next) {
+    User.findById(req.decoded._id, req.body, function (err, obj) {
+        if (err) return next(err);
+        res.json(obj);
+    });
+};
+
+module.exports.updateProfile = function(req ,res, next) {
+
+};

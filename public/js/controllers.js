@@ -111,7 +111,6 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
 
     .controller('loginController', function($scope, APIAuth, $location, $rootScope) {
         this.init = function() {
-            if(APIAuth.isLoggedIn()) $location.path("/");
         };
 
         this.sendForm = function() {
@@ -130,8 +129,19 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
 
     .controller('signInController', function($location) {
         this.init = function() {
-            if(APIAuth.isLoggedIn()) $location.path("/");
         };
+
+        this.sendForm = function() {
+            APIAuth.login({email:$scope.loginForm.userMail, password: $scope.loginForm.userPassword,
+                remember:$scope.loginForm.remember}).
+            then(function(success) {
+                if(success) {
+                    $location.path($rootScope.previousPage);
+                }
+                else Materialize.toast('Les dades introduïdes són errònies!', 4000);
+            });
+        };
+
         this.init();
     })
 
@@ -139,6 +149,9 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
 
     })
 
-    .controller('yourProfileController', function() {
-
+    .controller('yourProfileController', function($scope, SmarterAPI) {
+        SmarterAPI.getProfile().then(function(data) {
+            $scope.profile = data;
+            console.log($scope.profile);
+        });
     });
