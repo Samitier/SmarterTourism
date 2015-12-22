@@ -96,6 +96,11 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
             needsLogin:true
         })
 
+        .when("/termes-us",{
+            title: "Termes d'ús",
+            templateUrl: '/views/useTerms.html'
+        })
+
         .otherwise({redirectTo: '/'});
 
     $locationProvider.html5Mode(true);
