@@ -1,6 +1,6 @@
 var Order = require("../models/Order");
 
-module.exports.listAll = function(req,res,next) {
+module.exports.getAll = function(req,res,next) {
 
 }
 
