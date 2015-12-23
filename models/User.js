@@ -6,7 +6,8 @@ var UserSchema = new mongoose.Schema({
     lastname: {type:String, required:true},
     email: {type:String, required:true, unique:true,  validate: [ validator.isEmail, 'Invalid email address' ]},
     password: {type:String, required:true},
-    role:{type:String, required:true, enum: ['Client', 'Provider', 'Agency', 'Super']}
+    role:{type:String, required:true, enum: ['Client', 'Provider', 'Agency', 'Super']},
+    state:{type:String, default:"Unconfirmed", enum: ['Unconfirmed', 'Confirmed', 'Inactive']},
 });
 
 module.exports = mongoose.model('User', UserSchema);

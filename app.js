@@ -7,7 +7,6 @@ var bodyParser = require('body-parser');
 
 var api = require('./routes');
 var db = require('./config/database');
-var msg = require('./config/email');
 
 var app = express();
 
@@ -22,7 +21,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api', api);
 
 app.use(function(req, res) {
-    msg.send("confirmEmail", "te@tesico.com", {name: "tetesico", tokenUrl:req.protocol + '://' + req.get('host') + '/confirm/12312'});
     res.sendFile(__dirname + '/public/index.html');
 });
 

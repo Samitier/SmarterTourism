@@ -39,6 +39,8 @@ router.route('/users/:id')
 /*Authentication*/
 router.post('/login', ctrl.auth.login);
 router.post('/signin', ctrl.auth.signin);
+router.get('/confirm-email/:token', ctrl.auth.confirmEmail);
+
 
 /* Pofile */
 router.route('/profile')
