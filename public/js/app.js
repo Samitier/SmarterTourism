@@ -64,6 +64,20 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
             controllerAs: 'checkoutCtrl'
         })
 
+        .when("/login",{
+            title: "Login",
+            templateUrl: '/views/login.html',
+            controller: 'loginController',
+            controllerAs: 'loginCtrl'
+        })
+
+        .when("/signin",{
+            title: "Registrar-se",
+            templateUrl: '/views/signin.html',
+            controller: 'signInController',
+            controllerAs: 'signInCtrl'
+        })
+
         .when("/comandes",{
             title: "Les teves comandes",
             templateUrl: '/views/yourOrders.html',
@@ -87,5 +101,7 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
     $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
         $rootScope.title = current.$$route.title;
         $window.scrollTo(0,0);    //scroll to top of page after each route change
+        if(previous) $rootScope.previousPage = previous.$$route.originalPath;
+        else $rootScope.previousPage ="/";
     });
 }]);

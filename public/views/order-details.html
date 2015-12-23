@@ -43,7 +43,7 @@
                             <div class="col s12" ng-repeat="product in orderDetailsCtrl.order" ng-if="!product.isPack">
                                 <b>{{product.title}}</b>
                                 <div class="row">
-                                    <div class="col s6" ng-repeat="variation in orderDetailsCtrl.products[product.id].variations">
+                                    <div class="col s6" ng-repeat="variation in products[product.id].variations">
                                         <activity-variation-card variation="variation"></activity-variation-card>
                                     </div>
                                 </div>
@@ -63,7 +63,7 @@
                             <div class="col s12" ng-repeat="product in orderDetailsCtrl.order" ng-if="!product.isPack">
                                 <b>{{product.title}}</b>
                                 <div class="row">
-                                    <div class="col s6" ng-repeat="extra in orderDetailsCtrl.products[product.id].extras">
+                                    <div class="col s6" ng-repeat="extra in products[product.id].extras">
                                         <activity-variation-card variation="extra"></activity-variation-card>
                                     </div>
                                 </div>

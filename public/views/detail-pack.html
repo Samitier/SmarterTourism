@@ -2,7 +2,7 @@
 <div class="container">
     <div class="row">
         <div class="col s9">
-            <h3>{{detailPackCtrl.pack.title}}</h3>
+            <h3>{{pack.title}}</h3>
             <br>
         </div>
     </div>
@@ -17,12 +17,12 @@
                 <div class="col s12">
                     <div class="section">
                         <h5>Descripció</h5>
-                        <p>{{detailPackCtrl.pack.description}}</p>
+                        <p>{{pack.description}}</p>
                     </div>
                     <div class="divider"></div>
                     <div class="section">
                         <h5>Informació adicional</h5>
-                        <p>{{detailPackCtrl.pack.additional_info}}</p>
+                        <p>{{pack.additional_info}}</p>
                     </div>
                     <div class="divider"></div>
                     <div class="section">
@@ -32,20 +32,14 @@
                     <div class="divider"></div>
                     <div class="section">
                         <h5>Informació de contacte</h5>
-                        <p><b>Telèfon: </b>{{detailPackCtrl.pack.contact_telephone}}</p>
-                        <p><b>Mail: </b>{{detailPackCtrl.pack.contact_email}}</p>
+                        <p><b>Telèfon: </b>{{pack.contact_telephone}}</p>
+                        <p><b>Mail: </b>{{pack.contact_email}}</p>
                     </div>
                 </div>
             </div>
             <div id="activitats" class="col s12">
-                <div class="section center-align" ng-repeat="activityPeriod in detailPackCtrl.pack.activities">
-                    <h5>{{activityPeriod.day}}</h5>
-                    <div class="text-divider"></div>
-                    <div class="col s12" style="margin-bottom:25px;">
-                        <div class="col m3"ng-repeat="activity in activityPeriod.activities">
-                            <activity-card activity="activity"></activity-card>
-                        </div>
-                    </div>
+                <div class="col m3" ng-repeat="activity in pack.activitiesByPeriod.activities">
+                    <activity-card activity="activity"></activity-card>
                 </div>
             </div>
             <div id="valoracions" class="col s12">
@@ -82,7 +76,7 @@
             </div>
         </div>
         <div class="col l3">
-            <price-card order="detailPackCtrl.order" show-form="true" card-action="detailPackCtrl.sendAction(param)"></price-card>
+            <price-card order="order" show-form="true" card-action="detailPackCtrl.sendAction(param)"></price-card>
         </div>
     </div>
 </div>

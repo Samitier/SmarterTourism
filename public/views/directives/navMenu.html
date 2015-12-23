@@ -8,34 +8,14 @@
                 <li ng-repeat="option in navMenuCtrl.menuOptions">
                     <a ng-href="{{option.url}}">{{option.name}}</a>
                 </li>
-                <li>
-                    <a class="dropdown-button" href="#" data-activates="dropdown-nav">
-                        El teu perfil <i class="material-icons right">arrow_drop_down</i>
-                    </a>
-                    <ul id="dropdown-nav" class="dropdown-content">
-                        <li><a href="/comandes">Les meves comandes</a></li>
-                        <li><a href="/perfil">El meu perfil</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#!">Tancar sessió</a></li>
-                    </ul>
-                </li>
+                <user-menu dropdown-id="desktop-dropdown"></user-menu>
             </ul>
 
             <ul class="side-nav" id="mobile-demo">
                 <li ng-repeat="option in navMenuCtrl.menuOptions">
                     <a ng-href="{{option.url}}">{{option.name}}</a>
                 </li>
-                <li>
-                    <a class="dropdown-button" href="#" data-activates="dropdown-nav-mobile">
-                        El teu perfil <i class="material-icons right">arrow_drop_down</i>
-                    </a>
-                    <ul id="dropdown-nav-mobile" class="dropdown-content">
-                        <li><a href="/comandes">Les meves comandes</a></li>
-                        <li><a href="/perfil">El meu perfil</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#!">Tancar sessió</a></li>
-                    </ul>
-                </li>
+                <user-menu dropdown-id="mobile-dropdown"></user-menu>
             </ul>
         </div>
     </nav>

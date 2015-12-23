@@ -124,7 +124,6 @@ input[type="number"] {
     color:#ffab40;
 }
 
-
 .view-animate {
     width:100%;
 }
@@ -156,4 +155,17 @@ input[type="number"] {
 
 .activity-variation > p {
     padding:2rem 0rem 2rem 0rem;
+}
+
+.main-navbar-buttons:hover {
+    background-color: #5B9AD3;
+}
+
+.main-navbar-buttons > a {
+    margin-right: 1rem;
+    margin-left: 1rem;
+    font-size:14px;
+    height: 33px;
+    line-height: 33px;
+    margin-top:-2px;
 }

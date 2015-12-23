@@ -17,12 +17,34 @@ angular.module('app-directives', [])
                 ];
             },
             link:function(scope, elem) {
-                $(elem).find(".button-collapse").sideNav();
-                $(elem).find(".dropdown-button").dropdown();
+                $(elem).find(".button-collapse").first().sideNav();
             },
             controllerAs: 'navMenuCtrl'
         };
     })
+
+    /*
+     The menu for logged users & login/logout
+     */
+    .directive('userMenu', function() {
+        return {
+            restrict: 'E',
+            templateUrl: '/views/directives/userMenu.html',
+            controller: function($scope, APIAuth) {
+                $scope.username = APIAuth.getUsername();
+            },
+            scope: {
+              dropdownId:"@"
+            },
+            link:function(scope, elem) {
+                $(elem).find('.modal-triggeru').leanModal();
+                $(elem).find("ul").first().attr({id:scope.dropdownId});
+                $(elem).find(".dropdown-button").first().attr({"data-activates":scope.dropdownId}).dropdown();
+            },
+            controllerAs: 'userMenuCtrl'
+        };
+    })
+
 
     /*
      The main footer of the application
@@ -105,7 +127,8 @@ angular.module('app-directives', [])
             },
             controller: function($scope) {
                 this.sendForm = function() {
-                    $scope.cardAction({param:$scope.priceCardForm.initDate});
+                    var date = new Date($scope.priceCardForm.initDate);
+                    $scope.cardAction({param:date});
                 }
             },
             controllerAs: "priceCardCtrl",
@@ -195,7 +218,16 @@ angular.module('app-directives', [])
             link:function(scope, elem) {
                 elem.pickadate({
                     selectMonths: true, // Creates a dropdown to control month
-                    selectYears: 15 // Creates a dropdown of 15 years to control year
+                    selectYears: 15, // Creates a dropdown of 15 years to control year
+                    monthsFull: [ 'Gener', 'Febrer', 'Març', 'Abril', 'Maig', 'juny', 'Juliol', 'Agost', 'Setembre', 'Octubre', 'Novembre', 'Desembre' ],
+                    monthsShort: [ 'Gen', 'Feb', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Des' ],
+                    weekdaysFull: [ 'diumenge', 'dilluns', 'dimarts', 'dimecres', 'dijous', 'divendres', 'dissabte' ],
+                    weekdaysShort: [ 'diu', 'dil', 'dim', 'dmc', 'dij', 'div', 'dis' ],
+                    today: 'avui',
+                    clear: 'esborra',
+                    close: 'tanca',
+                    firstDay: 1,
+                    format: 'yyyy/mm/dd',
                 });
             }
         };
