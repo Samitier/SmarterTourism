@@ -1,8 +1,10 @@
+<div style="background:url('/img/parallax1.jpg');height:800px;opacity:0.8;">
 <div class="container">
     <div class="row">
-        <div class="col s6 offset-s3">
-            <h4>Entra a Smarter Tourism</h4>
-        </div>
+        <div class="hide-on-small-only" style="height: 2em"></div>
+        <div class="col m3"><br> </div>
+        <div class="col m6 z-depth-1 cyan lighten-5" style="padding:20px;border-radius:5px;">
+            <h4 class="center-align">Entra a Smarter Tourism</h4>
         <form name="loginForm" ng-submit="loginForm.$valid && loginCtrl.sendForm()" novalidate>
             <div class="input-field col s12">
                 <input ng-model="loginForm.userMail" id="email" type="email" class="validate" required>
@@ -10,16 +12,22 @@
             </div>
             <div class="input-field col s12">
                 <input  ng-model="loginForm.userPassword" id="password" type="password" class="validate" required>
-                <label for="password">Password</label>
+                <label for="password">Contrasenya</label>
+            </div>
+            <div class="col s12">
+                <p>
+                    <input ng-model="loginForm.remember" type="checkbox" id="remember" />
+                    <label for="remember">Recorda'm</label>
+                </p>
             </div>
             <div class="input-field col s12">
-                <button ng-class="{disabled:!loginForm.$valid}" class="waves-effect waves-light btn" type="submit" name="action">
+                <button ng-class="{disabled:!loginForm.$valid}" class="waves-effect waves-light btn right" type="submit" name="action">
                     Continuar
-                </button>
+                </button><br><br>
+                <p class="right right-align">No tens cap compte? <a href="/signin">Registra't!</a></p>
             </div>
         </form>
+        </div>
     </div>
-    <div class="row">
-    </div>
-</div>
+</div></div>
 

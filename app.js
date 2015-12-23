@@ -25,9 +25,10 @@ app.use(function(req, res) {
 });
 
 app.use(function(err, req, res, next) {
+    if(err.code == 11000) err.status=200; //mongoose's duplicate key error is not considered an internal server error
     res.status(err.status || 500);
-    if(app.get('ENV') === 'development') console.log(err);
-    res.send({
+    if(process.env.ENV === 'development') console.log(err);
+    res.json({
         message: err.message,
         error: err
     });

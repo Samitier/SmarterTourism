@@ -40,6 +40,11 @@ router.route('/users/:id')
 router.post('/login', ctrl.auth.login);
 router.post('/signin', ctrl.auth.signin);
 
+/* Pofile */
+router.route('/profile')
+    .get(ctrl.auth.authenticate, ctrl.users.getProfile)
+    .put(ctrl.auth.authenticate,ctrl.users.updateProfile)
+
 /* Not found, for every other route */
 router.all('*', function(req, res) {res.status(404).send({ error: {"code":"404", "name":'Resource not found'}});});
 

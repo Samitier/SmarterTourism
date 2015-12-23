@@ -1,24 +1,25 @@
-<li ng-if="!username" class="main-navbar-buttons hide-on-med-and-down">
+<li ng-if-start="!username" class="main-navbar-buttons hide-on-med-and-down">
     <a href="/signin" class="waves-effect waves-light btn amber accent-4">Registrar-se</a>
 </li>
-<li ng-if="!username" class="main-navbar-buttons hide-on-med-and-down">
+<li class="main-navbar-buttons hide-on-med-and-down">
     <a style="margin-left: 0rem;" class="waves-effect waves-light btn cyan darken-1" href="/login">Entrar</a>
 </li>
-<li ng-if="!username" class="hide-on-large-only">
+<li class="hide-on-large-only">
     <a href="/signin">Registrar-se</a>
 </li>
-<li ng-if="!username" class="hide-on-large-only">
+<li ng-if-end class="hide-on-large-only">
     <a href="/login">Entrar</a>
 </li>
-<li ng-if="username">
+
+<li ng-show="username">
         <a class="dropdown-button" href="#">
-            <i class="material-icons">account_circle</i> {{username}} <i class="material-icons right">arrow_drop_down</i>
+            <i class="material-icons left hide-on-med-and-down">account_circle</i>{{username}} <i class="material-icons right">arrow_drop_down</i>
         </a>
-        <ul class="dropdown-content">
-            <li><a href="/comandes">Les meves comandes</a></li>
-            <li><a href="/perfil"><i class="material-icons">settings</i> El meu perfil</a></li>
+        <ul class="dropdown-content" style="min-width: 13em;">
+            <li><a href="/comandes"><i class="material-icons left  hide-on-med-and-down">list</i> Comandes</a></li>
+            <li><a href="/perfil"><i class="material-icons left hide-on-med-and-down">settings</i> Perfil</a></li>
             <li class="divider"></li>
-            <li><a href="#!"><i class="material-icons">exit_to_app</i> Tancar sessió</a></li>
+            <li><a href="#!" ng-click="userMenuCtrl.logout()"><i class="material-icons left hide-on-med-and-down">exit_to_app</i> Tancar sessió</a></li>
         </ul>
     </div>
 </li>

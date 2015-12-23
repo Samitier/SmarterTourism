@@ -110,22 +110,47 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
     })
 
     .controller('loginController', function($scope, APIAuth, $location, $rootScope) {
+        this.init = function() {
+        };
+
         this.sendForm = function() {
-            APIAuth.login({email:$scope.loginForm.userMail, password: $scope.loginForm.userPassword}).then(function(success) {
-                if(success) $location.path($rootScope.previousPage);
-                //else mostrar error
+            APIAuth.login({email:$scope.loginForm.userMail, password: $scope.loginForm.userPassword,
+                                                                        remember:$scope.loginForm.remember}).
+            then(function(success) {
+                if(success) {
+                    $location.path($rootScope.previousPage);
+                }
+                else Materialize.toast('Les dades introduïdes són errònies!', 4000);
             });
         }
+
+        this.init();
     })
 
-    .controller('signInController', function() {
+    .controller('signInController', function(APIAuth, $scope) {
+        this.init = function() {
+            $scope.isLogged=false;
+        };
 
+        this.sendForm = function() {
+            APIAuth.signIn({email:$scope.signinForm.email, password: $scope.signinForm.password,
+                name:$scope.signinForm.name, lastname: $scope.signinForm.lastname}).
+            then(function(success) {
+                if(success) $scope.isLogged=true;
+                else Materialize.toast('Ja existeix un compte amb aquesta direcció de correu!', 4000);
+            });
+        };
+
+        this.init();
     })
 
     .controller('yourOrdersController', function() {
 
     })
 
-    .controller('yourProfileController', function() {
-
+    .controller('yourProfileController', function($scope, SmarterAPI) {
+        SmarterAPI.getProfile().then(function(data) {
+            $scope.profile = data;
+            console.log($scope.profile);
+        });
     });

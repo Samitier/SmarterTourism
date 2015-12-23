@@ -2,10 +2,13 @@
 
 angular.module('app-services', ['ngCookies'])
 
-.factory("SmarterAPI", function SmarterApiService($http) {
+.factory("SmarterAPI", function SmarterApiService($http, APIAuth) {
     var service={};
 
     var apiURI = "/api/";
+
+    var token = APIAuth.getUserToken();
+    if(token) $http.defaults.headers.common['st-access-token'] = token;
 
     service.getPacks = function() {
         return $http.get(apiURI + "packs").then(function(resp) {
@@ -27,6 +30,18 @@ angular.module('app-services', ['ngCookies'])
 
     service.getActivity = function(id) {
         return $http.get(apiURI + "activities/" + id).then(function(resp) {
+            return resp.data;
+        });
+    };
+
+    service.getProfile = function() {
+        return $http.get(apiURI + "profile").then(function(resp) {
+            return resp.data;
+        });
+    };
+
+    service.setProfile = function(data) {
+        return $http.put(apiURI + "profile", data).then(function(resp) {
             return resp.data;
         });
     };
@@ -88,25 +103,48 @@ angular.module('app-services', ['ngCookies'])
     service.login = function(data) {
         return $http.post(apiURI + "login", data).then(function (resp) {
             if(resp.data.success) {
-                $cookies.putObject('user', {name: resp.data.user, token: resp.data.token});
+                if(data.remember) {
+                    var expireDate = new Date();
+                    expireDate = new Date(expireDate.getTime()+14*24*60*60*1000);
+                    $cookies.putObject('user', {name: resp.data.user, token: resp.data.token},{'expires': expireDate});
+                }
+                else $cookies.putObject('user', {name: resp.data.user, token: resp.data.token});
+                $http.defaults.headers.common['st-access-token'] = resp.data.token;
                 return true;
             }
             return false;
         });
     };
 
-    service.logOut = function() {
+    service.isLoggedIn = function() {
+        var user = $cookies.getObject('user');
+        return (user!=null);
+    };
 
+    service.logOut = function() {
+        $cookies.remove("user");
     };
 
     service.signIn = function(user) {
-
+        return $http.post(apiURI + "signin", user).then(function (resp) {
+            if(resp.data.success) {
+                $cookies.putObject('user', {name: resp.data.user, token: resp.data.token});
+                $http.defaults.headers.common['st-access-token'] = resp.data.token;
+                return true;
+            }
+            return false;
+        });
     };
 
     service.getUsername = function() {
         var user = $cookies.getObject('user');
-        console.log(user);
         if(user) return user.name;
+        else return user;
+    };
+
+    service.getUserToken = function() {
+        var user = $cookies.getObject('user');
+        if(user) return user.token;
         else return user;
     };
 
