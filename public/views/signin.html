@@ -8,15 +8,19 @@
                     <h4 class="center-align">Dona't d'alta a Smarter Tourism</h4>
                     <form name="signinForm" ng-submit="signinForm.$valid && signInCtrl.sendForm()" novalidate>
                         <div class="input-field col s12">
-                            <input ng-model="signinForm.userMail" id="email" type="email" class="validate" required>
+                            <input ng-model="signinForm.email" id="email" type="email" class="validate" required>
                             <label for="email">Email</label>
                         </div>
-                        <div class="input-field col s12">
-                            <input  ng-model="signinForm.userName" id="name" type="text" class="validate" required>
-                            <label for="name">Nom Complet</label>
+                        <div class="input-field col s6">
+                            <input  ng-model="signinForm.name" id="name" type="text" class="validate" required>
+                            <label for="name">Nom</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input  ng-model="signinForm.lastname" id="lastname" type="text" class="validate" required>
+                            <label for="lastname">Cognoms</label>
                         </div>
                         <div class="input-field col s12">
-                            <input  ng-model="signinForm.userPassword" id="password" type="password" class="validate" required>
+                            <input  ng-model="signinForm.password" id="password" type="password" class="validate" required>
                             <label for="password">Contrasenya</label>
                         </div>
                         <div class="col s12">

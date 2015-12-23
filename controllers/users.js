@@ -36,7 +36,7 @@ module.exports.delete = function(req, res, next) {
 };
 
 module.exports.getProfile = function(req ,res, next) {
-    User.findById(req.decoded._id, req.body, function (err, obj) {
+    User.findById(req.decoded._id, "-_id -password", function (err, obj) {
         if (err) return next(err);
         res.json(obj);
     });
