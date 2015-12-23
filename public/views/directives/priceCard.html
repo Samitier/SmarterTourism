@@ -1,0 +1,31 @@
+<form name="priceCardForm" ng-submit="priceCardForm.$valid && priceCardCtrl.sendForm()" novalidate>
+    <div class="card blue-grey darken-1" style="margin:0px; max-width:243px;">
+        <div class="card-content white-text">
+            <div ng-if="showForm">
+                <span class="card-title" >Fes la teva reserva!</span>
+                <p>Preu total (per persona): <span>{{order.total_price}}€</span></p>
+            </div>
+            <div ng-if="!showForm">
+                <span class="card-title">El teu paquet:<br></span>
+                <p><br>Preu total (per persona): <span>{{order.total_price}}€</span></p>
+            </div>
+            <div ng-if="showForm">
+                <div class="input-field col s12" style="margin-top:35px">
+                    <input ng-model="priceCardForm.initDate" id="dataInici" type='text' class='datepicker pt-datepicker' required>
+                    <label for="dataInici">Dia</label>
+                </div>
+                <!--
+                <div class="input-field col s12">
+                    <input ng-model="order.numPersons" id="numPersones" type="number" class="validate" required>
+                    <label for="numPersones">Nombre de persones</label>
+                </div>
+                -->
+            </div>
+        </div>
+        <div class="card-action right-align">
+            <button ng-class="{disabled:!priceCardForm.$valid}" class="waves-effect waves-light btn-flat" type="submit" name="action">
+                Continuar
+            </button>
+        </div>
+    </div>
+</form>

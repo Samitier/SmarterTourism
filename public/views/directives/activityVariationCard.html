@@ -1,0 +1,25 @@
+<a class="activity-link activity-variation left-align" href ="#!">
+    <i class="material-icons left">done</i>
+    <img ng-src="/img/{{variation.image}}" alt="" class="left circle responsive-img  z-depth-1 hoverable">
+    <p class="truncate">
+        {{variation.title}}<br>
+        Per només {{variation.priceIncr}}€ més
+    </p>
+</a>
+
+<!-- Modal Structure -->
+<div class="modal">
+    <div class="modal-content">
+        <h4>{{variation.title}}</h4>
+        <div style="height:200px; overflow:hidden;position:relative;">
+            <img ng-src="/img/{{variation.image}}" alt="" style="position:absolute;top:-50%;width:100%;height:auto;"class="left responsive-img">
+        </div>
+        <p>{{variation.description}}<br>
+         Per {{variation.priceIncr}}€ més.</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="green-text modal-action modal-close waves-effect waves-green btn-flat">Seleccionar</a>
+
+        <a href="#!" class="red-text modal-action modal-close waves-effect waves-green btn-flat">Tancar</a>
+    </div>
+</div>

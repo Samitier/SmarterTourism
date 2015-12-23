@@ -1,8 +1,70 @@
 <div class="container">
     <div class="row">
-        <div class="col s12 center-align">
-            <h2>Buscar activitats</h2>
+        <div class="col s4 right right-align">
             <br><br>
+            <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Buscar activitats</a>
+        </div>
+        <div class="col s8 left">
+            <br><br>
+            <h3>Activitats destacades:</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col m2" ng-repeat="activity in activities | limitTo:3" ng-if="activity.featured">
+            <activity-card activity='activity'></activity-card>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <br><br>
+            <h3>Totes les activitats:</h3>
+        </div>
+        <div class="col m2" ng-repeat="activity in activities | orderBy:'title'">
+            <activity-card activity='activity'></activity-card>
+        </div>
+        <pt-paginator></pt-paginator>
+    </div>
+</div>
+
+
+<!-- Modal Structure -->
+<div id="modal1" style="overflow-y: initial;max-height: 60%;" class="modal bottom-sheet">
+    <div class="modal-content">
+        <h4>Buscar Paquets</h4>
+        <div class="row">
+            <form>
+                <div class="input-field col m6">
+                    <input id="last_name" type="text" class="validate">
+                    <label for="last_name">Nom del paquet</label>
+                </div>
+                <div class="input-field col m6">
+                    <select id="categories" multiple>
+                        <option value="" disabled selected>Escull les categories</option>
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                        <option value="3">Option 3</option>
+                        <option value="4">Option 4</option>
+                        <option value="4">Option 5</option>
+                        <option value="4">Option 6</option>
+
+                    </select>
+                    <label for="categories">Categories</label>
+                </div>
+            </form>
+            <div class=" col s12">
+                <div class="modal-footer">
+                    <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Buscar</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function(){
+        // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+        $('.modal-trigger').leanModal();
+        $('select').material_select();
+    });
+</script>
+

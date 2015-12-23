@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="row">
+        <div class="col s9">
+            <h3>Finalitzar compra<br>
+                <small>{{checkoutCtrl.product.title}}</small></h3>
+            <br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col l9 z-depth-1">
+            <div class="collapsible-header" style="cursor:default;">
+                <i class="material-icons">payment</i> Dades de facturació
+            </div>
+        </div>
+        <div class="col l3">
+            <price-card order="checkoutCtrl.order" show-form="false" card-action="checkoutCtrl.sendAction()"></price-card>
+        </div>
+    </div>
+</div>

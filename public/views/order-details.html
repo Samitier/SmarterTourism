@@ -1,0 +1,86 @@
+<div class="container">
+    <div class="row">
+        <div class="col s9">
+            <h3>Detalls de la reserva<br>
+            <small>{{orderDetailsCtrl.order[0].title}}</small></h3>
+            <br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col l9">
+            <ul class="collapsible popout" data-collapsible="accordion">
+                <li>
+                    <div class="collapsible-header active"><i class="material-icons">group</i> Nombre de persones</div>
+                    <div class="collapsible-body">
+                        <div style="margin:20px;">
+                            <div class="col s12">
+                                Quantes persones viatjareu?
+                            </div>
+                            <div class="input-field col s4">
+                                <input ng-model="orderDetailsCtrl.order.numAdults" id="numAdults" type="number" class="validate" required>
+                                <label for="numAdults">Adults</label>
+                            </div>
+                            <div class="input-field col s4">
+                                <input ng-model="orderDetailsCtrl.order.numChildren" id="numNens" type="number" class="validate" required>
+                                <label for="numNens">Nens (2-12 anys)</label>
+                            </div>
+                            <div class="input-field col s4">
+                                <input ng-model="orderDetailsCtrl.order.numInfants" id="numInfants" type="number" class="validate" required>
+                                <label for="numInfants">Infants (0-2 anys)</label>
+                            </div>
+                            <br>
+                            <p></p>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">mode_edit</i> Personalitza les activitats</div>
+                    <div class="collapsible-body">
+                        <div style="margin:20px;display:inline-block;">
+                            <div class="col s12">
+                                Complementa les activitats amb les variacions que vulguis. Prem sobre les variacions per veure'n una descripció detallada:<br><br>
+                            </div>
+                            <div class="col s12" ng-repeat="product in orderDetailsCtrl.order" ng-if="!product.isPack">
+                                <b>{{product.title}}</b>
+                                <div class="row">
+                                    <div class="col s6" ng-repeat="variation in products[product.id].variations">
+                                        <activity-variation-card variation="variation"></activity-variation-card>
+                                    </div>
+                                </div>
+                            </div>
+                            <p></p>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">weekend</i> Extres</div>
+                    <div class="collapsible-body">
+                        <div style="margin:20px;display:inline-block;">
+                            <div class="col s12">
+                                Vols contractar alguna opció extra en alguna de les activitats?
+                                A continuació es mostraran els extres disponibles:<br><br>
+                            </div>
+                            <div class="col s12" ng-repeat="product in orderDetailsCtrl.order" ng-if="!product.isPack">
+                                <b>{{product.title}}</b>
+                                <div class="row">
+                                    <div class="col s6" ng-repeat="extra in products[product.id].extras">
+                                        <activity-variation-card variation="extra"></activity-variation-card>
+                                    </div>
+                                </div>
+                            </div>
+                            <p></p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="col l3">
+            <price-card order="orderDetailsCtrl.order" show-form="false" card-action="orderDetailsCtrl.sendAction()"></price-card>
+        </div>
+    </div>
+</div>
+<script>
+    $('.collapsible').collapsible({
+        accordion : false
+    });
+</script>

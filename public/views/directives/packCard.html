@@ -1,7 +1,7 @@
 <div class="card hoverable">
-    <a ng-href="/paquet/{{pack.id}}">
-    <div class="card-image waves-effect waves-block waves-light">
-        <img class="pack-card-image" ng-src="/img/{{pack.image}}">
+    <a ng-href="/paquet/{{pack._id}}">
+    <div class="card-image waves-effect waves-block waves-light" style="max-height: 290px;">
+        <img class="grow" ng-src="/img/{{pack.image}}">
         <div class="more-packet-info">
             <p class="right-align">
                 A partir de {{pack.price}}€,
@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="card-content packet-card">
-        <span class="card-title activator grey-text text-darken-4">{{pack.title}}</span>
-        <p>El {{pack.date}}</p>
+        <span class="card-title activator grey-text text-darken-4">{{pack.title|limitTo:52}}{{pack.title.length>52?'...':''}}</span>
+        <p>El {{pack.date | date:"dd/MM/yyyy"}}</p>
     </div></a>
 </div>
