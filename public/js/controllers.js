@@ -49,7 +49,7 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         this.init();
     })
 
-    .controller('checkoutController', function(CheckoutOrder, SmarterAPI, $location) {
+    .controller('checkoutController', function(CheckoutOrder, SmarterAPI, $location, $scope) {
         this.init = function() {
         };
 
@@ -63,20 +63,37 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
 
     .controller('orderDetailsController', function($scope, CheckoutOrder, SmarterAPI, $location) {
         this.init = function() {
-            this.order = CheckoutOrder.getOrder();
-            //we grab the order products info
+            $scope.order = CheckoutOrder.getOrder();
+            $scope.order.selectedVariations = {};
+            $scope.order.selectedExtras = {};
             $scope.products=[];
 
-            for(var i=0; i<this.order.length; ++i) {
-                if(this.order[i].isPack) continue;
-                SmarterAPI.getActivity(this.order[i].id).then(function(resp){ $scope.products[resp._id] = resp;});
-            }
+            $scope.order.activities.forEach(function (activity) {
+                SmarterAPI.getActivity(activity.id).then(function(resp){
+                    $scope.products.push(resp);
+                    $scope.order.selectedVariations[activity.id] = resp.variations[0];
+                });
+            });
         };
 
         this.sendAction = function() {
-            CheckoutOrder.setOrder(this.order);
-            $location.path('/checkout');
+            if($scope.order.numAdults > 0) {
+                $scope.order.total_price = $scope.order.price * $scope.order.numAdults;
+                CheckoutOrder.setOrder($scope.order);
+                $location.path('/checkout');
+            }
+            else Materialize.toast("Si us plau, introduïu un nombre vàlid de viatjants adults.",3000)
         };
+
+        this.variationSelect = function(variation) {
+            //recalcular preu
+            $scope.order.selectedVariations[variation.activity] = variation.product;
+        };
+
+        this.extrasSelect = function(extra) {
+            //recalcular preu
+            $scope.order.selectedExtras[extra.activity] = extra.product;
+        }
 
         this.init();
     })

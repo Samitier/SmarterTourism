@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col s9">
             <h3>Detalls de la reserva<br>
-            <small>{{orderDetailsCtrl.order[0].title}}</small></h3>
+            <small>{{order.title}} el {{order.date}}</small></h3>
             <br>
         </div>
     </div>
@@ -17,15 +17,18 @@
                                 Quantes persones viatjareu?
                             </div>
                             <div class="input-field col s4">
-                                <input ng-model="orderDetailsCtrl.order.numAdults" id="numAdults" type="number" class="validate" required>
+                                <input ng-model="order.numAdults" id="numAdults"
+                                       type="number" class="validate" min="0" max="99" required>
                                 <label for="numAdults">Adults</label>
                             </div>
                             <div class="input-field col s4">
-                                <input ng-model="orderDetailsCtrl.order.numChildren" id="numNens" type="number" class="validate" required>
+                                <input ng-model="order.numChildren" id="numNens"
+                                       type="number" class="validate" min="0" max="99">
                                 <label for="numNens">Nens (2-12 anys)</label>
                             </div>
                             <div class="input-field col s4">
-                                <input ng-model="orderDetailsCtrl.order.numInfants" id="numInfants" type="number" class="validate" required>
+                                <input ng-model="order.numBabies" id="numInfants"
+                                       type="number" class="validate" min="0" max="99">
                                 <label for="numInfants">Infants (0-2 anys)</label>
                             </div>
                             <br>
@@ -40,11 +43,11 @@
                             <div class="col s12">
                                 Complementa les activitats amb les variacions que vulguis. Prem sobre les variacions per veure'n una descripció detallada:<br><br>
                             </div>
-                            <div class="col s12" ng-repeat="product in orderDetailsCtrl.order" ng-if="!product.isPack">
+                            <div class="col s12" ng-repeat="product in products">
                                 <b>{{product.title}}</b>
                                 <div class="row">
-                                    <div class="col s6" ng-repeat="variation in products[product.id].variations">
-                                        <activity-variation-card variation="variation"></activity-variation-card>
+                                    <div class="col s6" ng-repeat="variation in product.variations">
+                                        <activity-variation-card variation="variation" activity="product._id" card-action="orderDetailsCtrl.variationSelect(param)" selected="order.selectedVariations[product._id]._id == variation._id"></activity-variation-card>
                                     </div>
                                 </div>
                             </div>
@@ -60,11 +63,11 @@
                                 Vols contractar alguna opció extra en alguna de les activitats?
                                 A continuació es mostraran els extres disponibles:<br><br>
                             </div>
-                            <div class="col s12" ng-repeat="product in orderDetailsCtrl.order" ng-if="!product.isPack">
+                            <div class="col s12" ng-repeat="product in products">
                                 <b>{{product.title}}</b>
                                 <div class="row">
-                                    <div class="col s6" ng-repeat="extra in products[product.id].extras">
-                                        <activity-variation-card variation="extra"></activity-variation-card>
+                                    <div class="col s6" ng-repeat="extra in product.extras">
+                                        <activity-variation-card variation="extra" activity="product._id" card-action="orderDetailsCtrl.extrasSelect(param)" selected="order.selectedExtras[product._id]._id == extra._id"></activity-variation-card>
                                     </div>
                                 </div>
                             </div>
@@ -75,7 +78,7 @@
             </ul>
         </div>
         <div class="col l3">
-            <price-card order="orderDetailsCtrl.order" show-form="false" card-action="orderDetailsCtrl.sendAction()"></price-card>
+            <price-card order="order" show-form="false" card-action="orderDetailsCtrl.sendAction()"></price-card>
         </div>
     </div>
 </div>

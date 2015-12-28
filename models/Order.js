@@ -12,15 +12,16 @@ var OrderSchema = new mongoose.Schema({
         discount:{
             name: {type: String, required:true},
             value: {type: String, required:true},
-        }
+        },
+        quantity: Number
     },
     finalPrice: {type: Number, required:true},
     dateOfOrder: {type: Date, required:true},
     state: {type:String, required:true, enum: ['Processing', 'Accepted', 'Canceled', 'Completed']},
-    comments: {
+    comments: [{
         user: {type: String},
         comment: {type: String}
-    },
+    }],
 });
 
 module.exports = mongoose.model('Order', OrderSchema);

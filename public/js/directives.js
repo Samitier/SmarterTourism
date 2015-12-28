@@ -104,7 +104,10 @@ angular.module('app-directives', [])
             },
             controllerAs: 'activityVariationCardCtrl',
             scope:{
-                variation:"="
+                variation:"=",
+                selected:"=",
+                cardAction:"&",
+                activity:"="
             },
             link: function(scope, elem){
               $(elem).children().first().click(function() {
@@ -130,6 +133,7 @@ angular.module('app-directives', [])
             controller: function($scope) {
                 this.sendForm = function() {
                     var date = new Date($scope.priceCardForm.initDate);
+                    order.date = date;
                     $scope.cardAction({param:date});
                 }
             },

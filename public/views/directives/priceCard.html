@@ -3,23 +3,29 @@
         <div class="card-content white-text">
             <div ng-if="showForm">
                 <span class="card-title" >Fes la teva reserva!</span>
-                <p>Preu total (per persona): <span>{{order.total_price}}€</span></p>
+                <p>Preu total (per persona): <span>{{order.price}}€</span></p>
             </div>
             <div ng-if="!showForm">
                 <span class="card-title">El teu paquet:<br></span>
-                <p><br>Preu total (per persona): <span>{{order.total_price}}€</span></p>
+                <p ng-hide="order.numAdults"><br>Preu total (per persona): <span>{{order.price}}€</span></p>
+                <ul ng-show="order.numAdults">
+                    <p>Preu del paquet:<br><br></p>
+                    <li class="right-align">Preu base: {{order.price}}€</li>
+                    <li><br></li>
+                    <li class="right-align" ng-repeat="(key, value) in order.selectedVariations" ng-if="value.priceIncr>0">Variació {{value.title}}: +{{value.priceIncr}}€</li>
+                    <li><br></li>
+                    <li class="right-align" ng-repeat="(key, value) in order.selectedExtras" ng-if="value.priceIncr>0">Extra {{value.title}}: +{{value.priceIncr}}€</li>
+                    <li class="right-align" ng-show="order.numAdults">x{{order.numAdults}} adults</li>
+                    <li class="right-align" ng-show="order.numChildren">x{{order.numChildren}} nens</li>
+                    <li class="right-align" ng-show="order.numBabies">x{{order.numBabies}} infants</li>
+                    <p class="right-align"><br>Import total: <span>{{order.price * order.numAdults}}€ (IVA incl)</span></p>
+                </ul>
             </div>
             <div ng-if="showForm">
                 <div class="input-field col s12" style="margin-top:35px">
                     <input ng-model="priceCardForm.initDate" id="dataInici" type='text' class='datepicker pt-datepicker' required>
                     <label for="dataInici">Dia</label>
                 </div>
-                <!--
-                <div class="input-field col s12">
-                    <input ng-model="order.numPersons" id="numPersones" type="number" class="validate" required>
-                    <label for="numPersones">Nombre de persones</label>
-                </div>
-                -->
             </div>
         </div>
         <div class="card-action right-align">
