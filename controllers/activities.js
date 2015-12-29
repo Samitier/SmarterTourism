@@ -22,9 +22,18 @@ module.exports.getSingle = function(req, res, next) {
 };
 
 module.exports.update = function(req, res, next) {
-    Activity.findByIdAndUpdate(req.params.id, req.body, function (err, obj) {
+    Activity.findByIdAndRemove(req.params.id, req.body, function (err, obj) {
         if (err) return next(err);
-        res.json(obj);
+        var old = obj;
+        Activity.create(req.body, function (err, obj) {
+            if (err) {
+                Activity.create(old, function (err, obj) {
+                    if (err) return next(err);
+                });
+                res.json("An error has occurred when updating");
+            }
+            res.json(obj);
+        });
     });
 };
 

@@ -25,6 +25,8 @@ angular.module('app-directives', [])
 
     /*
      The menu for logged users & login/logout
+     Scope: dropdownId: used fro having aan unique id for the dropdown (if you want to instantiate more than one userMenu)
+            username: the username tht will show on the bar.
      */
     .directive('userMenu', function() {
         return {
@@ -62,7 +64,8 @@ angular.module('app-directives', [])
     })
 
     /*
-     The pack card, with info with the packet info
+     The pack card, wich shows the pack info
+     Scope: the pack info.
      */
     .directive('packCard', function() {
         return {
@@ -78,7 +81,8 @@ angular.module('app-directives', [])
     })
 
     /*
-     The activity card, with "activity" with the activity info
+     The activity card, wich shows the activity info.
+     Scope: the activty info
      */
     .directive('activityCard', function() {
         return {
@@ -94,7 +98,11 @@ angular.module('app-directives', [])
     })
 
     /*
-     The activity variation card, with "variation" with the variation info
+     The activity variation card, wich shows activity's "extras" info and activity's "variations" info
+     Scope: variation: the info to show.
+            selected: to mark this card as selected or not.
+            cardAction: the action to perform when accepting the modal.
+            activity: a reference to the activity where this extra or variation belongs.
      */
     .directive('activityVariationCard', function() {
         return {
@@ -104,7 +112,10 @@ angular.module('app-directives', [])
             },
             controllerAs: 'activityVariationCardCtrl',
             scope:{
-                variation:"="
+                variation:"=",
+                selected:"=",
+                cardAction:"&",
+                activity:"="
             },
             link: function(scope, elem){
               $(elem).children().first().click(function() {
@@ -117,6 +128,9 @@ angular.module('app-directives', [])
 
     /*
      A price card that shows the total price of a pack and a button to buy it
+     Scope: order: the order you want to show.
+            showForm: checks weather show a date form or not (used when creating a pack)
+            cardAction: action to perform when pressing the "continue" button
      */
     .directive('priceCard', function() {
         return {
@@ -164,7 +178,10 @@ angular.module('app-directives', [])
     })
 
     /*
-     The pack card, with info with the packet info
+     the materializeCSS slider
+     Scope: fullwidth: sets the slider fullscreen.
+            sliderHeight: sets the slider height.
+            images: the array of images.
      */
     .directive('ptSlider', function() {
         return {
@@ -172,7 +189,7 @@ angular.module('app-directives', [])
             templateUrl: '/views/directives/ptSlider.html',
             controller: function () {
             },
-            controllerAs: 'packCardCtrl',
+            controllerAs: 'ptSliderCtrl',
             scope:{
                 fullwidth:"=",
                 sliderHeight:"=",
@@ -190,6 +207,7 @@ angular.module('app-directives', [])
 
     /*
      A google maps map
+     Scope: coords: the coordinates x,y where the marker will be placed.
      */
     .directive('googlemap', function() {
         return {
@@ -212,15 +230,15 @@ angular.module('app-directives', [])
 
 
     /*
-     A datepicker input
+     The materializecss datepicker input
      */
     .directive('ptDatepicker', function() {
         return {
             restrict: 'C',
             link:function(scope, elem) {
                 elem.pickadate({
-                    selectMonths: true, // Creates a dropdown to control month
-                    selectYears: 15, // Creates a dropdown of 15 years to control year
+                    selectMonths: true,
+                    selectYears: 15,
                     monthsFull: [ 'Gener', 'Febrer', 'Març', 'Abril', 'Maig', 'juny', 'Juliol', 'Agost', 'Setembre', 'Octubre', 'Novembre', 'Desembre' ],
                     monthsShort: [ 'Gen', 'Feb', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Des' ],
                     weekdaysFull: [ 'diumenge', 'dilluns', 'dimarts', 'dimecres', 'dijous', 'divendres', 'dissabte' ],

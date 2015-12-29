@@ -39,11 +39,23 @@ router.route('/users/:id')
 /*Authentication*/
 router.post('/login', ctrl.auth.login);
 router.post('/signin', ctrl.auth.signin);
+router.get('/confirm-email/:token', ctrl.auth.confirmEmail);
+
 
 /* Pofile */
 router.route('/profile')
     .get(ctrl.auth.authenticate, ctrl.users.getProfile)
-    .put(ctrl.auth.authenticate,ctrl.users.updateProfile)
+    .put(ctrl.auth.authenticate,ctrl.users.updateProfile);
+
+/* Order */
+router.route('/orders')
+    .get(ctrl.auth.authenticate, ctrl.orders.getAll)
+    .post(ctrl.auth.authenticate,ctrl.orders.create);
+router.put('/orders/:id/pay', ctrl.orders.pay);
+router.put('/orders/:id/message', ctrl.orders.sendMessage);
+router.put('/orders/:id/accept', ctrl.orders.accept); //only providers & up
+router.put('/orders/:id/cancel', ctrl.orders.cancel); //only providers & up
+
 
 /* Not found, for every other route */
 router.all('*', function(req, res) {res.status(404).send({ error: {"code":"404", "name":'Resource not found'}});});

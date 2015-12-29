@@ -1,12 +1,13 @@
 var mongoose = require('mongoose');
+var validator = require('validator');
 
 var PackSchema = new mongoose.Schema({
     title: {type:String, required:true, unique:true},
     description: String,
     additional_info: String,
     contact_telephone: Number,
-    contact_email: String, //should be email
-    image: String,
+    contact_email: {type:String, validate: [ validator.isEmail, 'Invalid email address' ]},
+    image: {type:String, default:"placeholder.jpg"},
     numDays:Number,
     price: Number,
     featured: Boolean,

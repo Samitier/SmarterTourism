@@ -42,15 +42,18 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         };
 
         this.sendAction = function(orderDate) {
-            CheckoutOrder.setOrderDate(this.pack, orderDate);
+            CheckoutOrder.setOrderDate(this.pack, $scope.order, orderDate);
             $location.path('/detalls-comanda');
         };
 
         this.init();
     })
 
-    .controller('checkoutController', function(CheckoutOrder, SmarterAPI, $location) {
+    .controller('checkoutController', function(CheckoutOrder, SmarterAPI, $location, $scope, $rootScope) {
         this.init = function() {
+            $scope.order = CheckoutOrder.getOrder();
+            console.log($rootScope.previousPage);
+            if($rootScope.previousPage != "/detalls-comanda") $location.path("/detalls-comanda");
         };
 
         this.sendAction = function() {
@@ -63,20 +66,44 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
 
     .controller('orderDetailsController', function($scope, CheckoutOrder, SmarterAPI, $location) {
         this.init = function() {
-            this.order = CheckoutOrder.getOrder();
-            //we grab the order products info
+            $scope.order = CheckoutOrder.getOrder();
+            if(!$scope.order.selectedVariations) $scope.order.selectedVariations = {};
+            if(!$scope.order.selectedExtras) $scope.order.selectedExtras = {};
+            if(!$scope.order.total_price) $scope.order.total_price = $scope.order.price;
             $scope.products=[];
 
-            for(var i=0; i<this.order.length; ++i) {
-                if(this.order[i].isPack) continue;
-                SmarterAPI.getActivity(this.order[i].id).then(function(resp){ $scope.products[resp._id] = resp;});
-            }
+            $scope.order.activities.forEach(function (activity) {
+                SmarterAPI.getActivity(activity.id).then(function(resp){
+                    $scope.products.push(resp);
+                    if(!$scope.order.selectedVariations[activity.id]) $scope.order.selectedVariations[activity.id] = resp.variations[0];
+                });
+            });
         };
 
         this.sendAction = function() {
-            CheckoutOrder.setOrder(this.order);
-            $location.path('/checkout');
+            if($scope.order.numAdults > 0) {
+                $scope.order.total_price = $scope.order.total_price * $scope.order.numAdults;
+                CheckoutOrder.setOrder($scope.order);
+                $location.path('/checkout');
+            }
+            else Materialize.toast("Si us plau, introduïu un nombre vàlid de viatjants adults.",3000)
         };
+
+        this.variationSelect = function(variation) {
+            //recalcular preu
+            console.log(variation);
+            $scope.order.total_price -= $scope.order.selectedVariations[variation.activity].priceIncr;
+            $scope.order.selectedVariations[variation.activity] = variation.product;
+            $scope.order.total_price += $scope.order.selectedVariations[variation.activity].priceIncr;
+        };
+
+        this.extrasSelect = function(extra) {
+            if($scope.order.selectedExtras[extra.activity]) {
+                $scope.order.total_price -= $scope.order.selectedExtras[extra.activity].priceIncr;
+            }
+            $scope.order.selectedExtras[extra.activity] = extra.product;
+            $scope.order.total_price += $scope.order.selectedExtras[extra.activity].priceIncr;
+        }
 
         this.init();
     })
@@ -102,7 +129,7 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         };
 
         this.sendAction = function(orderDate) {
-            CheckoutOrder.setOrderDate(this.activity, orderDate);
+            CheckoutOrder.setOrderDate(this.activity, $scope.order, orderDate);
             $location.path('/detalls-comanda');
         };
 
