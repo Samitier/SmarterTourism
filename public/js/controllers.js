@@ -42,15 +42,18 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         };
 
         this.sendAction = function(orderDate) {
-            CheckoutOrder.setOrderDate(this.pack, orderDate);
+            CheckoutOrder.setOrderDate(this.pack, $scope.order, orderDate);
             $location.path('/detalls-comanda');
         };
 
         this.init();
     })
 
-    .controller('checkoutController', function(CheckoutOrder, SmarterAPI, $location, $scope) {
+    .controller('checkoutController', function(CheckoutOrder, SmarterAPI, $location, $scope, $rootScope) {
         this.init = function() {
+            $scope.order = CheckoutOrder.getOrder();
+            console.log($rootScope.previousPage);
+            if($rootScope.previousPage != "/detalls-comanda") $location.path("/detalls-comanda");
         };
 
         this.sendAction = function() {
@@ -64,21 +67,22 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
     .controller('orderDetailsController', function($scope, CheckoutOrder, SmarterAPI, $location) {
         this.init = function() {
             $scope.order = CheckoutOrder.getOrder();
-            $scope.order.selectedVariations = {};
-            $scope.order.selectedExtras = {};
+            if(!$scope.order.selectedVariations) $scope.order.selectedVariations = {};
+            if(!$scope.order.selectedExtras) $scope.order.selectedExtras = {};
+            if(!$scope.order.total_price) $scope.order.total_price = $scope.order.price;
             $scope.products=[];
 
             $scope.order.activities.forEach(function (activity) {
                 SmarterAPI.getActivity(activity.id).then(function(resp){
                     $scope.products.push(resp);
-                    $scope.order.selectedVariations[activity.id] = resp.variations[0];
+                    if(!$scope.order.selectedVariations[activity.id]) $scope.order.selectedVariations[activity.id] = resp.variations[0];
                 });
             });
         };
 
         this.sendAction = function() {
             if($scope.order.numAdults > 0) {
-                $scope.order.total_price = $scope.order.price * $scope.order.numAdults;
+                $scope.order.total_price = $scope.order.total_price * $scope.order.numAdults;
                 CheckoutOrder.setOrder($scope.order);
                 $location.path('/checkout');
             }
@@ -87,12 +91,18 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
 
         this.variationSelect = function(variation) {
             //recalcular preu
+            console.log(variation);
+            $scope.order.total_price -= $scope.order.selectedVariations[variation.activity].priceIncr;
             $scope.order.selectedVariations[variation.activity] = variation.product;
+            $scope.order.total_price += $scope.order.selectedVariations[variation.activity].priceIncr;
         };
 
         this.extrasSelect = function(extra) {
-            //recalcular preu
+            if($scope.order.selectedExtras[extra.activity]) {
+                $scope.order.total_price -= $scope.order.selectedExtras[extra.activity].priceIncr;
+            }
             $scope.order.selectedExtras[extra.activity] = extra.product;
+            $scope.order.total_price += $scope.order.selectedExtras[extra.activity].priceIncr;
         }
 
         this.init();
@@ -119,7 +129,7 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         };
 
         this.sendAction = function(orderDate) {
-            CheckoutOrder.setOrderDate(this.activity, orderDate);
+            CheckoutOrder.setOrderDate(this.activity, $scope.order, orderDate);
             $location.path('/detalls-comanda');
         };
 

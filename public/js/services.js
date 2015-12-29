@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('app-services', ['ngCookies'])
-
+/*
+    The service for handling all the API operations.
+     */
 .factory("SmarterAPI", function SmarterApiService($http, APIAuth) {
     var service={};
 
@@ -49,7 +51,9 @@ angular.module('app-services', ['ngCookies'])
     return service;
 })
 
-
+    /*
+        The service for handling orders
+     */
 .factory("CheckoutOrder", ["$cookies", function CheckoutOrderService($cookies) {
 
     var service = {};
@@ -86,14 +90,19 @@ angular.module('app-services', ['ngCookies'])
     /*
     Sets a departure date for each activity of an order
      */
-    service.setOrderDate = function(pack, orderDate) {
+    service.setOrderDate = function(pack, order, orderDate) {
+        //we need to put the init/end days for each activity of the pack
+        order.date= orderDate;
+        $cookies.putObject('order', order);
         return pack;
     };
 
     return service;
 }])
 
-
+/*
+        The service for handling authentication.
+     */
 .factory("APIAuth", ["$cookies","$http", function APIAuthService($cookies, $http) {
 
     var service = {};

@@ -12,7 +12,7 @@ module.exports.login = function(req,res,next) {
         }
         else if (user && user.password == crypto.createHash('md5').update(req.body.password).digest('hex')) {
             var token = jwt.sign({_id:user._id, name:user.name, email:user.email}, process.env.SECRET, {
-                expiresIn: process.env.TOKENEXPIRATION
+                expiresIn: (process.env.TOKENEXPIRATION||"14d")
             });
             res.json({
                 success: true,
@@ -34,7 +34,7 @@ module.exports.signin = function(req,res,next) {
     User.create(req.body, function (err, obj) {
         if (err) return next(err);
         var token = jwt.sign({_id:obj._id, name:obj.name, email:obj.email},
-            process.env.SECRET, {expiresIn: process.env.TOKENEXPIRATION});
+            process.env.SECRET, {expiresIn: (process.env.TOKENEXPIRATION||"14d")});
         email.send("confirmEmail", obj.email, {name: obj.name, tokenUrl:req.protocol+'://'+req.get('host')+'/api/confirm-email/'+token});
         res.json({success: true, user: obj.name, token: token});
     });
