@@ -63,7 +63,9 @@ angular.module('app-services', ['ngCookies'])
     };
 
     service.getOrder = function() {
-        return $cookies.getObject('order');
+        var order = $cookies.getObject('order');
+        if(!order) order = {state:"error"};
+        return order;
     };
 
     /*
@@ -93,6 +95,7 @@ angular.module('app-services', ['ngCookies'])
     service.setOrderDate = function(pack, order, orderDate) {
         //we need to put the init/end days for each activity of the pack
         order.date= orderDate;
+        order.state = "details"; //the order is now in the next step
         $cookies.putObject('order', order);
         return pack;
     };

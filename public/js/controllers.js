@@ -49,16 +49,38 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         this.init();
     })
 
-    .controller('checkoutController', function(CheckoutOrder, SmarterAPI, $location, $scope, $rootScope) {
+    .controller('checkoutController', function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope) {
         this.init = function() {
             $scope.order = CheckoutOrder.getOrder();
-            console.log($rootScope.previousPage);
-            if($rootScope.previousPage != "/detalls-comanda") $location.path("/detalls-comanda");
+            if($scope.order.state != 'checkout') $location.path('/detalls-comanda'); //we redirect if the user is trying to enter here without an order
+            if(!APIAuth.isLoggedIn()) $('#login-modal').openModal({dismissible: false});
+            else SmarterAPI.getProfile().then(function(dat) {$scope.facturationForm.user = dat;});
         };
 
+        this.sendLoginForm = function() {
+            APIAuth.login({email:$scope.loginForm.userMail, password: $scope.loginForm.userPassword,
+                remember:$scope.loginForm.remember}).
+            then(function(success) {
+                if (success) {
+                    SmarterAPI.getProfile().then(function(dat) {$scope.facturationForm.user = dat;})
+                    $('#login-modal').closeModal();
+                }
+                else Materialize.toast('Les dades introduïdes són errònies!', 4000);
+            });
+        };
+
+        $scope.$on("$destroy", function(){
+            $('#login-modal').closeModal();
+        });
+
         this.sendAction = function() {
-            CheckoutOrder.setOrder(this.order);
-            $location.path('/thankyou');
+            console.log($scope.facturationForm);
+            if($scope.facturationForm.$valid) {
+                //send the payment form to the tpv or paypal, depending where the user send it
+                //save the order to the API
+                //redirect to thank you page when the order is completed
+            }
+            else Materialize.toast('Si us plau, omple totes les dades del formulari', 4000);
         };
 
         this.init();
@@ -67,10 +89,16 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
     .controller('orderDetailsController', function($scope, CheckoutOrder, SmarterAPI, $location) {
         this.init = function() {
             $scope.order = CheckoutOrder.getOrder();
+            if($scope.order.state != 'checkout' && $scope.order.state!='details') $location.path("/");//we redirect if the user is trying to enter here without an order
             if(!$scope.order.selectedVariations) $scope.order.selectedVariations = {};
             if(!$scope.order.selectedExtras) $scope.order.selectedExtras = {};
-            if(!$scope.order.total_price) $scope.order.total_price = $scope.order.price;
+            if(!$scope.order.total_price_per_person) $scope.order.total_price_per_person = $scope.order.price;
+
             $scope.products=[];
+
+            $scope.$watch('order.numAdults', function (newValue, oldValue) {
+                $scope.order.total_price = newValue*$scope.order.total_price_per_person;
+            });
 
             $scope.order.activities.forEach(function (activity) {
                 SmarterAPI.getActivity(activity.id).then(function(resp){
@@ -82,7 +110,7 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
 
         this.sendAction = function() {
             if($scope.order.numAdults > 0) {
-                $scope.order.total_price = $scope.order.total_price * $scope.order.numAdults;
+                $scope.order.state="checkout";
                 CheckoutOrder.setOrder($scope.order);
                 $location.path('/checkout');
             }
@@ -91,18 +119,19 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
 
         this.variationSelect = function(variation) {
             //recalcular preu
-            console.log(variation);
-            $scope.order.total_price -= $scope.order.selectedVariations[variation.activity].priceIncr;
+            $scope.order.total_price_per_person -= $scope.order.selectedVariations[variation.activity].priceIncr;
             $scope.order.selectedVariations[variation.activity] = variation.product;
-            $scope.order.total_price += $scope.order.selectedVariations[variation.activity].priceIncr;
+            $scope.order.total_price_per_person += $scope.order.selectedVariations[variation.activity].priceIncr;
+            $scope.order.total_price = $scope.order.numAdults*$scope.order.total_price_per_person;
         };
 
         this.extrasSelect = function(extra) {
             if($scope.order.selectedExtras[extra.activity]) {
-                $scope.order.total_price -= $scope.order.selectedExtras[extra.activity].priceIncr;
+                $scope.order.total_price_per_person -= $scope.order.selectedExtras[extra.activity].priceIncr;
             }
             $scope.order.selectedExtras[extra.activity] = extra.product;
-            $scope.order.total_price += $scope.order.selectedExtras[extra.activity].priceIncr;
+            $scope.order.total_price_per_person += $scope.order.selectedExtras[extra.activity].priceIncr;
+            $scope.order.total_price = $scope.order.numAdults*$scope.order.total_price_per_person;
         }
 
         this.init();

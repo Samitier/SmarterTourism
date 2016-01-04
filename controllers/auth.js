@@ -64,7 +64,7 @@ module.exports.confirmEmail = function(req,res,next) {
         jwt.verify(token, process.env.SECRET, function(err, decoded) {
             if (err) return res.status(403).send({ error: {"code":"403", "name":'Access denied. Invalid token.'}});
             else {
-                User.update({email: req.body.email}, {state:"Confirmed"}, function (err) {
+                User.update({email: decoded.email}, {state:"Confirmed"}, function (err) {
                     if(err) res.sendFile(path.resolve(__dirname + '/../public/index.html'));
                     else res.sendFile(path.resolve(__dirname + '/../public/views/confirmation.html'));
                 });
