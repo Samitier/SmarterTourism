@@ -16,8 +16,8 @@ var OrderSchema = new mongoose.Schema({
         total:{type: Number}
     },
     numAdults: {type: Number, required:true},
-    numChildren: {type: Number, required:true, default:0},
-    numBabies: {type: Number, required:true, default:0},
+    numChildren: {type: Number, default:0},
+    numBabies: {type: Number, default:0},
     finalPrice: {type: Number, required:true},
     dateOfOrder: {type: Date, required:true},
     state: {type:String, required:true, enum: ['PaymentPending','Processing', 'Accepted', 'Canceled', 'Completed'], default:'PaymentPending'},

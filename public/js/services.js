@@ -54,6 +54,12 @@ angular.module('app-services', ['ngCookies'])
         });
     };
 
+    service.getOrders = function() {
+        return $http.get(apiURI + "orders").then(function(resp) {
+            return resp.data;
+        });
+    }
+
     return service;
 })
 

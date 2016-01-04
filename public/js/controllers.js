@@ -74,7 +74,6 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         });
 
         this.sendAction = function() {
-            console.log($scope.order);
             if($scope.facturationForm.$valid) {
                 SmarterAPI.createOrder({facturationInfo:$scope.facturationForm.user,  order:$scope.order}).then(function(dat) {
                     if(dat.success) {
@@ -153,7 +152,7 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         };
         this.init();
     })
-    
+
     .controller('searchActivitiesCtrl', function(SmarterAPI, $scope) {
 
         this.init = function() {
@@ -217,13 +216,24 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         this.init();
     })
 
-    .controller('yourOrdersController', function() {
+    .controller('yourOrdersController', function($scope, SmarterAPI) {
+        this.init = function() {
+            SmarterAPI.getOrders().then(function(data) {
+                $scope.orders = data;
+                console.log($scope.orders);
+            });
+        };
 
+        this.init();
     })
 
     .controller('yourProfileController', function($scope, SmarterAPI) {
-        SmarterAPI.getProfile().then(function(data) {
-            $scope.profile = data;
-            console.log($scope.profile);
-        });
+        this.init = function() {
+            SmarterAPI.getProfile().then(function (data) {
+                $scope.profile = data;
+                console.log($scope.profile);
+            });
+        };
+
+        this.init();
     });
