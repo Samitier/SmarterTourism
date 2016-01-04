@@ -54,7 +54,7 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
             $scope.order = CheckoutOrder.getOrder();
             if($scope.order.state != 'checkout') $location.path('/detalls-comanda'); //we redirect if the user is trying to enter here without an order
             if(!APIAuth.isLoggedIn()) $('#login-modal').openModal({dismissible: false});
-            else SmarterAPI.getProfile().then(function(dat) {$scope.facturationForm.user = dat;});
+            else SmarterAPI.getProfile().then(function(dat) {$scope.facturationForm.user = dat.facturationInfo;});
         };
 
         this.sendLoginForm = function() {
@@ -62,7 +62,7 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
                 remember:$scope.loginForm.remember}).
             then(function(success) {
                 if (success) {
-                    SmarterAPI.getProfile().then(function(dat) {$scope.facturationForm.user = dat;})
+                    SmarterAPI.getProfile().then(function(dat) {$scope.facturationForm.user = dat.facturationInfo;})
                     $('#login-modal').closeModal();
                 }
                 else Materialize.toast('Les dades introduïdes són errònies!', 4000);
@@ -74,11 +74,18 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         });
 
         this.sendAction = function() {
-            console.log($scope.facturationForm);
+            console.log($scope.order);
             if($scope.facturationForm.$valid) {
-                //send the payment form to the tpv or paypal, depending where the user send it
-                //save the order to the API
-                //redirect to thank you page when the order is completed
+                SmarterAPI.createOrder({facturationInfo:$scope.facturationForm.user,  order:$scope.order}).then(function(dat) {
+                    if(dat.success) {
+                        $scope.order.state="finishedOK";
+                        CheckoutOrder.setOrder($scope.order);
+                        //send the payment form to the tpv or paypal, depending where the user send it
+                        //redirect to thank you page when the order is completed
+                        $location.path("/finalitzar");
+                    }
+                    else Materialize.toast('Hi ha hagut algun error inesperat. Torna-ho a provar més tard.', 4000);
+                });
             }
             else Materialize.toast('Si us plau, omple totes les dades del formulari', 4000);
         };
@@ -137,6 +144,16 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         this.init();
     })
 
+    .controller('thankyouController', function(CheckoutOrder, APIAuth, $location, $scope) {
+        this.init = function() {
+            $scope.order = CheckoutOrder.getOrder();
+            if ($scope.order.state != 'finishedOK' || !APIAuth.isLoggedIn()) {
+                $location.path('/checkout');
+            } //we redirect if the user is trying to enter here without an order
+        };
+        this.init();
+    })
+    
     .controller('searchActivitiesCtrl', function(SmarterAPI, $scope) {
 
         this.init = function() {
@@ -178,7 +195,7 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
                 }
                 else Materialize.toast('Les dades introduïdes són errònies!', 4000);
             });
-        }
+        };
 
         this.init();
     })

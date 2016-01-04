@@ -19,17 +19,17 @@
                             <div class="input-field col s4">
                                 <input ng-model="order.numAdults" id="numAdults"
                                        type="number" class="validate" min="0" max="99" required>
-                                <label for="numAdults">Adults</label>
+                                <label ng-class="{active:order.numAdults}" for="numAdults">Adults</label>
                             </div>
                             <div class="input-field col s4">
                                 <input ng-model="order.numChildren" id="numNens"
                                        type="number" class="validate" min="0" max="99">
-                                <label for="numNens">Nens (2-12 anys)</label>
+                                <label ng-class="{active:order.numChildren}" for="numNens">Nens (2-12 anys)</label>
                             </div>
                             <div class="input-field col s4">
                                 <input ng-model="order.numBabies" id="numInfants"
                                        type="number" class="validate" min="0" max="99">
-                                <label for="numInfants">Infants (0-2 anys)</label>
+                                <label ng-class="{active:order.numBabies}" for="numInfants">Infants (0-2 anys)</label>
                             </div>
                             <br>
                             <p></p>

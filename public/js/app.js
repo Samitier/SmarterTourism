@@ -95,6 +95,12 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
             needsLogin:true
         })
 
+        .when("/finalitzar",{
+            title: "Gràcies per la teva compra",
+            templateUrl: '/views/thankyou.html',
+            controller: 'thankyouController',
+            controllerAs: 'thankyouCtrl',
+        })
         .when("/termes-us",{
             title: "Termes d'ús",
             templateUrl: '/views/useTerms.html'

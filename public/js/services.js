@@ -48,6 +48,12 @@ angular.module('app-services', ['ngCookies'])
         });
     };
 
+    service.createOrder = function(data) {
+        return $http.post(apiURI + "orders", data).then(function(resp) {
+            return resp.data;
+        });
+    };
+
     return service;
 })
 

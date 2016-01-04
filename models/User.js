@@ -8,6 +8,16 @@ var UserSchema = new mongoose.Schema({
     password: {type:String, required:true},
     role:{type:String, required:true, enum: ['Client', 'Provider', 'Agency', 'Super']},
     state:{type:String, default:"Unconfirmed", enum: ['Unconfirmed', 'Confirmed', 'Inactive']},
+    facturationInfo: {
+        name: String,
+        lastname: String,
+        address: String,
+        telephone: Number,
+        postalCode: Number,
+        city: String,
+        province: String,
+        country: String
+    }
 });
 
 module.exports = mongoose.model('User', UserSchema);

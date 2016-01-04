@@ -18,36 +18,36 @@
                             <form name="facturationForm" novalidate>
                                 <div class="row">
                                 <div class="input-field col s6">
-                                    <input ng-model="facturationForm.user.name" id="name" type="text" class="validate" required>
-                                    <label for="name">Nom</label>
+                                    <input ng-model="facturationForm.user.name" id="name" type="text" class="validate"  required>
+                                    <label ng-class="{active:facturationForm.user.name}" for="name">Nom</label>
                                 </div>
                                 <div class="input-field col s6">
                                     <input  ng-model="facturationForm.user.lastname" id="lastname" type="text" class="validate" required>
-                                    <label for="lastname">Cognoms</label>
+                                    <label ng-class="{active:facturationForm.user.lastname}" for="lastname">Cognoms</label>
                                 </div>
                                 <div class="input-field col s12">
                                     <input  ng-model="facturationForm.user.address" id="address" type="text" class="validate" required>
-                                    <label for="address">Adreça</label>
+                                    <label ng-class="{active:facturationForm.user.address}" for="address">Adreça</label>
                                 </div>
                                 <div class="input-field col s4">
                                     <input  ng-model="facturationForm.user.telephone" id="telf" type="number" class="validate" required>
-                                    <label for="telf">Telèfon</label>
+                                    <label ng-class="{active:facturationForm.user.telephone}" for="telf">Telèfon</label>
                                 </div>
                                 <div class="input-field col s4">
                                     <input  ng-model="facturationForm.user.postalCode" id="postalcode" type="text" class="validate" required>
-                                    <label for="postalcode">Codi Postal</label>
+                                    <label ng-class="{active:facturationForm.user.postalCode}" for="postalcode">Codi Postal</label>
                                 </div>
                                 <div class="input-field col s4">
                                     <input  ng-model="facturationForm.user.city" id="city" type="text" class="validate" required>
-                                    <label for="city">Ciutat</label>
+                                    <label ng-class="{active:facturationForm.user.city}" for="city">Ciutat</label>
                                 </div>
                                 <div class="input-field col s6">
                                     <input  ng-model="facturationForm.user.province" id="province" type="text" class="validate" required>
-                                    <label for="province">Província</label>
+                                    <label ng-class="{active:facturationForm.user.province}" for="province">Província</label>
                                 </div>
                                 <div class="input-field col s6">
                                     <input  ng-model="facturationForm.user.country" id="country" type="text" class="validate" required>
-                                    <label for="country">País</label>
+                                    <label ng-class="{active:facturationForm.user.country}" for="country">País</label>
                                 </div>
                                 </div>
                             </form>

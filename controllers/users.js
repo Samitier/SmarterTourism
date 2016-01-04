@@ -47,5 +47,5 @@ module.exports.updateProfile = function(req ,res, next) {
     User.findByIdAndUpdate(req.decoded._id, req.body, function (err, obj) {
         if (err) return next(err);
         res.json(obj);
-    })
+    });
 };

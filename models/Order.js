@@ -4,20 +4,23 @@ var validator = require('validator');
 var OrderSchema = new mongoose.Schema({
     buyer: {type:mongoose.Schema.Types.ObjectId, ref: 'User', required:true},
     seller: {type:mongoose.Schema.Types.ObjectId, ref: 'User' , required:true},
-    pack: {type:mongoose.Schema.Types.ObjectId, ref: 'Pack' , required:true},
+    pack: {type:mongoose.Schema.Types.ObjectId, ref: 'Pack', required:true},
     product: {
-        name: {type: String, required:true},
+        title: {type: String, required:true},
         variation: {type: String, required:true},
-        extra: {type: String, required:true},
+        extra: {type: String},
         discount:{
-            name: {type: String, required:true},
-            value: {type: String, required:true},
+            name: {type: String},
+            value: {type: String},
         },
-        quantity: Number
+        total:{type: Number}
     },
+    numAdults: {type: Number, required:true},
+    numChildren: {type: Number, required:true, default:0},
+    numBabies: {type: Number, required:true, default:0},
     finalPrice: {type: Number, required:true},
     dateOfOrder: {type: Date, required:true},
-    state: {type:String, required:true, enum: ['Processing', 'Accepted', 'Canceled', 'Completed']},
+    state: {type:String, required:true, enum: ['PaymentPending','Processing', 'Accepted', 'Canceled', 'Completed'], default:'PaymentPending'},
     comments: [{
         user: {type: String},
         comment: {type: String}
