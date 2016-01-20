@@ -17,10 +17,11 @@ var Extra = new mongoose.Schema({
 var ActivitySchema = new mongoose.Schema({
     title: {type:String, required:true},
     description: {type:String, required:true},
+    seller: {type:mongoose.Schema.Types.ObjectId, ref: 'User' , required:true},
     featured: Boolean,
     image: {type:String, default:"placeholder.jpg"},
-    seller: String, //referencia a User
     price: Number,
+    category: {type:String},
     variations: [Variation],
     extras: [Extra],
 });

@@ -21,7 +21,7 @@ module.exports.create = function(req,res,next) {
 
         for(var i=0; i<req.body.order.activities.length; ++i) {
             var productOrder = order;
-            productOrder.seller= req.decoded._id, //TODO:id of seller, hardcoded untill is added on model
+            productOrder.seller= req.decoded.seller,
             productOrder.product = { id:req.body.order.activities[i].id,
                     title:req.body.order.activities[i].title,
                     variation:req.body.order.selectedVariations[req.body.order.activities[i].id],

@@ -15,10 +15,12 @@ module.exports.create = function(req, res, next) {
 };
 
 module.exports.getSingle = function(req, res, next) {
-    Activity.findById(req.params.id, function (err, obj) {
-        if (err) return next(err);
-        res.json(obj);
-    });
+    Activity.findById(req.params.id)
+        .populate({ path: 'seller', select: 'name' })
+        .exec(function (err, obj) {
+            if (err) return next(err);
+            res.json(obj);
+        });
 };
 
 module.exports.update = function(req, res, next) {

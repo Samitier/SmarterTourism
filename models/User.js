@@ -8,6 +8,7 @@ var UserSchema = new mongoose.Schema({
     password: {type:String, required:true},
     role:{type:String, required:true, enum: ['Client', 'Provider', 'Agency', 'Super']},
     state:{type:String, default:"Unconfirmed", enum: ['Unconfirmed', 'Confirmed', 'Inactive']},
+    businessName: {type:String, unique:true},
     facturationInfo: {
         name: String,
         lastname: String,
