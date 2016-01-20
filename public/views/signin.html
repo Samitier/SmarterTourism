@@ -20,8 +20,9 @@
                             <label for="lastname">Cognoms</label>
                         </div>
                         <div class="input-field col s12">
-                            <input  ng-model="signinForm.password" id="password" type="password" class="validate" required>
+                            <input  ng-model="signinForm.password" ng-minlength="8" id="password" type="password" class="validate" required>
                             <label for="password">Contrasenya</label>
+                            <span class="red-text" ng-show="signinForm.$error.minlength">La contrasenya és massa curta.</span>
                         </div>
                         <div class="col s12">
                             <p>

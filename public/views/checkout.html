@@ -7,13 +7,111 @@
         </div>
     </div>
     <div class="row">
-        <div class="col l9 z-depth-1">
-            <div class="collapsible-header" style="cursor:default;">
-                <i class="material-icons">payment</i> Dades de facturació
-            </div>
+        <div class="col l9">
+            <ul class="collapsible popout" data-collapsible="accordion">
+                <li>
+                    <div class="collapsible-header active">
+                        <i class="material-icons">more</i> Dades de facturació
+                    </div>
+                    <div class="collapsible-body">
+                        <div style="margin:20px;">
+                            <form name="facturationForm" novalidate>
+                                <div class="row">
+                                <div class="input-field col s6">
+                                    <input ng-model="facturationForm.user.name" id="name" type="text" class="validate"  required>
+                                    <label ng-class="{active:facturationForm.user.name}" for="name">Nom</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input  ng-model="facturationForm.user.lastname" id="lastname" type="text" class="validate" required>
+                                    <label ng-class="{active:facturationForm.user.lastname}" for="lastname">Cognoms</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <input  ng-model="facturationForm.user.address" id="address" type="text" class="validate" required>
+                                    <label ng-class="{active:facturationForm.user.address}" for="address">Adreça</label>
+                                </div>
+                                <div class="input-field col s4">
+                                    <input  ng-model="facturationForm.user.telephone" id="telf" type="number" class="validate" required>
+                                    <label ng-class="{active:facturationForm.user.telephone}" for="telf">Telèfon</label>
+                                </div>
+                                <div class="input-field col s4">
+                                    <input  ng-model="facturationForm.user.postalCode" id="postalcode" type="text" class="validate" required>
+                                    <label ng-class="{active:facturationForm.user.postalCode}" for="postalcode">Codi Postal</label>
+                                </div>
+                                <div class="input-field col s4">
+                                    <input  ng-model="facturationForm.user.city" id="city" type="text" class="validate" required>
+                                    <label ng-class="{active:facturationForm.user.city}" for="city">Ciutat</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input  ng-model="facturationForm.user.province" id="province" type="text" class="validate" required>
+                                    <label ng-class="{active:facturationForm.user.province}" for="province">Província</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input  ng-model="facturationForm.user.country" id="country" type="text" class="validate" required>
+                                    <label ng-class="{active:facturationForm.user.country}" for="country">País</label>
+                                </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header">
+                        <i class="material-icons">payment</i> Mètodes de pagament
+                    </div>
+                    <div class="collapsible-body">
+                        <div style="margin:20px;display:inline-block;">
+                            <div class="input-field col s6">
+                                <input ng-model="facturationForm.paypalPayment" name="paymentType" type="radio" id="paypalPayment" />
+                                <label for="paypalPayment"><img class="responsive-img" src="/img/paypalLogo.png"></label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input ng-model="facturationForm.tpvPayment" name="paymentType" type="radio" id="tpvPayment" />
+                                <label for="tpvPayment"><img class="responsive-img" src="/img/redsysLogo.jpg"></label>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
         </div>
         <div class="col l3">
-            <price-card order="checkoutCtrl.order" show-form="false" card-action="checkoutCtrl.sendAction()"></price-card>
+            <price-card order="order" show-form="false" card-action="checkoutCtrl.sendAction()"></price-card>
         </div>
     </div>
 </div>
+<div id="login-modal" class="modal" style="width:40%">
+    <div class="modal-content">
+        <div class="row">
+        <div class="col m12">
+            <h4 class="center-align">Entra a Smarter Tourism per a continuar amb la compra</h4>
+            <form name="loginForm" ng-submit="loginForm.$valid && checkoutCtrl.sendLoginForm()" novalidate>
+                <div class="input-field col s12">
+                    <input ng-model="loginForm.userMail" id="email" type="email" class="validate" required>
+                    <label for="email">Email</label>
+                </div>
+                <div class="input-field col s12">
+                    <input  ng-model="loginForm.userPassword" id="password" type="password" class="validate" required>
+                    <label for="password">Contrasenya</label>
+                </div>
+                <div class="col s12">
+                    <p>
+                        <input ng-model="loginForm.remember" type="checkbox" id="remember" />
+                        <label for="remember">Recorda'm</label>
+                    </p>
+                </div>
+                <div class="input-field col s12">
+                    <button ng-class="{disabled:!loginForm.$valid}" class="waves-effect waves-light btn right" type="submit" name="action">
+                        Continuar
+                    </button><br><br>
+                    <p class="right right-align">No tens cap compte? <a href="/signin">Registra't!</a></p>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('.collapsible').collapsible({
+        accordion : false
+    });
+</script>
+

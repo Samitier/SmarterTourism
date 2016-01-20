@@ -3,24 +3,25 @@ var mongoose = require('mongoose');
 var Variation = new mongoose.Schema({
     title: {type:String, required:true, unique:true},
     description: {type:String, required:true},
-    image: String,
+    image: {type:String, default:"placeholder.jpg"},
     priceIncr: Number
 });
 
 var Extra = new mongoose.Schema({
     title: {type:String, required:true, unique:true},
     description: {type:String, required:true},
-    image: String,
+    image: {type:String, default:"placeholder.jpg"},
     priceIncr: Number
 });
 
 var ActivitySchema = new mongoose.Schema({
     title: {type:String, required:true},
     description: {type:String, required:true},
+    seller: {type:mongoose.Schema.Types.ObjectId, ref: 'User' , required:true},
     featured: Boolean,
-    image: String,
-    seller: String, //referencia a User
+    image: {type:String, default:"placeholder.jpg"},
     price: Number,
+    category: {type:String},
     variations: [Variation],
     extras: [Extra],
 });

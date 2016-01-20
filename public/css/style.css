@@ -148,13 +148,29 @@ input[type="number"] {
     z-index: 100;
 }
 
-.activity-variation >img {
+.activity-variation >img, .activity-variation >span {
     max-width:70px;
     margin:1rem;
 }
 
+.activity-variation > span {
+    position:absolute;
+    z-index:10;
+    width:70px;
+    height:70px;
+    opacity:0.7;
+    transform: scale(1.1);
+}
+
 .activity-variation > p {
     padding:2rem 0rem 2rem 0rem;
+}
+
+.activity-variation > span > i {
+    position: relative;
+    top: 10px;
+    left: 10px;
+    font-size: 50px;
 }
 
 .main-navbar-buttons:hover {

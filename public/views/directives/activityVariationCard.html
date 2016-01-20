@@ -1,25 +1,26 @@
-<a class="activity-link activity-variation left-align" href ="#!">
-    <i class="material-icons left">done</i>
-    <img ng-src="/img/{{variation.image}}" alt="" class="left circle responsive-img  z-depth-1 hoverable">
+<a class="activity-link activity-variation left-align" href ="#">
+    <span ng-show="selected" class="left circle green"><i class="material-icons left white-text">done</i></span>
+    <img ng-src="/img/activities/{{variation.image}}" alt="" class="left circle responsive-img  z-depth-1 hoverable">
     <p class="truncate">
         {{variation.title}}<br>
-        Per només {{variation.priceIncr}}€ més
+        <span ng-if="variation.priceIncr>0">Per només {{variation.priceIncr}}€ més</span>
     </p>
 </a>
 
 <!-- Modal Structure -->
-<div class="modal">
+<div class="modal" style="width:40%">
     <div class="modal-content">
-        <h4>{{variation.title}}</h4>
         <div style="height:200px; overflow:hidden;position:relative;">
-            <img ng-src="/img/{{variation.image}}" alt="" style="position:absolute;top:-50%;width:100%;height:auto;"class="left responsive-img">
+            <div style="width: 100%;position: absolute;bottom:0;right: 0;background-color: rgba(0,0,0,0.4);z-index:10;padding:1em;padding-bottom:0px;">
+                <h4 class="white-text">{{variation.title}}</h4>
+            </div>
+            <img ng-src="/img/activities/{{variation.image}}" alt="" style="position:absolute;top:-50%;width:100%;height:auto;"class="left responsive-img">
         </div>
-        <p>{{variation.description}}<br>
+        <p>{{variation.description}}<br><br>
          Per {{variation.priceIncr}}€ més.</p>
     </div>
     <div class="modal-footer">
-        <a href="#!" class="green-text modal-action modal-close waves-effect waves-green btn-flat">Seleccionar</a>
-
-        <a href="#!" class="red-text modal-action modal-close waves-effect waves-green btn-flat">Tancar</a>
+        <a href="#" ng-click="cardAction({param:{activity:activity, product: variation}})" class="green-text modal-action modal-close waves-effect waves-green btn-flat">Seleccionar</a>
+        <a href="#" class="red-text modal-action modal-close waves-effect waves-green btn-flat">Tancar</a>
     </div>
 </div>

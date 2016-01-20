@@ -42,20 +42,51 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         };
 
         this.sendAction = function(orderDate) {
-            CheckoutOrder.setOrderDate(this.pack, orderDate);
+            CheckoutOrder.setOrderDate(this.pack, $scope.order, orderDate);
             $location.path('/detalls-comanda');
         };
 
         this.init();
     })
 
-    .controller('checkoutController', function(CheckoutOrder, SmarterAPI, $location) {
+    .controller('checkoutController', function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope) {
         this.init = function() {
+            $scope.order = CheckoutOrder.getOrder();
+            if($scope.order.state != 'checkout') $location.path('/detalls-comanda'); //we redirect if the user is trying to enter here without an order
+            if(!APIAuth.isLoggedIn()) $('#login-modal').openModal({dismissible: false});
+            else SmarterAPI.getProfile().then(function(dat) {$scope.facturationForm.user = dat.facturationInfo;});
         };
 
+        this.sendLoginForm = function() {
+            APIAuth.login({email:$scope.loginForm.userMail, password: $scope.loginForm.userPassword,
+                remember:$scope.loginForm.remember}).
+            then(function(success) {
+                if (success) {
+                    SmarterAPI.getProfile().then(function(dat) {$scope.facturationForm.user = dat.facturationInfo;})
+                    $('#login-modal').closeModal();
+                }
+                else Materialize.toast('Les dades introduïdes són errònies!', 4000);
+            });
+        };
+
+        $scope.$on("$destroy", function(){
+            $('#login-modal').closeModal();
+        });
+
         this.sendAction = function() {
-            CheckoutOrder.setOrder(this.order);
-            $location.path('/thankyou');
+            if($scope.facturationForm.$valid) {
+                SmarterAPI.createOrder({facturationInfo:$scope.facturationForm.user,  order:$scope.order}).then(function(dat) {
+                    if(dat.success) {
+                        $scope.order.state="finishedOK";
+                        CheckoutOrder.setOrder($scope.order);
+                        //send the payment form to the tpv or paypal, depending where the user send it
+                        //redirect to thank you page when the order is completed
+                        $location.path("/finalitzar");
+                    }
+                    else Materialize.toast('Hi ha hagut algun error inesperat. Torna-ho a provar més tard.', 4000);
+                });
+            }
+            else Materialize.toast('Si us plau, omple totes les dades del formulari', 4000);
         };
 
         this.init();
@@ -63,21 +94,62 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
 
     .controller('orderDetailsController', function($scope, CheckoutOrder, SmarterAPI, $location) {
         this.init = function() {
-            this.order = CheckoutOrder.getOrder();
-            //we grab the order products info
+            $scope.order = CheckoutOrder.getOrder();
+            if($scope.order.state != 'checkout' && $scope.order.state!='details') $location.path("/");//we redirect if the user is trying to enter here without an order
+            if(!$scope.order.selectedVariations) $scope.order.selectedVariations = {};
+            if(!$scope.order.selectedExtras) $scope.order.selectedExtras = {};
+            if(!$scope.order.total_price_per_person) $scope.order.total_price_per_person = $scope.order.price;
+
             $scope.products=[];
 
-            for(var i=0; i<this.order.length; ++i) {
-                if(this.order[i].isPack) continue;
-                SmarterAPI.getActivity(this.order[i].id).then(function(resp){ $scope.products[resp._id] = resp;});
-            }
+            $scope.$watch('order.numAdults', function (newValue, oldValue) {
+                $scope.order.total_price = newValue*$scope.order.total_price_per_person;
+            });
+
+            $scope.order.activities.forEach(function (activity) {
+                SmarterAPI.getActivity(activity.id).then(function(resp){
+                    $scope.products.push(resp);
+                    if(!$scope.order.selectedVariations[activity.id]) $scope.order.selectedVariations[activity.id] = resp.variations[0];
+                });
+            });
         };
 
         this.sendAction = function() {
-            CheckoutOrder.setOrder(this.order);
-            $location.path('/checkout');
+            if($scope.order.numAdults > 0) {
+                $scope.order.state="checkout";
+                CheckoutOrder.setOrder($scope.order);
+                $location.path('/checkout');
+            }
+            else Materialize.toast("Si us plau, introduïu un nombre vàlid de viatjants adults.",3000)
         };
 
+        this.variationSelect = function(variation) {
+            //recalcular preu
+            $scope.order.total_price_per_person -= $scope.order.selectedVariations[variation.activity].priceIncr;
+            $scope.order.selectedVariations[variation.activity] = variation.product;
+            $scope.order.total_price_per_person += $scope.order.selectedVariations[variation.activity].priceIncr;
+            $scope.order.total_price = $scope.order.numAdults*$scope.order.total_price_per_person;
+        };
+
+        this.extrasSelect = function(extra) {
+            if($scope.order.selectedExtras[extra.activity]) {
+                $scope.order.total_price_per_person -= $scope.order.selectedExtras[extra.activity].priceIncr;
+            }
+            $scope.order.selectedExtras[extra.activity] = extra.product;
+            $scope.order.total_price_per_person += $scope.order.selectedExtras[extra.activity].priceIncr;
+            $scope.order.total_price = $scope.order.numAdults*$scope.order.total_price_per_person;
+        }
+
+        this.init();
+    })
+
+    .controller('thankyouController', function(CheckoutOrder, APIAuth, $location, $scope) {
+        this.init = function() {
+            $scope.order = CheckoutOrder.getOrder();
+            if ($scope.order.state != 'finishedOK' || !APIAuth.isLoggedIn()) {
+                $location.path('/checkout');
+            } //we redirect if the user is trying to enter here without an order
+        };
         this.init();
     })
 
@@ -102,7 +174,7 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         };
 
         this.sendAction = function(orderDate) {
-            CheckoutOrder.setOrderDate(this.activity, orderDate);
+            CheckoutOrder.setOrderDate(this.activity, $scope.order, orderDate);
             $location.path('/detalls-comanda');
         };
 
@@ -122,7 +194,7 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
                 }
                 else Materialize.toast('Les dades introduïdes són errònies!', 4000);
             });
-        }
+        };
 
         this.init();
     })
@@ -144,13 +216,24 @@ angular.module('app-controllers', ["ngRoute", "ngAnimate"])
         this.init();
     })
 
-    .controller('yourOrdersController', function() {
+    .controller('yourOrdersController', function($scope, SmarterAPI) {
+        this.init = function() {
+            SmarterAPI.getOrders().then(function(data) {
+                $scope.orders = data;
+                console.log($scope.orders);
+            });
+        };
 
+        this.init();
     })
 
     .controller('yourProfileController', function($scope, SmarterAPI) {
-        SmarterAPI.getProfile().then(function(data) {
-            $scope.profile = data;
-            console.log($scope.profile);
-        });
+        this.init = function() {
+            SmarterAPI.getProfile().then(function (data) {
+                $scope.profile = data;
+                console.log($scope.profile);
+            });
+        };
+
+        this.init();
     });

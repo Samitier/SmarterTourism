@@ -43,5 +43,9 @@ module.exports.getProfile = function(req ,res, next) {
 };
 
 module.exports.updateProfile = function(req ,res, next) {
-
+    delete req.body.role; delete req.body._id; delete req.body.state; delete req.body.__v;
+    User.findByIdAndUpdate(req.decoded._id, req.body, function (err, obj) {
+        if (err) return next(err);
+        res.json(obj);
+    });
 };

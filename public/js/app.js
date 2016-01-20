@@ -1,6 +1,5 @@
 'use strict';
 
-// Declare app level module which depends on views, and components
 angular.module('SmarterTourism', [
     'ngRoute',
     'app-directives',
@@ -96,6 +95,12 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
             needsLogin:true
         })
 
+        .when("/finalitzar",{
+            title: "Gràcies per la teva compra",
+            templateUrl: '/views/thankyou.html',
+            controller: 'thankyouController',
+            controllerAs: 'thankyouCtrl',
+        })
         .when("/termes-us",{
             title: "Termes d'ús",
             templateUrl: '/views/useTerms.html'
@@ -106,6 +111,10 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
     $locationProvider.html5Mode(true);
 }])
 
+/*
+        This handles the dynamic title for the page, and saving last page visited for redirecting back on some operations.
+        This also handles route restriction for registered only elements.
+     */
 .run(['$rootScope', "$window","APIAuth", '$location', function($rootScope, $window, APIAuth, $location) {
     $rootScope.title ="";
     $rootScope.previousPage ="/";
