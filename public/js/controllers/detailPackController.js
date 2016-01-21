@@ -1,3 +1,8 @@
+/*
+ DETAIL PACK CONTROLLER:
+     Gets and shows the selected pack data.
+     This is the controller for the detail pack view .
+ */
 module.exports = function(CheckoutOrder, $routeParams, SmarterAPI, $location, $scope) {
 
     this.init = function() {

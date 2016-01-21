@@ -1,3 +1,8 @@
+/*
+ LOGIN CONTROLLER:
+    Logs in the user.
+    This is the controller for the login view .
+ */
 module.exports = function($scope, APIAuth, $location, $rootScope) {
     this.init = function() {
     };

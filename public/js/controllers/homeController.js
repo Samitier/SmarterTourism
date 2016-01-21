@@ -1,3 +1,8 @@
+/*
+ HOME CONTROLLER:
+     Gets and shows the home data.
+     This is the controller for the home view .
+ */
 module.exports = function(SmarterAPI, CheckoutOrder, $scope, $location) {
 
     this.init = function() {

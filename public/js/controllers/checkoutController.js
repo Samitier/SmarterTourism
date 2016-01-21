@@ -1,3 +1,10 @@
+/*
+    CHECKOUT CONTROLLER:
+        Collects the payment data from an user's order and attemps to create and pay the order via API.
+        This is the controller for the checkout view and users must be registered in order to use it. A prompt
+        will popup if they are not logged in.
+*/
+
 module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope) {
 
     this.init = function() {

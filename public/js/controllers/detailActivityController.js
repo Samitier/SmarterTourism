@@ -1,3 +1,8 @@
+/*
+ DETAIL ACTIVITY CONTROLLER:
+     Gets and shows the selected activity data.
+     This is the controller for the detail activity view .
+ */
 module.exports = function($routeParams, SmarterAPI, $location, CheckoutOrder, $scope) {
     this.init = function() {
         SmarterAPI.getActivity($routeParams.id).then(function(data) {

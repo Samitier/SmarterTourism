@@ -1,3 +1,9 @@
+/*
+ ORDER DETAILS CONTROLLER:
+     First step for creating an order. Gets an activity/pack and lets the user choose variations & extras,
+     calculating the final price.
+     This is the controller for the order details view .
+ */
 module.exports = function($scope, CheckoutOrder, SmarterAPI, $location) {
 
     this.init = function() {
