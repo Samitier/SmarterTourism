@@ -1,3 +1,7 @@
+/*
+    PT PAGINATOR
+    A paginator for large collctions or large lists.
+ */
 module.exports = function() {
     return {
         restrict: 'E',

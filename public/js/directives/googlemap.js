@@ -1,3 +1,9 @@
+/*
+    GOOGLE MAP
+    The google maps widget.
+    Scope:
+        coords -> string containing the coordinates to show on the map
+ */
 module.exports = function() {
     return {
         restrict: 'E',

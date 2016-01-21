@@ -1,3 +1,7 @@
+/*
+    API AUTH SERVICE
+        A service that handles authentication to the Smarter Tourism API.
+ */
 module.exports = function($cookies, $http) {
 
     var service = {};

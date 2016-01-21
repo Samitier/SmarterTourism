@@ -1,3 +1,7 @@
+/*
+ PT DATEPICKER
+    A wrapper for the materializecss datepicker. It's broken.
+ */
 module.exports = function() {
     return {
         restrict: 'C',

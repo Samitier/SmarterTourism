@@ -116,9 +116,9 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
 }])
 
 /*
-        This handles the dynamic title for the page, and saving last page visited for redirecting back on some operations.
-        This also handles route restriction for registered only elements.
-     */
+    This handles the dynamic title for the page, and saving last page visited for redirecting back on some operations.
+    This also handles route restriction for registered only elements.
+ */
 .run(['$rootScope', "$window","APIAuth", '$location', function($rootScope, $window, APIAuth, $location) {
     $rootScope.title ="";
     $rootScope.previousPage ="/";

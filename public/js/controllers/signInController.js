@@ -1,3 +1,8 @@
+/*
+ SIGN IN CONTROLLER:
+    Signs in new users.
+    This is the controller for the sign in view .
+ */
 module.exports = function(APIAuth, $scope) {
     this.init = function() {
         $scope.isLogged=false;

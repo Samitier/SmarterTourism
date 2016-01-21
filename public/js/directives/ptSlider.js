@@ -1,3 +1,11 @@
+/*
+    PT SLIDER
+        The materializecss slider.
+        Scope:
+            fullwidth   -> if true, the slider will be full width
+            sliderHeight    -> the height of the slider
+            images  -> the array of images you want to show
+ */
 module.exports = function() {
     return {
         restrict: 'E',

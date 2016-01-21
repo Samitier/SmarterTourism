@@ -1,3 +1,10 @@
+/*
+    USER MENU
+        The user menu that shows when a user is logged in.
+        Scope:
+            dropdownId  -> a unique id for the dropdowns
+            username    -> the username that the menu will display
+ */
 module.exports = function() {
     return {
         restrict: 'E',

@@ -1,3 +1,7 @@
+/*
+    CHECKOUT ORDER SERVICE
+        A service that creates and handles the orders.
+ */
 module.exports = function ($cookies) {
 
     var service = {};

@@ -1,3 +1,11 @@
+/*
+    PRICE CARD
+    The card that shows the total price of the purchase throughout the entire order creation.
+    Scope:
+        order       -> the order to display.
+        showForm    -> if ture, a date form will be displayed (for choosing the day to travel).
+        cardAction  -> the action that happens when the "continue" button is pressed.
+ */
 module.exports = function() {
     return {
         restrict: 'E',

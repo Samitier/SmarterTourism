@@ -1,3 +1,9 @@
+/*
+    PACK CARD
+    A card containing info of the packs
+    Scope:
+        Pack -> the info to display
+ */
 module.exports = function() {
     return {
         restrict: 'E',

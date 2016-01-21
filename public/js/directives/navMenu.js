@@ -1,3 +1,7 @@
+/*
+    NAV MENU
+    Main application menu.
+ */
 module.exports = function() {
     return {
         restrict: 'E',

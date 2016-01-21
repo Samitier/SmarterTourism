@@ -1,3 +1,7 @@
+/*
+    SMARTER API SERVICE
+        The calls to the Smarter Tourism API.
+ */
 module.exports = function ($http, APIAuth) {
     var service={};
 
