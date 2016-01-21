@@ -1,11 +1,15 @@
 'use strict';
 
-angular.module('SmarterTourism', [
-    'ngRoute',
-    'app-directives',
-    'app-controllers',
-    'app-services'
-]).
+window.$ = require('jquery');
+window.jQuery = require("jquery");
+
+var angular = require('angular');
+require('angular-route');
+require('angular-animate');
+require('angular-cookies');
+$.getScript("/js/materialize.min.js");
+
+angular.module('SmarterTourism', ['ngRoute', "ngCookies", "ngAnimate"]).
 
 config(['$routeProvider','$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
@@ -31,7 +35,7 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
         .when("/buscar-activitats",{
             title: "Buscar activitats",
             templateUrl: '/views/search-activities.html',
-            controller: 'searchActivitiesCtrl',
+            controller: 'searchActivitiesController',
             controllerAs: 'searchActivitiesCtrl'
         })
 
@@ -134,3 +138,7 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
             $location.path('/');
     });
 }]);
+
+require('./services');
+require('./controllers');
+require('./directives');
