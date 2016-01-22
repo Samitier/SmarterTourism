@@ -22,4 +22,7 @@ O el mateix amb **watchify** per no haver d'executar l'anterior per cada canvi q
 Seria òptim fer una branch per cada funcionalitat/cas d'ús nou que es vulgui afegir.
 La branch **heroku-deployment** està configurada per publicar directament a heroku els canvis i hauria d'estar tot corrent com a "production" i amb el javascript minificat.
 
+### DOCUMENTS
+La especificació de l'aplicació i els mockups bàsics es troben a aquest enllaç: https://drive.google.com/folderview?id=0B8Z_tPXG69gVdEVzeTJhR3Ruc2c&usp=sharing
+
 
