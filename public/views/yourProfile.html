@@ -1,14 +1,74 @@
 <div class="container">
+    <br>
     <div class="row">
-        <div class="col s12 left-align">
-            <h2>El teu perfil</h2>
+        <div class="col s4">
+            <div class="card">
+                <div class="card-image">
+                    <img class="responsive-img" src="/img/users/placeholder.png">
+                </div>
+                <div class="card-content">
+                    <h3>{{ profile.name }} {{ profile.lastname }}</h3>
+                    <div class="grey-text text-darken-1">
+                        <!--<h6><i class="tiny material-icons align">my_location</i>&nbsp;Santa Eugènia de Berga</h6>-->
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col s3">
-            <img class="responsive-img" src="/img/users/placeholder.png">
-        </div>
+        <div class="col s8">
+            <div class="card teal" ng-show="profile.state == 'Unconfirmed' && !hideConfirmationMail">
+                <div class="white-text card-content">
+                    <span class="alert-card-text">El teu compte no està confirmat. T'hem enviat un mail de confirmació a {{ profile.email }}.</span>
+                    <i class="material-icons right cursor-pointer" ng-click="hideConfirmationMail = true">close</i>
+                </div>
+            </div>
+            <div class="blankslate" ng-show="orders.length == 0">
+                <span>Encara no has comprat cap paquet.</span>
+            </div>
+            <div ng-hide="orders.length == 0">
+            <h3 class="inline-block">Últimes comandes</h3>&nbsp;
+            <a href="/comandes" class="inline-block">Veure-les totes</a>
+            <ul class="collapsible" data-collapsible="accordion">
+                <li ng-repeat="order in orders | limitTo: 3">
+                    <div class="collapsible-header">
+                        <i class="material-icons">receipt</i>
+                        {{ order.product.title }} <small class="grey-text">{{ order.product.variation }}</small>
+                    </div>
+                    <div class="collapsible-body">
+                        <div style="padding: 2rem">
+                            <i class="tiny material-icons align">perm_identity</i>
+                            {{ order.numAdults }} adults
+                            <span ng-show="numChildren > 0">, {{ order.numChildren }} nens</span>
+                            <span ng-show="numBabies > 0">, {{ order.numBabies }} bebès</span>.<br>
 
+                            <i class="tiny material-icons align">today</i> {{ order.dateOfOrder }}<br>
+
+                            <i class="tiny material-icons align">credit_card</i> {{ order.finalPrice }}€<br>
+
+                            <i class="tiny material-icons align">info_outline</i> Estat: {{ order.state }}<br>
+                            <br>
+                            <b>Comentaris</b>
+                            <ul class="collection">
+                                    <li class="collection-item avatar" ng-repeat="comment in order.comments">
+                                        <!--<img src="images/yuna.jpg" alt="" class="circle">-->
+                                        <i class="material-icons circle">folder</i>
+                                        <b class="title">{{ comment.user }}</b><br>
+                                        <span>{{ comment.comment }}</span>
+                                    </li>
+                            </ul>
+                            <form>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <textarea id="textarea1" class="materialize-textarea"></textarea>
+                                        <label for="textarea1">Deixa un comentari</label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            </div>
+        </div>
     </div>
 </div>
 
