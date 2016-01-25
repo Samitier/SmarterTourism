@@ -5,9 +5,21 @@
  */
 module.exports = function($scope, SmarterAPI) {
     this.init = function() {
+
         SmarterAPI.getProfile().then(function (data) {
             $scope.profile = data;
-            console.log($scope.profile);
+            //console.log($scope.profile);
+        });
+
+        SmarterAPI.getOrders().then(function (data) {
+            $scope.orders = data;
+            console.log($scope.orders);
+        });
+
+        $scope.hideConfirmationMail = false;
+
+        $('.collapsible').collapsible({
+            accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
         });
     };
 
