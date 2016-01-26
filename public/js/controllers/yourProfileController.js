@@ -8,7 +8,7 @@ module.exports = function($scope, SmarterAPI) {
 
         SmarterAPI.getProfile().then(function (data) {
             $scope.profile = data;
-            //console.log($scope.profile);
+            console.log($scope.profile);
         });
 
         SmarterAPI.getOrders().then(function (data) {
@@ -17,6 +17,7 @@ module.exports = function($scope, SmarterAPI) {
         });
 
         $scope.hideConfirmationMail = false;
+        $scope.hcm = function() { $scope.hideConfirmationMail = true; }
 
         $('.collapsible').collapsible({
             accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style

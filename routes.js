@@ -16,7 +16,7 @@ router.route('/activities')
 router.route('/activities/:id')
         .get(ctrl.activities.getSingle)
         .put(ctrl.auth.authenticate,ctrl.activities.update)
-        .delete(ctrl.auth.authenticate,ctrl.activities.delete);
+        .delete(ctrl.auth.authenticate, ctrl.auth.isProvider, ctrl.activities.delete);
 
 /* Packs */
 router.route('/packs')

@@ -1,0 +1,105 @@
+<div class="container">
+    <br>
+    <div class="row">
+            <div class="col s12">
+                <ul class="tabs">
+                    <li class="tab col s3"><a href="#personal">Personal</a></li>
+                    <li class="tab col s3"><a class="active" href="#pagament">Pagament</a></li>
+                </ul>
+            </div>
+                <form id="personal" name="personalForm" class="col s12" ng-submit="editProfileCtrl.sendFormPersonal()" novalidate>
+                    <div class="card teal" ng-show="profile.state == 'Unconfirmed' && !hideConfirmationMail">
+                        <div class="white-text card-content">
+                            <span class="alert-card-text">El teu compte no està confirmat. T'hem enviat un mail de confirmació a {{ profile.email }}.</span>
+                            <i class="material-icons right cursor-pointer" ng-click="hideConfirmationMail = true">close</i>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input ng-model="personalForm.name" id="first_name" type="text" class="validate">
+                            <label for="first_name" ng-class="{active: 'personalForm.name != \'\''}">Nom</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input ng-model="personalForm.lastname" id="last_name" type="text" class="validate">
+                            <label for="last_name" ng-class="{active: 'personalForm.lastname != \'\''}">Cognoms</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="location" type="text" class="validate" value="">
+                            <label for="location" ng-class="{active: false}">Població</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="birthday" type="text" class="validate" value="">
+                            <label for="birthday" ng-class="{active: false}">Data de naixement</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="password" type="password" class="validate">
+                            <label for="password">Nova contrasenya</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="password2" type="password" class="validate">
+                            <label for="password2">Repeteix la contrasenya</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn waves-effect waves-light right" name="action">Aplicar
+                        <i class="material-icons right">send</i>
+                    </button>
+                </form>
+                <form id="pagament" name="pagamentForm" class="col s12" ng-submit="pagament.$valid && editProfileCtrl.sendFormPagament()" novalidate>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="first_name_pay" type="text" class="validate">
+                            <label for="first_name_pay">Nom</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="last_name_pay" type="text" class="validate">
+                            <label for="last_name_pay">Cognoms</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="address_pay" type="text" class="validate">
+                            <label for="address_pay">Adreça</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="phone_pay" type="text" class="validate">
+                            <label for="phone_pay">Telèfon de contacte</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="city_pay" type="text" class="validate">
+                            <label for="city_pay">Ciutat</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="postal_code_pay" type="text" class="validate">
+                            <label for="postal_code_pay">Codi Postal</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="region_pay" type="text" class="validate">
+                            <label for="region_pay">Provincia</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="country_pay" type="text" class="validate">
+                            <label for="country_pay">País</label>
+                        </div>
+                    </div>
+                    <button class="btn waves-effect waves-light right" type="submit" name="action">Aplicar
+                        <i class="material-icons right">send</i>
+                    </button>
+                </form>
+
+    </div>
+</div>
+

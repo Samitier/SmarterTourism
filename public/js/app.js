@@ -99,6 +99,14 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
             needsLogin:true
         })
 
+        .when("/perfil/edit",{
+            title: "Editar perfil",
+            templateUrl: '/views/editProfile.html',
+            controller: 'editProfileController',
+            controllerAs: 'editProfileCtrl',
+            needsLogin:true
+        })
+
         .when("/finalitzar",{
             title: "Gràcies per la teva compra",
             templateUrl: '/views/thankyou.html',
