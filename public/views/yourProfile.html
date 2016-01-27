@@ -24,6 +24,9 @@
                     <i class="material-icons right cursor-pointer" ng-click="hcm()">close</i>
                 </div>
             </div>
+            <div class="row">
+                <pt-spinner ng-if="!orders" class="col m12 center-align"></pt-spinner>
+            </div>
             <div class="blankslate" ng-show="orders.length == 0">
                 <span>Encara no has comprat cap paquet.</span>
             </div>
