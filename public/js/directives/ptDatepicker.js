@@ -6,19 +6,36 @@ module.exports = function() {
     return {
         restrict: 'C',
         link:function(scope, elem) {
-            $(elem).pickadate({
-                selectMonths: true,
-                selectYears: 15,
-                monthsFull: [ 'Gener', 'Febrer', 'Març', 'Abril', 'Maig', 'juny', 'Juliol', 'Agost', 'Setembre', 'Octubre', 'Novembre', 'Desembre' ],
-                monthsShort: [ 'Gen', 'Feb', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Des' ],
-                weekdaysFull: [ 'diumenge', 'dilluns', 'dimarts', 'dimecres', 'dijous', 'divendres', 'dissabte' ],
-                weekdaysShort: [ 'diu', 'dil', 'dim', 'dmc', 'dij', 'div', 'dis' ],
-                today: 'avui',
-                clear: 'esborra',
-                close: 'tanca',
-                firstDay: 1,
-                format: 'yyyy/mm/dd',
+            $.datepicker.setDefaults({
+                closeText: 'Tancar',
+                prevText: '<i class="material-icons">skip_previous</i>',
+                nextText: '<i class="material-icons">skip_next</i>',
+                currentText: 'Avui',
+                monthNames: ['Gener','Febrer','Mar&ccedil;','Abril','Maig','Juny',
+                    'Juliol','Agost','Setembre','Octubre','Novembre','Desembre'],
+                monthNamesShort: ['Gen','Feb','Mar','Abr','Mai','Jun',
+                    'Jul','Ago','Set','Oct','Nov','Des'],
+                dayNames: ['Diumenge','Dilluns','Dimarts','Dimecres','Dijous','Divendres','Dissabte'],
+                dayNamesShort: ['Dug','Dln','Dmt','Dmc','Djs','Dvn','Dsb'],
+                dayNamesMin: ['Dg','Dl','Dt','Dc','Dj','Dv','Ds'],
+                dateFormat: 'dd/mm/yy', firstDay: 1,
+                isRTL: false,
+                minDate: new Date()
             });
+
+            if($(elem).data("date-type") == "first") {
+                $( elem ).datepicker({
+                    onClose: function( selectedDate ) { console.log(selectedDate);
+                        $( "#dataFi" ).datepicker( "option", "minDate", selectedDate );
+                    }
+                });
+            } else if($(elem).data("date-type") == "last") {
+                $( elem ).datepicker({
+                    onClose: function( selectedDate ) {
+                        $( "#dataInici" ).datepicker( "option", "maxDate", selectedDate );
+                    }
+                });
+            } else if($(elem).data("date-type") == "unique") $( elem ).datepicker();
         }
     };
 }

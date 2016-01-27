@@ -16,7 +16,7 @@ router.route('/activities')
 router.route('/activities/:id')
         .get(ctrl.activities.getSingle)
         .put(ctrl.auth.authenticate,ctrl.activities.update)
-        .delete(ctrl.auth.authenticate,ctrl.activities.delete);
+        .delete(ctrl.auth.authenticate, ctrl.auth.isProvider, ctrl.activities.delete);
 
 /* Packs */
 router.route('/packs')
@@ -55,7 +55,6 @@ router.put('/orders/:id/pay', ctrl.orders.pay);
 router.put('/orders/:id/message', ctrl.orders.sendMessage);
 router.put('/orders/:id/accept', ctrl.orders.accept); //only providers & up
 router.put('/orders/:id/cancel', ctrl.orders.cancel); //only providers & up
-
 
 /* Not found, for every other route */
 router.all('*', function(req, res) {res.status(404).send({ error: {"code":"404", "name":'Resource not found'}});});

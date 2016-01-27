@@ -8,6 +8,7 @@ require('angular-route');
 require('angular-animate');
 require('angular-cookies');
 $.getScript("/js/materialize.min.js");
+require('jquery-ui/datepicker');
 
 angular.module('SmarterTourism', ['ngRoute', "ngCookies", "ngAnimate"]).
 
@@ -96,6 +97,14 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
             templateUrl: '/views/yourProfile.html',
             controller: 'yourProfileController',
             controllerAs: 'yourProfileCtrl',
+            needsLogin:true
+        })
+
+        .when("/perfil/edit",{
+            title: "Editar perfil",
+            templateUrl: '/views/editProfile.html',
+            controller: 'editProfileController',
+            controllerAs: 'editProfileCtrl',
             needsLogin:true
         })
 
