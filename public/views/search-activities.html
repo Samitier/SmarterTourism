@@ -9,7 +9,9 @@
             <h3>Activitats destacades:</h3>
         </div>
     </div>
+
     <div class="row">
+        <pt-spinner ng-if="!activities" class="col m12 center-align"></pt-spinner>
         <div class="col m2" ng-repeat="activity in activities | limitTo:3" ng-if="activity.featured">
             <activity-card activity='activity'></activity-card>
         </div>
@@ -19,6 +21,7 @@
             <br><br>
             <h3>Totes les activitats:</h3>
         </div>
+        <pt-spinner ng-if="!activities" class="col m12 center-align"></pt-spinner>
         <div class="col m2" ng-repeat="activity in activities | orderBy:'title'">
             <activity-card activity='activity'></activity-card>
         </div>
