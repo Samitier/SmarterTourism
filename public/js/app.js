@@ -1,11 +1,16 @@
 'use strict';
 
-angular.module('SmarterTourism', [
-    'ngRoute',
-    'app-directives',
-    'app-controllers',
-    'app-services'
-]).
+window.$ = require('jquery');
+window.jQuery = require("jquery");
+
+var angular = require('angular');
+require('angular-route');
+require('angular-animate');
+require('angular-cookies');
+$.getScript("/js/materialize.min.js");
+require('jquery-ui/datepicker');
+
+angular.module('SmarterTourism', ['ngRoute', "ngCookies", "ngAnimate"]).
 
 config(['$routeProvider','$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
@@ -31,7 +36,7 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
         .when("/buscar-activitats",{
             title: "Buscar activitats",
             templateUrl: '/views/search-activities.html',
-            controller: 'searchActivitiesCtrl',
+            controller: 'searchActivitiesController',
             controllerAs: 'searchActivitiesCtrl'
         })
 
@@ -95,6 +100,14 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
             needsLogin:true
         })
 
+        .when("/perfil/edit",{
+            title: "Editar perfil",
+            templateUrl: '/views/editProfile.html',
+            controller: 'editProfileController',
+            controllerAs: 'editProfileCtrl',
+            needsLogin:true
+        })
+
         .when("/finalitzar",{
             title: "Gràcies per la teva compra",
             templateUrl: '/views/thankyou.html',
@@ -112,9 +125,9 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
 }])
 
 /*
-        This handles the dynamic title for the page, and saving last page visited for redirecting back on some operations.
-        This also handles route restriction for registered only elements.
-     */
+    This handles the dynamic title for the page, and saving last page visited for redirecting back on some operations.
+    This also handles route restriction for registered only elements.
+ */
 .run(['$rootScope', "$window","APIAuth", '$location', function($rootScope, $window, APIAuth, $location) {
     $rootScope.title ="";
     $rootScope.previousPage ="/";
@@ -134,3 +147,7 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
             $location.path('/');
     });
 }]);
+
+require('./services');
+require('./controllers');
+require('./directives');

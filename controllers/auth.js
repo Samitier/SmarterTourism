@@ -75,3 +75,8 @@ module.exports.confirmEmail = function(req,res,next) {
         return res.status(401).send({ error: {"code":"401", "name":'This resource needs authentication'}});
     }
 }
+
+module.exports.isProvider = function(req,res,next) {
+    //si el usuari de req.decoded.id és de tipus "Provider", "Agency" o "Admin"
+    //deixo passar la request a next, sinó retorno un 403
+}
