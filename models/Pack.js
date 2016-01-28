@@ -11,6 +11,7 @@ var PackSchema = new mongoose.Schema({
     numDays:Number,
     price: Number,
     featured: Boolean,
+    category: String,
     date: Date,
     activities:[],
     activitiesByPeriod: {
