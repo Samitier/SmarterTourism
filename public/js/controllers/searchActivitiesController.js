@@ -9,6 +9,7 @@ module.exports = function(SmarterAPI, $scope) {
         SmarterAPI.getActivities().then(function(data) {
             $scope.activities = data;
         });
+        $scope.search = '';
     };
 
     this.init();

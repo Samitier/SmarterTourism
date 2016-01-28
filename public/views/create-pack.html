@@ -1,8 +1,30 @@
 <div class="container">
     <div class="row">
-        <div class="col s12 center-align">
-            <h2>Crear paquet</h2>
+        <div class="col m8" pt-tabs>
+            <div class="row">
+                <div class="col s12">
+                    <br>
+                    <ul class="tabs">
+                        <li class="tab col s3" ng-repeat="day in days"><a ng-href="#dia{{day | date: 'ddMMyyyy'}}">{{ day | date: medium }}</a></li>
+                    </ul>
+                </div>
+                <div ng-repeat="day in days" class="col s12 dies" id="dia{{day | date: 'ddMMyyyy'}}">
+                    <h3>Estada</h3>
+                    <!--Estades-->
+                    <h3>Activitats</h3>
+                    <div class="row">
+                        <div class="col m2" ng-repeat="activity in activities | orderBy:'title'">
+                            <activity-card activity='activity'></activity-card>
+                        </div>
+                    </div>
+                    <h3>Àpats</h3>
+                    <!--Àpats-->
+                </div>
+            </div>
+        </div>
+        <div class="col m4">
             <br><br>
+            <price-card order="order" show-form="false" card-action=""></price-card>
         </div>
     </div>
 </div>
