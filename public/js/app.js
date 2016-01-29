@@ -7,7 +7,6 @@ var angular = require('angular');
 require('angular-route');
 require('angular-animate');
 require('angular-cookies');
-$.getScript("/js/materialize.min.js");
 require('jquery-ui/datepicker');
 
 angular.module('SmarterTourism', ['ngRoute', "ngCookies", "ngAnimate"]).

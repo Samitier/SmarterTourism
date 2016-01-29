@@ -1,24 +1,41 @@
 <div class="container">
     <div class="row">
-        <div class="col m8" pt-tabs>
+        <div class="col m8">
             <div class="row">
                 <div class="col s12">
                     <br>
                     <ul class="tabs">
-                        <li class="tab col s3" ng-repeat="day in days"><a ng-href="#dia{{day | date: 'ddMMyyyy'}}">{{ day | date: medium }}</a></li>
+                        <li class="tab col s3" ng-repeat="day in days"><a ng-href="#dia{{day | date: 'ddMMyyyy'}}">{{ day | date: 'dd/MM' }}</a></li>
                     </ul>
                 </div>
-                <div ng-repeat="day in days" class="col s12 dies" id="dia{{day | date: 'ddMMyyyy'}}">
+                <div pt-tabs ng-repeat="day in days" class="col s12 dies" id="dia{{day | date: 'ddMMyyyy'}}">
                     <h3>Estada</h3>
                     <!--Estades-->
+                    <div class="row">
+                        <div class="col m2">
+                            <a class="activity-link center-align" href ="#">
+                                <img src="/img/plus_icon.png" alt="" class="circle responsive-img  z-depth-1 hoverable">
+                            </a>
+                        </div>
+                    </div>
                     <h3>Activitats</h3>
                     <div class="row">
                         <div class="col m2" ng-repeat="activity in activities | orderBy:'title'">
                             <activity-card activity='activity'></activity-card>
                         </div>
+                        <div class="col m2">
+                            <a class="activity-link center-align" onclick="$('#modalAfegirActivitat').openModal();" href="#">
+                                <img src="/img/plus_icon.png" alt="" class="circle responsive-img  z-depth-1 hoverable">
+                            </a>
+                        </div>
                     </div>
                     <h3>Àpats</h3>
                     <!--Àpats-->
+                    <div class="col m2">
+                        <a class="activity-link center-align" href ="#">
+                            <img src="/img/plus_icon.png" alt="" class="circle responsive-img  z-depth-1 hoverable">
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -28,3 +45,4 @@
         </div>
     </div>
 </div>
+<add-activity></add-activity>

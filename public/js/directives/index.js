@@ -14,4 +14,5 @@ require('angular').module('SmarterTourism')
     .directive('googlemap', require('./googlemap'))
     .directive('ptDatepicker', require('./ptDatepicker'))
     .directive('ptSpinner', require('./ptSpinner'))
-    .directive('ptTabs', require('./ptTabs'));
+    .directive('ptTabs', require('./ptTabs'))
+    .directive('addActivity', require('./addActivityModal'));

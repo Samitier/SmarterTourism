@@ -30,12 +30,17 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI) {
 
     this.init = function() {
         var order = CheckoutOrder.getOrder();
-        $scope.days = this.getDates(order.initDate, order.endDate);
+        var dates = [
+            order.initDate.split('/'),
+            order.endDate.split('/')
+        ];
+        $scope.days = this.getDates(new Date(dates[0][2],dates[0][1]-1,dates[0][0]), new Date(dates[1][2],dates[1][1]-1,dates[1][0]));
+        /*
         $scope.days = [
             new Date(2016,0,29),
             new Date(2016,0,30)
-        ];
-
+        ]*/
+        //console.log(order);
         SmarterAPI.getActivities().then(function(data) {
             $scope.activities = data;
         });
