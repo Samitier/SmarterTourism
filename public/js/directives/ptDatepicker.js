@@ -25,7 +25,7 @@ module.exports = function() {
 
             if($(elem).data("date-type") == "first") {
                 $( elem ).datepicker({
-                    onClose: function( selectedDate ) { console.log(selectedDate);
+                    onClose: function( selectedDate ) {
                         $( "#dataFi" ).datepicker( "option", "minDate", selectedDate );
                     }
                 });

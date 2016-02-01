@@ -1,0 +1,28 @@
+<div id="modalDates" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s12">
+                <h4>Escull la teva estada:</h4>
+            </div>
+            <form class="col s12" name="createPackForm" ng-submit="createPackForm.$valid && $parent.createPackCtrl.getRangeOfDays(order)" novalidate>
+                <div class="card-content">
+                    <div class="row" style="margin-bottom: 0px;">
+                        <div class="input-field col s4">
+                            <input ng-model="order.initDate" id="dataInici" type='text' data-date-type="first" class='datepicker pt-datepicker' required>
+                            <label for="dataInici">Data inici</label>
+                        </div>
+                        <div class="input-field col s4">
+                            <input ng-model="order.endDate" id="dataFi" type='text' data-date-type="last" class='datepicker pt-datepicker' required>
+                            <label for="dataFi">Data fi</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-action right-align">
+                    <button ng-class="{disabled:!createPackForm.$valid}" class="waves-effect waves-light btn-flat modal-action modal-close" type="submit" name="action">
+                        Començar!
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

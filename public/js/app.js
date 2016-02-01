@@ -24,7 +24,7 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
             title: 'Crear Paquet',
             templateUrl: '/views/create-pack.html',
             controller: 'createPackController',
-            controllerAs: 'crearPackCtrl'
+            controllerAs: 'createPackCtrl'
         })
         .when("/els-nostres-paquets",{
             title: "Els nostres paquets",

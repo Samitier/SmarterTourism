@@ -4,7 +4,7 @@ var validator = require('validator');
 var OrderSchema = new mongoose.Schema({
     buyer: {type:mongoose.Schema.Types.ObjectId, ref: 'User', required:true},
     seller: {type:mongoose.Schema.Types.ObjectId, ref: 'User' , required:true},
-    pack: {type:mongoose.Schema.Types.ObjectId, ref: 'Pack', required:true},
+    pack: {type:mongoose.Schema.Types.ObjectId, ref: 'Pack'},
     product: {
         title: {type: String, required:true},
         variation: {type: String, required:true},

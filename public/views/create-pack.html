@@ -12,6 +12,9 @@
                     <h3>Estada</h3>
                     <!--Estades-->
                     <div class="row">
+                        <div class="col m2" ng-repeat="activity in custom.stay | orderBy:'title'">
+                            <activity-card activity='activity'></activity-card>
+                        </div>
                         <div class="col m2">
                             <a class="activity-link center-align" href ="#">
                                 <img src="/img/plus_icon.png" alt="" class="circle responsive-img  z-depth-1 hoverable">
@@ -20,7 +23,7 @@
                     </div>
                     <h3>Activitats</h3>
                     <div class="row">
-                        <div class="col m2" ng-repeat="activity in activities | orderBy:'title'">
+                        <div class="col m2" ng-repeat="activity in custom.activities | orderBy:'title'">
                             <activity-card activity='activity'></activity-card>
                         </div>
                         <div class="col m2">
@@ -31,6 +34,9 @@
                     </div>
                     <h3>Àpats</h3>
                     <!--Àpats-->
+                    <div class="col m2" ng-repeat="activity in custom.meals | orderBy:'title'">
+                        <activity-card activity='activity'></activity-card>
+                    </div>
                     <div class="col m2">
                         <a class="activity-link center-align" href ="#">
                             <img src="/img/plus_icon.png" alt="" class="circle responsive-img  z-depth-1 hoverable">
@@ -45,4 +51,5 @@
         </div>
     </div>
 </div>
+<modal-dates action="createPackCtrl.getRangeOfDays()" ng-if="!days.length"></modal-dates>
 <add-activity></add-activity>

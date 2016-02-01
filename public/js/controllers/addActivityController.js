@@ -1,7 +1,7 @@
 /**
  * Created by Roger on 29/01/2016.
  */
-module.exports = function($scope, SmarterAPI, CheckoutOrder, $location) {
+module.exports = function($scope, SmarterAPI, CheckoutOrder, $location, $rootScope) {
     $scope.$on( "$routeChangeStart", function(event) {
         // Ensenyar activitat al modal
         var id = $location.url().split('/activitat/');
@@ -17,11 +17,7 @@ module.exports = function($scope, SmarterAPI, CheckoutOrder, $location) {
     $scope.activitat = '';
 
     $scope.afegirActivitat = function(activitat) {
-        var order = CheckoutOrder.getOrder();
-        if(order.activities) order.activities.push({ id: activitat });
-        else order.activities = [{ id: activitat }];
-        CheckoutOrder.setOrder(order);
-        console.log(order);
+        $rootScope.$emit("addActivity", { id: activitat });
     }
 
     this.init = function() {
