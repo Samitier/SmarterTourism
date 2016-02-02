@@ -21,7 +21,7 @@ var ActivitySchema = new mongoose.Schema({
     featured: Boolean,
     image: {type:String, default:"placeholder.jpg"},
     price: Number,
-    category: {type:String},
+    category: {type:String, enum: ['Activity','Stay', 'Meal', 'Inactive']},
     variations: [Variation],
     extras: [Extra],
 });
