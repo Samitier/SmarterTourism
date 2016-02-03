@@ -15,4 +15,5 @@ require('angular').module('SmarterTourism')
     .controller('signInController', require('./signInController'))
     .controller('yourOrdersController', require('./yourOrdersController'))
     .controller('yourProfileController', require('./yourProfileController'))
-    .controller('editProfileController', require('./editProfileController'));
+    .controller('editProfileController', require('./editProfileController'))
+    .controller('addActivityController', require('./addActivityController'));

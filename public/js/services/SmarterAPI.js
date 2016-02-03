@@ -47,6 +47,7 @@ module.exports = function ($http, APIAuth, $location) {
     };
 
     service.createOrder = function(data) {
+        console.log(data);
         return $http.post(apiURI + "orders", data).then(function(resp) {
             return resp.data;
         }, tractarErrors);
