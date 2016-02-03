@@ -8,7 +8,7 @@ var Variation = new mongoose.Schema({
 });
 
 var Extra = new mongoose.Schema({
-    title: {type:String, required:true, unique:true},
+    title: {type:String, required:true},
     description: {type:String, required:true},
     image: {type:String, default:"placeholder.jpg"},
     priceIncr: Number
@@ -24,6 +24,7 @@ var ActivitySchema = new mongoose.Schema({
     category: {type:String, enum: ['Activity','Stay', 'Meal', 'Inactive']},
     variations: [Variation],
     extras: [Extra],
+    timetable: String
 });
 
 module.exports = mongoose.model('Activity', ActivitySchema);
