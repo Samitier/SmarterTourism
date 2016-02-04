@@ -15,9 +15,13 @@ module.exports = function($scope, SmarterAPI, CheckoutOrder, $location, $rootSco
     });
 
     $scope.activitat = '';
+    $scope.stay = {};
 
-    $scope.afegirActivitat = function(activitat) {
-        $rootScope.$emit("addActivity", { id: activitat });
+    $scope.afegirActivitat = function(activitat, tipus) {
+        var obj = { id: activitat, tipus: tipus };
+        if(tipus == 'stay') obj.stay = arguments[2];
+        $rootScope.$emit("addActivity", obj);
+        $scope.activitat = '';
     }
 
     this.init = function() {

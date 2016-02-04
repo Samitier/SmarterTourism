@@ -29,8 +29,8 @@ module.exports.create = function(req,res,next) {
                     //TODO: discounts & more than one extra
                     total: 0 //TODO: the total amount for that activity (not the total paid for order)
             };
-            Order.create(productOrder, function (err, obj) {
-                if (err) return next(err);
+        Order.create(productOrder, function (err, obj) {
+            if (err) return next(err);
             });
         }
         //TODO: redirect to the payment platform & redirect to "thank you" on success

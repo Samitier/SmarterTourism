@@ -4,9 +4,6 @@
             <div class="row">
                 <div class="col s12">
                     <br>
-                    <div class="progress">
-                        <div class="determinate" ng-style="{ 'width': ((selectedDay+1)*100/numDays).toString()+'%' }"></div>
-                    </div>
                     <div class="row">
                         <div class="col s2"><br></div>
                         <div class="col s2">
@@ -20,16 +17,19 @@
                         </div>
                         <div class="col s2"><br></div>
                     </div>
+                    <div class="progress">
+                        <div class="determinate" ng-style="{ 'width': ((selectedDay+1)*100/numDays).toString()+'%' }"></div>
+                    </div>
                 </div>
                 <div pt-tabs ng-repeat="day in days" class="col s12 dies" id="dia{{day.getTime()}}">
                     <h3>Estada</h3>
                     <!--Estades-->
                     <div class="row">
-                        <div class="col m2" ng-repeat="activity in custom.stay | orderBy:'title' | filter: dateRangeFilter(days[selectedDay])">
+                        <div class="col m2" ng-repeat="activity in custom.stay | orderBy:'title' | filter: createPackCtrl.dateRangeFilter(days[selectedDay])">
                             <activity-card activity='activity'></activity-card>
                         </div>
-                        <div class="col m2" ng-if="!custom.stay.length">
-                            <a class="activity-link center-align" href ="#">
+                        <div class="col m2">
+                            <a class="activity-link center-align" href ="#" onclick="$('#modalAfegirEstada').openModal();">
                                 <img src="/img/plus_icon.png" alt="" class="circle responsive-img  z-depth-1 hoverable">
                             </a>
                         </div>
@@ -51,7 +51,7 @@
                         <activity-card activity='activity'></activity-card>
                     </div>
                     <div class="col m2">
-                        <a class="activity-link center-align" href ="#">
+                        <a class="activity-link center-align" href ="#" onclick="$('#modalAfegirApat').openModal();">
                             <img src="/img/plus_icon.png" alt="" class="circle responsive-img  z-depth-1 hoverable">
                         </a>
                     </div>
