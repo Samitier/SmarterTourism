@@ -30,9 +30,9 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope) {
         meals: []
     };
 
-    $rootScope.$on("addActivity", function($event, d) {
+    $rootScope.$on("addActivity", function($event, d) { console.log("ssd");
         var ok = true;
-
+        console.log($scope.custom);
         $.each(eval("$scope.custom." + d.tipus), function(i, v) {
             if(v._id == d.id && v.when == $scope.days[$scope.selectedDay]) {
                 ok = false;
@@ -50,8 +50,8 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope) {
             } else obj.when = $scope.days[$scope.selectedDay];
             eval("$scope.custom."+ d.tipus+".push(obj)");
             $scope.total += data.price;
-            //$scope.activity = data;
         });
+        event.stopPropagation();
     });
 
     this.getRangeOfDays = function(formDates) {
