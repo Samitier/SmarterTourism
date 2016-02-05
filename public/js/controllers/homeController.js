@@ -11,8 +11,8 @@ module.exports = function(SmarterAPI, CheckoutOrder, $scope, $location) {
     };
 
     this.createPack = function() {
-        $scope.order.price=0;
-        CheckoutOrder.setOrder($scope.order);
+        /*$scope.order.price=0;
+        CheckoutOrder.setOrder($scope.order);*/
         $location.path('/crear-paquet');
     }
 

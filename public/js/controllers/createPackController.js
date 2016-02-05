@@ -3,7 +3,7 @@
      This is the controller for the creat pack view.
  */
 
-module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope) {
+module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope, $location) {
 
     $scope.addDays = function(currentDate, days) {
         var dat = new Date(currentDate.valueOf());
@@ -30,9 +30,8 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope) {
         meals: []
     };
 
-    $rootScope.$on("addActivity", function($event, d) { console.log("ssd");
+    $rootScope.$on("addActivity", function($event, d) {
         var ok = true;
-        console.log($scope.custom);
         $.each(eval("$scope.custom." + d.tipus), function(i, v) {
             if(v._id == d.id && v.when == $scope.days[$scope.selectedDay]) {
                 ok = false;
@@ -108,6 +107,16 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope) {
         SmarterAPI.getActivities().then(function(data) {
             $scope.activities = data;
         });
+    }
+
+    this.checkout = function() {
+        var order = {};
+        order.price = $scope.total;
+        order.activities = $scope.custom.stay.concat($scope.custom.activities.concat($scope.custom.meals));
+
+        CheckoutOrder.createOrderFromActivityArray(order);
+
+        $location.path('/detalls-comanda');
     }
 
     this.init();

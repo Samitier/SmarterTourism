@@ -20,7 +20,8 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $location) {
         });
 
         $scope.order.activities.forEach(function (activity) {
-            SmarterAPI.getActivity(activity.id).then(function(resp){
+            //SmarterAPI.getActivity(activity.id).then(function(resp){
+            SmarterAPI.getActivity(activity._id).then(function(resp){
                 $scope.products.push(resp);
                 if(!$scope.order.selectedVariations[activity.id]) $scope.order.selectedVariations[activity.id] = resp.variations[0];
             });
