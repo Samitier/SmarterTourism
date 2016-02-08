@@ -1,0 +1,49 @@
+<div id="modalAfegirActivitat" class="modal modal-fixed-footer" ng-controller="addActivityController">
+    <div class="modal-content" ng-if="!activitat">
+        <div class="row">
+            <div class="col s12">
+                <h4>Activitats destacades:</h4>
+            </div>
+            <pt-spinner ng-if="!activities" class="col m12 center-align"></pt-spinner>
+            <div class="col m2" ng-repeat="activity in activities | limitTo:3" ng-if="activity.featured">
+                <activity-card activity='activity'></activity-card>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <h4>Totes les activitats:</h4>
+            </div>
+            <pt-spinner ng-if="!activities" class="col m12 center-align"></pt-spinner>
+            <div class="col m2" ng-repeat="activity in activities | orderBy:'title'">
+                <activity-card activity='activity'></activity-card>
+            </div>
+        </div>
+    </div>
+    <div class="modal-content" ng-if="activitat">
+        <pt-slider fullwidth="true" slider-height="200" images=""></pt-slider>
+        <div class="section">
+            <h5>Descripció</h5>
+            <p>{{activity.description}}</p>
+        </div>
+        <div class="divider"></div>
+        <div class="section">
+            <h5>Informació adicional</h5>
+            <p>{{activity.additional_info}}</p>
+        </div>
+        <div class="divider"></div>
+        <div class="section">
+            <h5>Localització</h5>
+            <googlemap coords="[41.3759069,2.1333681]"></googlemap>
+        </div>
+        <div class="divider"></div>
+        <div class="section">
+            <h5>Informació de contacte</h5>
+            <p><b>Telèfon: </b>{{activity.contact_telephone}}</p>
+            <p><b>Mail: </b>{{activity.contact_email}}</p>
+        </div>
+    </div>
+    <div class="modal-footer" ng-show="activitat">
+        <a class="cursor-pointer modal-action modal-close waves-effect waves-green btn-flat" ng-click="afegirActivitat(activitat)">Sel·leccionar</a>
+        <a class="cursor-pointer modal-action waves-effect waves-green btn-flat" ng-click="activitat=''">Enrere</a>
+    </div>
+</div>

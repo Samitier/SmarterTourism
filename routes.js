@@ -30,7 +30,7 @@ router.route('/packs/:id')
 /* Users */
 router.route('/users')
     .get(ctrl.auth.authenticate, ctrl.users.getAll)
-    .post(ctrl.auth.authenticate,ctrl.users.create);
+    .post(ctrl.auth.authenticate, ctrl.users.create);
 router.route('/users/:id')
     .get(ctrl.auth.authenticate,ctrl.users.getSingle)
     .put(ctrl.auth.authenticate,ctrl.users.update)
