@@ -25,13 +25,13 @@
                     </div>
                     <div class="divider"></div>
                     <div class="section">
-                        <h5>Informació adicional</h5>
+                        <h5>Informació addicional</h5>
                         <p>{{activity.additional_info}}</p>
                     </div>
                     <div class="divider"></div>
                     <div class="section">
-                        <h5>Localització</h5>
-                        <googlemap coords="[41.3759069,2.1333681]"></googlemap>
+                        <h5>Localització{{activity.coords[0]}}</h5>
+                        <googlemap coordsx="{{activity.coords[0]}}" coordsy="{{activity.coords[1]}}"></googlemap>
                     </div>
                     <div class="divider"></div>
                     <div class="section">

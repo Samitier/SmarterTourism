@@ -25,10 +25,7 @@ var ActivitySchema = new mongoose.Schema({
     variations: [Variation],
     extras: [Extra],
     timetable: String,
-    coords: {
-        x: Number,
-        y: Number
-    }
+    coords: [Number]
 });
 
 module.exports = mongoose.model('Activity', ActivitySchema);

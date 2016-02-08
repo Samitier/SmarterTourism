@@ -17,7 +17,8 @@ var PackSchema = new mongoose.Schema({
     activitiesByPeriod: {
         periods: [Date],
         activities:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Activity' }]
-    }
+    },
+    coords: [Number]
 });
 
 module.exports = mongoose.model('Pack', PackSchema);
