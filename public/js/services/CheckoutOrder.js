@@ -20,7 +20,7 @@ module.exports = function ($cookies) {
      Creates an order from a pack. Stores it as a cookie and returns it.
      */
     service.createOrderFromPack = function(pack) {
-        var order = {id: pack._id, title: pack.title, price: pack.price, activities:[]};
+        var order = {title: pack.title, price: pack.price, activities:[]};
         pack.activitiesByPeriod.activities.forEach(function (activity) {
             order.activities.push({id: activity._id, title: activity.title});
         });
@@ -32,7 +32,7 @@ module.exports = function ($cookies) {
      Creates an order from an activity. Stores it as a cookie and returns it.
      */
     service.createOrderFromActivity = function(activity) {
-        var order = {id: activity._id, title: activity.title, price: activity.price, activities:[{id: activity._id, title: activity.title}]};
+        var order = {title: activity.title, price: activity.price, activities:[{id: activity._id, title: activity.title, seller:activity.seller}]};
         $cookies.putObject('order', order);
         return order;
     };
@@ -43,6 +43,10 @@ module.exports = function ($cookies) {
     service.setOrderDate = function(pack, order, orderDate) {
         //we need to put the init/end days for each activity of the pack
         order.date= orderDate;
+        order.activities.forEach(function(activity) {
+            activity.initDate = orderDate;
+            activity.endDate = orderDate;
+        });
         order.state = "details"; //the order is now in the next step
         $cookies.putObject('order', order);
         return pack;

@@ -37,7 +37,6 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $location) {
     };
 
     this.variationSelect = function(variation) {
-        //recalcular preu
         $scope.order.total_price_per_person -= $scope.order.selectedVariations[variation.activity].priceIncr;
         $scope.order.selectedVariations[variation.activity] = variation.product;
         $scope.order.total_price_per_person += $scope.order.selectedVariations[variation.activity].priceIncr;
