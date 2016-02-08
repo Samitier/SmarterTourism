@@ -1,11 +1,11 @@
-<div id="modalAfegirActivitat" class="modal modal-fixed-footer" ng-controller="addActivityController">
+<div id="modalAfegirActivitat" class="modal modal-fixed-footer" >
     <div class="modal-content" ng-if="!activitat">
         <div class="row">
             <div class="col s12">
                 <h4>Activitats destacades:</h4>
             </div>
             <pt-spinner ng-if="!activities" class="col m12 center-align"></pt-spinner>
-            <div class="col m2" ng-repeat="activity in activities | limitTo:3" ng-if="activity.featured">
+            <div class="col m2" ng-repeat="activity in activities | limitTo:3 | filter: {category:'Activity'}" ng-if="activity.featured">
                 <activity-card activity='activity'></activity-card>
             </div>
         </div>
@@ -14,7 +14,7 @@
                 <h4>Totes les activitats:</h4>
             </div>
             <pt-spinner ng-if="!activities" class="col m12 center-align"></pt-spinner>
-            <div class="col m2" ng-repeat="activity in activities | orderBy:'title'">
+            <div class="col m2" ng-repeat="activity in activities | orderBy:'title' | filter: {category:'Activity'}">
                 <activity-card activity='activity'></activity-card>
             </div>
         </div>
@@ -27,7 +27,7 @@
         </div>
         <div class="divider"></div>
         <div class="section">
-            <h5>Informació adicional</h5>
+            <h5>Informació addicional</h5>
             <p>{{activity.additional_info}}</p>
         </div>
         <div class="divider"></div>
@@ -43,7 +43,109 @@
         </div>
     </div>
     <div class="modal-footer" ng-show="activitat">
-        <a class="cursor-pointer modal-action modal-close waves-effect waves-green btn-flat" ng-click="afegirActivitat(activitat)">Sel·leccionar</a>
+        <a class="cursor-pointer modal-action modal-close waves-effect waves-green btn-flat" ng-click="afegirActivitat(activitat, 'activities')">Sel·leccionar</a>
+        <a class="cursor-pointer modal-action waves-effect waves-green btn-flat" ng-click="activitat=''">Enrere</a>
+    </div>
+</div>
+<div id="modalAfegirEstada" class="modal modal-fixed-footer">
+    <form name="formStayDates" id="formStayDates" ng-submit="afegirActivitat(activitat, 'stay', stay)" novalidate>
+    <div class="modal-content" ng-if="!activitat">
+        <div class="row">
+            <pt-spinner ng-if="!activities" class="col m12 center-align"></pt-spinner>
+            <div class="col m2" ng-repeat="activity in activities | orderBy:'title' | filter: {category:'Stay'}">
+                <activity-card activity='activity'></activity-card>
+            </div>
+        </div>
+    </div>
+    <div class="modal-content" ng-if="activitat">
+        <pt-slider fullwidth="true" slider-height="200" images=""></pt-slider>
+        <div class="section">
+            <h5>Selecciona les dates de la teva estada</h5>
+            <div class="row" style="margin-bottom: 0px;">
+                <div class="input-field col s4">
+                    <input ng-model="stay.initDate" id="dataInici" type='text' data-date-type="first" class='datepicker pt-datepicker' required>
+                    <label for="dataInici">Data inici</label>
+                </div>
+                <div class="input-field col s4">
+                    <input ng-model="stay.endDate" id="dataFi" type='text' data-date-type="last" class='datepicker pt-datepicker' required>
+                    <label for="dataFi">Data fi</label>
+                </div>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div class="section">
+            <h5>Descripció</h5>
+            <p>{{activity.description}}</p>
+        </div>
+        <div class="divider"></div>
+        <div class="section">
+            <h5>Informació addicional</h5>
+            <p>{{activity.additional_info}}</p>
+        </div>
+        <div class="divider"></div>
+        <div class="section">
+            <h5>Localització</h5>
+            <googlemap coords="[41.3759069,2.1333681]"></googlemap>
+        </div>
+        <div class="divider"></div>
+        <div class="section">
+            <h5>Informació de contacte</h5>
+            <p><b>Telèfon: </b>{{activity.contact_telephone}}</p>
+            <p><b>Mail: </b>{{activity.contact_email}}</p>
+        </div>
+    </div>
+    <div class="modal-footer" ng-show="activitat">
+        <button class="modal-action modal-close waves-effect waves-green btn-flat" type="submit" form="formStayDates" ng-class="{disabled:!formStayDates.$valid, 'cursor-pointer': formStayDates.$valid}" ng-disabled="!formStayDates.$valid">Sel·leccionar</button>
+        <a class="cursor-pointer modal-action waves-effect waves-green btn-flat" ng-click="activitat=''">Enrere</a>
+    </div>
+    </form>
+</div>
+<div id="modalAfegirApat" class="modal modal-fixed-footer">
+    <div class="modal-content" ng-if="!activitat">
+        <div class="row">
+            <div class="col s12">
+                <h4>Àpats destacats:</h4>
+            </div>
+            <pt-spinner ng-if="!activities" class="col m12 center-align"></pt-spinner>
+            <div class="col m2" ng-repeat="activity in activities | limitTo:3 | filter: {category:'Meal'}" ng-if="activity.featured">
+                <activity-card activity='activity'></activity-card>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <h4>Totes els àpats:</h4>
+            </div>
+            <pt-spinner ng-if="!activities" class="col m12 center-align"></pt-spinner>
+            <div class="col m2" ng-repeat="activity in activities | orderBy:'title' | filter: {category:'Meal'}">
+                <activity-card activity='activity'></activity-card>
+            </div>
+        </div>
+    </div>
+    <div class="modal-content" ng-if="activitat">
+        <pt-slider fullwidth="true" slider-height="200" images=""></pt-slider>
+        <div class="section">
+            <h5>Descripció</h5>
+            <p>{{activity.description}}</p>
+        </div>
+        <div class="divider"></div>
+        <div class="section">
+            <h5>Informació addicional</h5>
+            <p>{{activity.additional_info}}</p>
+        </div>
+        <div class="divider"></div>
+        <div class="section">
+            <h5>Localització</h5>
+            <googlemap coords="[41.3759069,2.1333681]"></googlemap>
+        </div>
+        <div class="divider"></div>
+        <div class="section">
+            <h5>Informació de contacte</h5>
+            <p><b>Telèfon: </b>{{activity.contact_telephone}}</p>
+            <p><b>Mail: </b>{{activity.contact_email}}</p>
+        </div>
+    </div>
+    <div class="modal-footer" ng-show="activitat">
+        <a class="cursor-pointer modal-action modal-close waves-effect waves-green btn-flat" ng-click="afegirActivitat(activitat, 'meals')">Sel·leccionar</a>
         <a class="cursor-pointer modal-action waves-effect waves-green btn-flat" ng-click="activitat=''">Enrere</a>
     </div>
 </div>

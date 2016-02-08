@@ -6,7 +6,7 @@ var OrderSchema = new mongoose.Schema({
     seller: {type:mongoose.Schema.Types.ObjectId, ref: 'User' , required:true},
     title: {type: String, required:true},
     product: {
-        id: {type:mongoose.Schema.Types.ObjectId},
+        _id: {type:mongoose.Schema.Types.ObjectId},
         title: {type: String, required:true},
         variation: {type: String, required:true},
         extra: {type: String},
@@ -26,7 +26,7 @@ var OrderSchema = new mongoose.Schema({
     comments: [{
         user: {type: String},
         comment: {type: String}
-    }],
+    }]
 });
 
 module.exports = mongoose.model('Order', OrderSchema);

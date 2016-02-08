@@ -1,5 +1,6 @@
 var paypal = require('paypal-rest-sdk');
 
+/*
 var create_payment_json = {
     "intent": "authorize",
     "payer": {
@@ -62,4 +63,4 @@ paypal.payment.execute(paymentId, execute_payment_json, function (error, payment
         console.log("Get Payment Response");
         console.log(JSON.stringify(payment));
     }
-});
+});*/

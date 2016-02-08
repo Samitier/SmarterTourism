@@ -3,20 +3,20 @@
      This is the controller for the creat pack view.
  */
 
-module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope) {
+module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope, $location) {
 
-    this.addDays = function(currentDate, days) {
+    $scope.addDays = function(currentDate, days) {
         var dat = new Date(currentDate.valueOf());
         dat.setDate(dat.getDate() + days);
         return dat;
     }
 
-    this.getDates = function (startDate, stopDate) {
+    $scope.getDates = function (startDate, stopDate) {
         var dateArray = new Array();
         var currentDate = startDate;
         while (currentDate <= stopDate) {
             dateArray.push( new Date (currentDate) );
-            currentDate = this.addDays(currentDate, 1);
+            currentDate = $scope.addDays(currentDate, 1);
         }
         return dateArray;
     }
@@ -30,10 +30,10 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope) {
         meals: []
     };
 
-    $rootScope.$on("addActivity", function($event, activity) {
+    $rootScope.$on("addActivity", function($event, d) {
         var ok = true;
-        $.each($scope.custom.activities, function(i, v) {
-            if(v._id == activity.id && v.when == $scope.days[$scope.selectedDay]) {
+        $.each(eval("$scope.custom." + d.tipus), function(i, v) {
+            if(v._id == d.id && v.when == $scope.days[$scope.selectedDay]) {
                 ok = false;
                 return false;
             }
@@ -42,13 +42,15 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope) {
             Materialize.toast("Aquesta activitat ja està sel·leccionada!", 4000);
             return false;
         }
-        SmarterAPI.getActivity(activity.id).then(function(data) {
+        SmarterAPI.getActivity(d.id).then(function(data) {
             var obj = data;
-            obj.when = $scope.days[$scope.selectedDay];
-            $scope.custom.activities.push(obj);
+            if(d.tipus == "stay") {
+                obj.stay = d.stay;
+            } else obj.when = $scope.days[$scope.selectedDay];
+            eval("$scope.custom."+ d.tipus+".push(obj)");
             $scope.total += data.price;
-            //$scope.activity = data;
         });
+        event.stopPropagation();
     });
 
     this.getRangeOfDays = function(formDates) {
@@ -56,7 +58,7 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope) {
             formDates.initDate.split('/'),
             formDates.endDate.split('/')
         ];
-        $scope.days = this.getDates(new Date(dates[0][2],dates[0][1]-1,dates[0][0]), new Date(dates[1][2],dates[1][1]-1,dates[1][0]));
+        $scope.days = $scope.getDates(new Date(dates[0][2],dates[0][1]-1,dates[0][0]), new Date(dates[1][2],dates[1][1]-1,dates[1][0]));
         $scope.selectedDay = 0;
         $scope.numDays = $scope.days.length;
     }
@@ -84,9 +86,13 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope) {
         $scope.changeDay();
     });
 
-    $scope.dateRangeFilter = function(day) {
+    this.dateRangeFilter = function(day) {
         return function(item) {
-            return (day.getTime() >= item.from.getTime() && day.getTime() <= item.to.getTime());
+            var dates = [
+                item.stay.initDate.split('/'),
+                item.stay.endDate.split('/')
+            ];
+            return (day.getTime() >= new Date(dates[0][2],dates[0][1]-1,dates[0][0]).getTime() && day.getTime() <= new Date(dates[1][2],dates[1][1]-1,dates[1][0]).getTime());
         };
     };
 
@@ -101,6 +107,16 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope) {
         SmarterAPI.getActivities().then(function(data) {
             $scope.activities = data;
         });
+    }
+
+    this.checkout = function() {
+        var order = {};
+        order.price = $scope.total;
+        order.activities = $scope.custom.stay.concat($scope.custom.activities.concat($scope.custom.meals));
+
+        CheckoutOrder.createOrderFromActivityArray(order);
+
+        $location.path('/detalls-comanda');
     }
 
     this.init();

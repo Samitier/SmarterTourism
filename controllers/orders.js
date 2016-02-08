@@ -15,9 +15,15 @@ module.exports.getAll = function(req,res,next) {
 module.exports.create = function(req,res,next) {
     var user = {};
     user.facturationInfo = req.body.facturationInfo;
-    User.findByIdAndUpdate(req.decoded._id, user, function (err, obj) {
-        if (err) return next(err);
-    });
+
+    if(req.decoded._id) {
+        User.findByIdAndUpdate(req.decoded._id, user, function (err, obj) {
+            if (err) return next(err);
+        });
+    }
+    else {
+        //TODO: if the user is not registered- we create him.
+    }
 
     //TODO:re-check the final price to check if the client maliciously modified the request
 
@@ -29,10 +35,10 @@ module.exports.create = function(req,res,next) {
     for(var i=0; i< clientOrder.activities.length; ++i) {
         var productOrder = order;
         productOrder.seller = clientOrder.activities[i].seller;
-        productOrder.product = { id:clientOrder.activities[i].id,
+        productOrder.product = { _id:clientOrder.activities[i]._id,
                 title: clientOrder.activities[i].title,
-                variation: clientOrder.selectedVariations[clientOrder.activities[i].id],
-                extra: clientOrder.selectedExtras[clientOrder.activities[i].id],
+                variation: clientOrder.selectedVariations[clientOrder.activities[i]._id],
+                extra: clientOrder.selectedExtras[clientOrder.activities[i]._id],
                 //TODO: discounts & more than one extra
                 dates:[clientOrder.activities[i].initDate, clientOrder.activities[i].endDate],
                 total: 10 //<-hardcoded TODO: the total amount for that activity (not the total paid for order)

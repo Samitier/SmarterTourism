@@ -22,7 +22,8 @@ module.exports = function ($cookies) {
     service.createOrderFromPack = function(pack) {
         var order = {title: pack.title, price: pack.price, activities:[]};
         pack.activitiesByPeriod.activities.forEach(function (activity) {
-            order.activities.push({id: activity._id, title: activity.title});
+            //order.activities.push({id: activity._id, title: activity.title});
+            order.activities.push({_id: activity._id, title: activity.title});
         });
         $cookies.putObject('order', order);
         return order;
@@ -32,10 +33,24 @@ module.exports = function ($cookies) {
      Creates an order from an activity. Stores it as a cookie and returns it.
      */
     service.createOrderFromActivity = function(activity) {
-        var order = {title: activity.title, price: activity.price, activities:[{id: activity._id, title: activity.title, seller:activity.seller}]};
+        var order = {title: activity.title, price: activity.price, activities:[{_id: activity._id, title: activity.title, seller:activity.seller}]};
         $cookies.putObject('order', order);
         return order;
     };
+
+    service.createOrderFromActivityArray = function(custom) {
+        var order = {title: "Pack personalizado", price: custom.price, state:"details", activities:[]};
+        custom.activities.forEach(function(a) {
+            if(a.stay) {
+                a.initDate = a.stay.initDate;
+                a.endDate = a.stay.endDate;
+            }
+            else a.initDate =  a.endDate = a.when;
+            order.activities.push(a);
+        });
+        $cookies.putObject('order', order);
+        return order;
+    }
 
     /*
      Sets a departure date for each activity of an order

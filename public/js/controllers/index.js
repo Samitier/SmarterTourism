@@ -16,4 +16,3 @@ require('angular').module('SmarterTourism')
     .controller('yourOrdersController', require('./yourOrdersController'))
     .controller('yourProfileController', require('./yourProfileController'))
     .controller('editProfileController', require('./editProfileController'))
-    .controller('addActivityController', require('./addActivityController'));

@@ -16,13 +16,15 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $location) {
         $scope.products=[];
 
         $scope.$watch('order.numAdults', function (newValue, oldValue) {
-            $scope.order.total_price = newValue*$scope.order.total_price_per_person;
+            if(typeof(newValue) == 'undefined') Materialize.toast("El número d'adults és incorrecte!",3000);
+            else $scope.order.total_price = newValue*$scope.order.total_price_per_person;
         });
 
         $scope.order.activities.forEach(function (activity) {
-            SmarterAPI.getActivity(activity.id).then(function(resp){
+            //SmarterAPI.getActivity(activity.id).then(function(resp){
+            SmarterAPI.getActivity(activity._id).then(function(resp){
                 $scope.products.push(resp);
-                if(!$scope.order.selectedVariations[activity.id]) $scope.order.selectedVariations[activity.id] = resp.variations[0];
+                if(!$scope.order.selectedVariations[activity._id]) $scope.order.selectedVariations[activity._id] = resp.variations[0];
             });
         });
     };

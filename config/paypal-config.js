@@ -6,4 +6,4 @@ paypal.configure({
     'client_secret': process.env.PAYPAL_API_PASS
 });
 
-module.exports = payapl;
+module.exports = paypal;
