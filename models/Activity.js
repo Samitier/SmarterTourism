@@ -24,7 +24,11 @@ var ActivitySchema = new mongoose.Schema({
     category: {type:String, enum: ['Activity','Stay', 'Meal', 'Inactive']},
     variations: [Variation],
     extras: [Extra],
-    timetable: String
+    timetable: String,
+    coords: {
+        x: Number,
+        y: Number
+    }
 });
 
 module.exports = mongoose.model('Activity', ActivitySchema);

@@ -24,7 +24,7 @@ var OrderSchema = new mongoose.Schema({
     comments: [{
         user: {type: String},
         comment: {type: String}
-    }],
+    }]
 });
 
 module.exports = mongoose.model('Order', OrderSchema);
