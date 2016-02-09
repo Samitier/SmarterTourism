@@ -1,4 +1,5 @@
 var paypal = require('../config/paypal-config');
+var Order = require("../models/Order");
 
 
 module.exports.createPayment = function (req, res, next) {
@@ -16,37 +17,33 @@ module.exports.createPayment = function (req, res, next) {
     });
 }
 
-/*
- var execute_payment_json = {
- "payer_id": "Appended to redirect url",
- "transactions": [{
- "amount": {
- "currency": "USD",
- "total": "1.00"
- }
- }]
- };
-
- var paymentId = 'PAYMENT id created in previous step';
- */
-
 module.exports.pay = function (req, res, next) {
-    res.json(req);
-    /*
-     paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
-     if (error) {
-     console.log(error.response);
-     throw error;
-     } else {
-     console.log("Get Payment Response");
-     console.log(JSON.stringify(payment));
-     }
+    var execute_payment_json = {
+        "payer_id": req.query.PayerID,
+    };
+     paypal.payment.execute(req.query.paymentId, execute_payment_json, function (error, payment) {
+         if (error) next(error);
+         else {
+             //set the order to paid
+             var orderId = payment.transactions[0].item_list.items[0].sku;
+             console.log(orderId);
+             Order.findById(orderId, function(err, dat) {
+                 if(err) next(err);
+                 else {
+                     dat.state = "Processing";
+                     dat.products.forEach(function(dat) {
+                        dat.state = "Processing";
+                     });
+                     res.redirect('/finalitzar');
+                 }
+             });
+         }
      });
-     */
 };
 
 module.exports.cancel = function (req, res, next) {
-
+    //the order has to be cancelled
+    res.send("token is set to " + req.query.token);
 }
 
 var createPaymentInfo = function (order) {
@@ -56,8 +53,8 @@ var createPaymentInfo = function (order) {
             "payment_method": "paypal"
         },
         "redirect_urls": {
-            "return_url": "/api/payments/paypal/pay",
-            "cancel_url": "/api/payments/paypal/cancel"
+            "return_url": "http://localhost:4321/api/payments/paypal/pay",
+            "cancel_url": "http://localhost:4321/api/payments/paypal/cancel"
         },
         "transactions": [{
             "item_list": {
