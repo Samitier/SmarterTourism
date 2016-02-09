@@ -1,7 +1,6 @@
 'use strict';
 
-window.$ = require('jquery');
-window.jQuery = require("jquery");
+window.$ = window.jQuery = require('jquery');
 
 var angular = require('angular');
 require('angular-route');
