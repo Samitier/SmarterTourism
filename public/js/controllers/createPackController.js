@@ -45,12 +45,21 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope, $locati
         SmarterAPI.getActivity(d.id).then(function(data) {
             var obj = data;
             if(d.tipus == "stay") {
-                obj.stay = d.stay;
+                if($scope.selectedDay + d.stay.numNights <= $scope.days.length) {
+                    var dat = new Date($scope.days[$scope.selectedDay].valueOf());
+                    dat.setDate(dat.getDate() + d.stay.numNights - 1);
+                    obj.stay = {
+                        initDate: $scope.days[$scope.selectedDay],
+                        endDate: dat
+                    };
+                } else {
+                    Materialize.toast("El número de nits superen l'estada!", 4000);
+                    return;
+                }
             } else obj.when = $scope.days[$scope.selectedDay];
-            eval("$scope.custom."+ d.tipus+".push(obj)");
+            eval("$scope.custom."+ d.tipus +".push(obj)");
             $scope.total += data.price;
         });
-        event.stopPropagation();
     });
 
     this.getRangeOfDays = function(formDates) {
@@ -88,18 +97,18 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope, $locati
 
     this.dateRangeFilter = function(day) {
         return function(item) {
-            var dates = [
+            /*var dates = [
                 item.stay.initDate.split('/'),
                 item.stay.endDate.split('/')
-            ];
-            return (day.getTime() >= new Date(dates[0][2],dates[0][1]-1,dates[0][0]).getTime() && day.getTime() <= new Date(dates[1][2],dates[1][1]-1,dates[1][0]).getTime());
+            ];*/
+            return (day.getTime() >= item.stay.initDate.getTime() && day.getTime() <= item.stay.endDate.getTime());
         };
     };
 
     this.init = function() {
         var order = CheckoutOrder.getOrder();
         $scope.order = order;
-
+        console.log(order);
         if(order.initDate && order.endDate) {
             this.getRangeOfDays(order);
         }
@@ -111,9 +120,12 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope, $locati
 
     this.checkout = function() {
         var order = {};
+        order.initDate = $scope.days[0];
+        order.endDate = $scope.days[$scope.days.length-1];
         order.price = $scope.total;
         order.activities = $scope.custom.stay.concat($scope.custom.activities.concat($scope.custom.meals));
-
+        console.log("checkout");
+        console.log(order);
         CheckoutOrder.createOrderFromActivityArray(order);
 
         $location.path('/detalls-comanda');
@@ -121,23 +133,3 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope, $locati
 
     this.init();
 }
-
-/*********************
-
- custom = {
-    stay = [{
-        where: ,
-        from: ,
-        to:
-    }],
-    activities = [{
-        id: ,
-        when:
-    }],
-    meals = [{
-        id: ,
-        when
-    }]
- }
-
- *********************/

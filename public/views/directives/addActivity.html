@@ -33,7 +33,7 @@
         <div class="divider"></div>
         <div class="section">
             <h5>Localització</h5>
-            <googlemap coords="[activity.coords.x,activity.coords.y]"></googlemap><!-- 41.3759069,2.1333681 -->
+            <googlemap coords="[activity.coords.x,activity.coords.y]"></googlemap>
         </div>
         <div class="divider"></div>
         <div class="section">
@@ -62,13 +62,17 @@
         <div class="section">
             <h5>Selecciona les dates de la teva estada</h5>
             <div class="row" style="margin-bottom: 0px;">
-                <div class="input-field col s4">
+                <!--<div class="input-field col s4">
                     <input ng-model="stay.initDate" id="dataInici" type='text' data-date-type="first" class='datepicker pt-datepicker' required>
                     <label for="dataInici">Data inici</label>
                 </div>
                 <div class="input-field col s4">
                     <input ng-model="stay.endDate" id="dataFi" type='text' data-date-type="last" class='datepicker pt-datepicker' required>
                     <label for="dataFi">Data fi</label>
+                </div>-->
+                <div class="input-field col s8">
+                    <input ng-model="stay.numNights" id="numNights" type="number" class="validate" required>
+                    <label for="numNights">How many nights?</label>
                 </div>
             </div>
         </div>
@@ -85,7 +89,7 @@
         <div class="divider"></div>
         <div class="section">
             <h5>Localització</h5>
-            <googlemap coords="[activity.coords.x,activity.coords.y]"></googlemap> <!--41.3759069,2.1333681 -->
+            <googlemap coords="[activity.coords.x,activity.coords.y]"></googlemap>
         </div>
         <div class="divider"></div>
         <div class="section">

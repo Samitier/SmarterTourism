@@ -9,6 +9,7 @@ module.exports.getAll = function(req,res,next) {
 }
 
 module.exports.create = function(req,res,next) {
+    checkRequest(req.body);
     //saving the facturation info
     var user = {};
     user.facturationInfo = req.body.facturationInfo;
@@ -63,4 +64,10 @@ module.exports.complete = function(req,res,next) {
 
 module.exports.cancel = function(req,res,next) {
 
+}
+
+var checkReqquest = function(req,res,next) {
+    //els ifs
+    //si sta malament retornem bad request
+    //sino fem next
 }
