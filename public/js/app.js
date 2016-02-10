@@ -152,3 +152,4 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
 require('./services');
 require('./controllers');
 require('./directives');
+require('./i18n/angular-locale_ca-ad');
