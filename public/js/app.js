@@ -107,10 +107,13 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
         })
 
         .when("/finalitzar",{
-            title: "Gràcies per la teva compra",
-            templateUrl: '/views/thankyou.html',
-            controller: 'thankyouController',
-            controllerAs: 'thankyouCtrl',
+            title: "Finalitzar comanda",
+            templateUrl: function(urlattr) {
+                if(urlattr.sta == 1) return '/views/thankyou.html';
+                else return '/views/orderError.html'
+            },
+            controller: 'finishOrderController',
+            controllerAs: 'finishOrderCtrl',
         })
         .when("/termes-us",{
             title: "Termes d'ús",

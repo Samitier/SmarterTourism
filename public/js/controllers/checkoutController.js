@@ -35,7 +35,7 @@ module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope,
             SmarterAPI.createOrder({facturationInfo:$scope.facturationForm.user,  order:$scope.order}).then(function(dat) {
                 if(dat.success) {
                     Materialize.toast('Redirigint a la plataforma de pagament...', 4000);
-                    $scope.order.state="finishedOK";
+                    $scope.order.state="finished";
                     CheckoutOrder.setOrder($scope.order);
                     $window.location.href = dat.url;
                 }

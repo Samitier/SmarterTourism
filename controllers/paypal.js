@@ -24,17 +24,16 @@ module.exports.pay = function (req, res, next) {
      paypal.payment.execute(req.query.paymentId, execute_payment_json, function (error, payment) {
          if (error) next(error);
          else {
-             //set the order to paid
              var orderId = payment.transactions[0].item_list.items[0].sku;
-             console.log(orderId);
              Order.findById(orderId, function(err, dat) {
                  if(err) next(err);
                  else {
                      dat.state = "Processing";
-                     dat.products.forEach(function(dat) {
-                        dat.state = "Processing";
+                     dat.products.forEach(function(dat) {dat.state = "Processing";});
+                     Order.findByIdAndUpdate(orderId, dat, function(err, dat){
+                        if(err) next(err);
+                        else res.redirect('/finalitzar?sta=1');
                      });
-                     res.redirect('/finalitzar');
                  }
              });
          }
@@ -54,7 +53,7 @@ var createPaymentInfo = function (order) {
         },
         "redirect_urls": {
             "return_url": "http://localhost:4321/api/payments/paypal/pay",
-            "cancel_url": "http://localhost:4321/api/payments/paypal/cancel"
+            "cancel_url": "http://localhost:4321/finalitzar?sta=0"
         },
         "transactions": [{
             "item_list": {
