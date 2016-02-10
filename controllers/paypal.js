@@ -44,24 +44,45 @@ module.exports.pay = function (req, res, next) {
 };
 
 module.exports.cancel = function (req, res, next) {
-    //the order has to be cancelled
-    if(req.query.orderId) {
-        Order.findById(req.query.orderId, function (err, dat) {
-            if (err) next(err);
-            else {
+    Order.findById(req.query.orderId, function (err, dat) {
+        if (err) next(err);
+        else {
+            dat.state = "Cancelled";
+            dat.products.forEach(function (dat) {
                 dat.state = "Cancelled";
-                dat.products.forEach(function (dat) {
-                    dat.state = "Cancelled";
-                });
-                Order.findByIdAndUpdate(req.query.orderId, dat, function (err, dat) {
-                    if (err) next(err);
-                    else res.redirect('/finalitzar?sta=0');
-                });
-            }
-        });
-    }
-    else res.status(400).send({ error: {"code":"401", "name":'Bad request'}});
+            });
+            Order.findByIdAndUpdate(req.query.orderId, dat, function (err, dat) {
+                if (err) next(err);
+                else res.redirect('/finalitzar?sta=0');
+            });
+        }
+    });
 }
+
+
+/*
+ /////////// CHECK REQUESTS //////////
+ */
+module.exports.checkRequestPay = function(req, res, next) {
+    if(req.query.PayerID && req.query.paymentId) next();
+    else res.status(400).send({ error: {"code":"400", "name":'Bad request. This resource needs a PayerID and paymentId.'}});
+}
+
+module.exports.checkRequestCreatePayment = function(req, res, next) {
+    if((req.body.token || req.query.stAccessToken || req.headers['st-access-token'])
+        && req.order && req.order.title && req.order._id && req.order.finalPrice) next();
+    else res.status(400).send({ error: {"code":"400", "name":'Bad request. This resource needs an order and an auth token.'}});
+}
+
+module.exports.checkRequestCancel = function(req, res, next) {
+    if(req.query.orderId) next();
+    else res.status(400).send({ error: {"code":"400", "name":'Bad request. This resource needs an orderId.'}});
+
+}
+
+/*
+//////////// PRIVATE FUNCTIONS ////////////
+ */
 
 var createPaymentInfo = function (order, userToken) {
     var info = {

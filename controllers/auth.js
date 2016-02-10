@@ -80,3 +80,18 @@ module.exports.isProvider = function(req,res,next) {
     //si el usuari de req.decoded.id és de tipus "Provider", "Agency" o "Admin"
     //deixo passar la request a next, sinó retorno un 403
 }
+
+
+/*
+/////////// CHECK REQUESTS //////////
+ */
+
+module.exports.checkRequestLogin = function(req, res, next) {
+    if(req.body.password && req.body.email) next();
+    else res.status(400).send({ error: {"code":"400", "name":'Bad request. This resource needs an email and a password.'}});
+}
+
+module.exports.checkRequestSignin = function(req, res, next) {
+    if(req.body.password && req.body.email && req.body.name && req.body.lastname)  next();
+    else res.status(400).send({ error: {"code":"400", "name":'Bad request. This resource needs an email, password, name and lastname.'}});
+}

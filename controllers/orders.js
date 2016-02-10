@@ -3,18 +3,13 @@ var User = require("../models/User");
 var paypal = require("./paypal");
 
 module.exports.getAll = function(req,res,next) {
-    Order.find(function (err, obj) {
+    Order.find({buyer: req.decoded._id}, function (err, obj) {
         if (err) return next(err);
         res.json(obj);
     });
-    /*Order.find({buyer: req.decoded._id}, function (err, obj) {
-        if (err) return next(err);
-        res.json(obj);
-    });*/
 }
 
 module.exports.create = function(req,res,next) {
-    checkRequest(req.body);
 
     var user = {};
     user.facturationInfo = req.body.facturationInfo;
@@ -60,7 +55,6 @@ module.exports.create = function(req,res,next) {
 
     Order.create(order, function (err, dat) {
         if (err) return next(err);
-
         //TODO: redirect to the payment platform & redirect to "thank you" on success
         req.order = dat;
         paypal.createPayment(req,res,next);
@@ -68,7 +62,7 @@ module.exports.create = function(req,res,next) {
 }
 
 module.exports.pay = function(req,res,next) {
-
+    //here should go the logic to execute after a successful payment (setting the state to processing & sending the emails).
 }
 
 module.exports.sendMessage = function(req,res,next) {
@@ -84,11 +78,16 @@ module.exports.complete = function(req,res,next) {
 }
 
 module.exports.cancel = function(req,res,next) {
-
+   //here should go the logic to execute after a cancelled payment or a cancelation from the provider/client.
 }
 
-var checkRequest = function(req) {
-    //els ifs
-    //si sta malament retornem bad request
-    //sino fem next
+
+/*
+ /////////// CHECK REQUESTS //////////
+ */
+module.exports.checkRequest = function(req, res, next) {
+    if(req.body.facturationInfo && req.body.order && req.body.order.title && req.body.order.numAdults && req.body.order.total_price
+        && req.body.order.activities && req.body.order.selectedVariations) next();
+    else res.status(400).send({ error: {"code":"400", "name":'Bad request. This resource needs an order.'}});
+
 }
