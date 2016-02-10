@@ -23,6 +23,7 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope, $locati
 
     $scope.days = new Array();
     $scope.total = 0;
+    $scope.dateRangeSelected = false;
 
     $scope.custom = {
         stay: [],
@@ -45,12 +46,21 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope, $locati
         SmarterAPI.getActivity(d.id).then(function(data) {
             var obj = data;
             if(d.tipus == "stay") {
-                obj.stay = d.stay;
+                if($scope.selectedDay + d.stay.numNights <= $scope.days.length) {
+                    var dat = new Date($scope.days[$scope.selectedDay].valueOf());
+                    dat.setDate(dat.getDate() + d.stay.numNights - 1);
+                    obj.stay = {
+                        initDate: $scope.days[$scope.selectedDay],
+                        endDate: dat
+                    };
+                } else {
+                    Materialize.toast("El número de nits superen l'estada!", 4000);
+                    return;
+                }
             } else obj.when = $scope.days[$scope.selectedDay];
-            eval("$scope.custom."+ d.tipus+".push(obj)");
+            eval("$scope.custom."+ d.tipus +".push(obj)");
             $scope.total += data.price;
         });
-        event.stopPropagation();
     });
 
     this.getRangeOfDays = function(formDates) {
@@ -58,7 +68,8 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope, $locati
             formDates.initDate.split('/'),
             formDates.endDate.split('/')
         ];
-        $scope.days = $scope.getDates(new Date(dates[0][2],dates[0][1]-1,dates[0][0]), new Date(dates[1][2],dates[1][1]-1,dates[1][0]));
+        if(dates[0].length != 3) $scope.days = $scope.getDates(new Date(formDates.initDate), new Date(formDates.endDate));
+        else $scope.days = $scope.getDates(new Date(dates[0][2],dates[0][1]-1,dates[0][0]), new Date(dates[1][2],dates[1][1]-1,dates[1][0]));
         $scope.selectedDay = 0;
         $scope.numDays = $scope.days.length;
     }
@@ -88,11 +99,7 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope, $locati
 
     this.dateRangeFilter = function(day) {
         return function(item) {
-            var dates = [
-                item.stay.initDate.split('/'),
-                item.stay.endDate.split('/')
-            ];
-            return (day.getTime() >= new Date(dates[0][2],dates[0][1]-1,dates[0][0]).getTime() && day.getTime() <= new Date(dates[1][2],dates[1][1]-1,dates[1][0]).getTime());
+            return (day.getTime() >= new Date(item.stay.initDate).getTime() && day.getTime() <= new Date(item.stay.endDate).getTime());
         };
     };
 
@@ -101,7 +108,15 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope, $locati
         $scope.order = order;
 
         if(order.initDate && order.endDate) {
+            $scope.dateRangeSelected = true;
             this.getRangeOfDays(order);
+            $.each(order.activities, function(i, v) {
+                switch(v.category) {
+                    case 'Activity': $scope.custom.activities.push(v); break;
+                    case 'Stay': $scope.custom.stay.push(v); break;
+                    case 'Meal': $scope.custom.meals.push(v); break;
+                }
+            });
         }
 
         SmarterAPI.getActivities().then(function(data) {
@@ -111,9 +126,10 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope, $locati
 
     this.checkout = function() {
         var order = {};
+        order.initDate = $scope.days[0];
+        order.endDate = $scope.days[$scope.days.length-1];
         order.price = $scope.total;
         order.activities = $scope.custom.stay.concat($scope.custom.activities.concat($scope.custom.meals));
-
         CheckoutOrder.createOrderFromActivityArray(order);
 
         $location.path('/detalls-comanda');
@@ -121,23 +137,3 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope, $locati
 
     this.init();
 }
-
-/*********************
-
- custom = {
-    stay = [{
-        where: ,
-        from: ,
-        to:
-    }],
-    activities = [{
-        id: ,
-        when:
-    }],
-    meals = [{
-        id: ,
-        when
-    }]
- }
-
- *********************/

@@ -39,7 +39,13 @@ module.exports = function ($cookies) {
     };
 
     service.createOrderFromActivityArray = function(custom) {
-        var order = {title: "Pack personalizado", price: custom.price, state:"details", activities:[]};
+        var order = {
+            title: "Pack personalizado",
+            price: custom.price,
+            state: "details",
+            initDate: custom.initDate,
+            endDate: custom.endDate
+        };
         custom.activities.forEach(function(a) {
             if(a.stay) {
                 a.initDate = a.stay.initDate;

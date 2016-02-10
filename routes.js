@@ -49,8 +49,9 @@ router.route('/profile')
 
 /* Order */
 router.route('/orders')
-    .get(ctrl.orders.getAll)
-    .post(ctrl.auth.authenticate,ctrl.orders.create);
+    .get(ctrl.auth.authenticate, ctrl.orders.getAll)
+    .post(ctrl.auth.authenticate, ctrl.orders.create);
+
 router.put('/orders/:id/pay', ctrl.orders.pay);
 router.put('/orders/:id/message', ctrl.orders.sendMessage);
 router.put('/orders/:id/accept', ctrl.orders.accept); //only providers & up

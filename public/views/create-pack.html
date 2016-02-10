@@ -36,7 +36,7 @@
                     </div>
                     <h3>Activitats</h3>
                     <div class="row">
-                        <div class="col m2" ng-repeat="activity in custom.activities | orderBy:'title' | filter: { when: days[selectedDay] }">
+                        <div class="col m2" ng-repeat="activity in custom.activities | orderBy:'title' | filter: { when: JSON.stringify(days[selectedDay]) }">
                             <activity-card activity='activity'></activity-card>
                         </div>
                         <div class="col m2">
@@ -47,7 +47,7 @@
                     </div>
                     <h3>Àpats</h3>
                     <!--Àpats-->
-                    <div class="col m2" ng-repeat="activity in custom.meals | orderBy:'title' | filter: { when: days[selectedDay] }">
+                    <div class="col m2" ng-repeat="activity in custom.meals | orderBy:'title' | filter: { when: JSON.stringify(days[selectedDay]) }">
                         <activity-card activity='activity'></activity-card>
                     </div>
                     <div class="col m2">
@@ -79,5 +79,5 @@
         </div>
     </div>
 </div>
-<modal-dates action="createPackCtrl.getRangeOfDays()" ng-if="!days.length"></modal-dates>
+<modal-dates action="createPackCtrl.getRangeOfDays()" ng-if="!days.length && !dateRangeSelected"></modal-dates>
 <add-activity></add-activity>

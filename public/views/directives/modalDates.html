@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="card-action right-align">
-                    <button ng-class="{disabled:!createPackForm.$valid}" class="waves-effect waves-light btn-flat modal-action modal-close" type="submit" name="action">
+                    <button ng-class="{disabled:!createPackForm.$valid}" ng-disabled="!createPackForm.$valid" class="waves-effect waves-light btn-flat modal-action modal-close" type="submit" name="action">
                         Començar!
                     </button>
                 </div>
