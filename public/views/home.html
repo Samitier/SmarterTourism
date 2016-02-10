@@ -5,18 +5,19 @@
         <div class="card-content white-text">
             <span class="card-title">Comença a crear un paquet turístic:</span>
             <div class="row" style="margin-bottom: 0px;">
-                    <div class="input-field col s4">
-                        <input ng-model="order.initDate" id="dataInici" type='text' data-date-type="first" class='datepicker pt-datepicker'>
-                        <label for="dataInici">Data inici</label>
-                    </div>
-                    <div class="input-field col s4">
-                        <input ng-model="order.endDate" id="dataFi" type='text' data-date-type="last" class='datepicker pt-datepicker'>
-                        <label for="dataFi">Data fi</label>
-                    </div>
-                    <div class="input-field col s4">
-                        <input ng-model="order.numPersons" id="numPersones" type="number" class="validate">
-                        <label for="numPersones">Nombre de persones</label>
-                    </div>
+                   <div class="col s2">
+                    <br>
+                   </div>
+                <div class="input-field col s4">
+                    <input ng-model="order.initDate" id="dataInici" type='text' data-date-type="first"
+                           class='datepicker pt-datepicker' required>
+                    <label for="dataInici">Data inici</label>
+                </div>
+                <div class="input-field col s4">
+                    <input ng-model="order.endDate" id="dataFi" type='text' data-date-type="last"
+                           class='datepicker pt-datepicker' required>
+                    <label for="dataFi">Data fi</label>
+                </div>
             </div>
         </div>
         <div class="card-action right-align">

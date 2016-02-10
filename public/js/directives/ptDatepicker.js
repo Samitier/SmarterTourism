@@ -8,8 +8,8 @@ module.exports = function() {
         link:function(scope, elem) {
             $.datepicker.setDefaults({
                 closeText: 'Tancar',
-                prevText: '<i class="material-icons">skip_previous</i>',
-                nextText: '<i class="material-icons">skip_next</i>',
+                prevText: '<i class="material-icons">keyboard_arrow_left</i>',
+                nextText: '<i class="material-icons">keyboard_arrow_right</i>',
                 currentText: 'Avui',
                 monthNames: ['Gener','Febrer','Mar&ccedil;','Abril','Maig','Juny',
                     'Juliol','Agost','Setembre','Octubre','Novembre','Desembre'],
@@ -25,7 +25,7 @@ module.exports = function() {
 
             if($(elem).data("date-type") == "first") {
                 $( elem ).datepicker({
-                    onClose: function( selectedDate ) { console.log(selectedDate);
+                    onClose: function( selectedDate ) {
                         $( "#dataFi" ).datepicker( "option", "minDate", selectedDate );
                     }
                 });

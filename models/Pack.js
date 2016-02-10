@@ -11,12 +11,14 @@ var PackSchema = new mongoose.Schema({
     numDays:Number,
     price: Number,
     featured: Boolean,
+    category: String,
     date: Date,
     activities:[],
     activitiesByPeriod: {
         periods: [Date],
         activities:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Activity' }]
-    }
+    },
+    coords: [Number]
 });
 
 module.exports = mongoose.model('Pack', PackSchema);

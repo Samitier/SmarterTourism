@@ -307,3 +307,14 @@ footer.page-footer {
     display: block;
     font-size: 2em;
 }
+
+ul.tabs {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 60px;
+}
+
+.dies {
+    display: none;
+}

@@ -5,7 +5,7 @@
         will popup if they are not logged in.
 */
 
-module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope) {
+module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope, $window) {
 
     this.init = function() {
         $scope.order = CheckoutOrder.getOrder();
@@ -34,11 +34,10 @@ module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope)
         if($scope.facturationForm.$valid) {
             SmarterAPI.createOrder({facturationInfo:$scope.facturationForm.user,  order:$scope.order}).then(function(dat) {
                 if(dat.success) {
-                    $scope.order.state="finishedOK";
+                    Materialize.toast('Redirigint a la plataforma de pagament...', 4000);
+                    $scope.order.state="finished";
                     CheckoutOrder.setOrder($scope.order);
-                    //send the payment form to the tpv or paypal, depending where the user send it
-                    //redirect to thank you page when the order is completed
-                    $location.path("/finalitzar");
+                    $window.location.href = dat.url;
                 }
                 else Materialize.toast('Hi ha hagut algun error inesperat. Torna-ho a provar més tard.', 4000);
             });
