@@ -1,5 +1,6 @@
 var Order = require("../models/Order");
 var User = require("../models/User");
+var paypal = require("./paypal");
 
 module.exports.getAll = function(req,res,next) {
     Order.find(function (err, obj) {
@@ -24,33 +25,45 @@ module.exports.create = function(req,res,next) {
         });
     }
     else {
-        //TODO: if the user is not registered- we create him.
+        //TODO: if the user is not registered we create him.
     }
 
     //TODO:re-check the final price to check if the client maliciously modified the request
 
-    var clientOrder = req.body.order;
-    var order = {buyer: req.decoded._id,
-        numAdults:clientOrder.numAdults, numChildren:clientOrder.numChildren, numBabies:clientOrder.numBabies,
-        finalPrice: clientOrder.total_price, title: clientOrder.title};
-    var orders = [];
-    for(var i=0; i< clientOrder.activities.length; ++i) {
-        var productOrder = order;
-        productOrder.seller = clientOrder.activities[i].seller;
-        productOrder.product = { _id:clientOrder.activities[i]._id,
-                title: clientOrder.activities[i].title,
-                variation: clientOrder.selectedVariations[clientOrder.activities[i]._id],
-                extra: clientOrder.selectedExtras[clientOrder.activities[i]._id],
-                //TODO: discounts & more than one extra
-                dates:[clientOrder.activities[i].initDate, clientOrder.activities[i].endDate],
-                total: 10 //<-hardcoded TODO: the total amount for that activity (not the total paid for order)
-        };
-        orders.push(productOrder);
+    var order = {
+        title: req.body.order.title,
+        buyer: req.decoded._id,
+        products:[],
+        numAdults: req.body.order.numAdults,
+        numChildren: req.body.order.numChildren,
+        numBabies: req.body.order.numBabies,
+        finalPrice: req.body.order.total_price
+    };
+
+    for(var i=0; i< req.body.order.activities.length; ++i) {
+        var productOrder = {
+            seller: req.body.order.activities[i].seller,
+            title: req.body.order.activities[i].title,
+            variation: req.body.order.selectedVariations[req.body.order.activities[i]._id].title,
+            discount:{
+                name: "",
+                value: "",
+            },
+            total:10,
+            dates: [req.body.order.activities[i].initDate,  req.body.order.activities[i].endDate]
+        }
+        if(req.body.order.selectedExtras[req.body.order.activities[i]]){
+            productOrder.extra = req.body.order.selectedExtras[req.body.order.activities[i]._id].title;
+        }
+        order.products.push(productOrder);
     }
-    Order.create(orders, function (err) {
+
+    Order.create(order, function (err, dat) {
         if (err) return next(err);
-        else res.json({success:true});
+
         //TODO: redirect to the payment platform & redirect to "thank you" on success
+        req.order = dat;
+        paypal.createPayment(req,res,next);
     });
 }
 

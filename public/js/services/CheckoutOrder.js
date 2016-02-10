@@ -16,6 +16,10 @@ module.exports = function ($cookies) {
         return order;
     };
 
+    service.removeOrder = function() {
+        $cookies.remove('order');
+    };
+
     /*
      Creates an order from a pack. Stores it as a cookie and returns it.
      */
