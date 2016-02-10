@@ -3,7 +3,8 @@ var Order = require("../models/Order");
 
 
 module.exports.createPayment = function (req, res, next) {
-    var paymentInfo = createPaymentInfo(req.order);
+    var token = req.body.token || req.query.stAccessToken || req.headers['st-access-token'];
+    var paymentInfo = createPaymentInfo(req.order, token);
     paypal.payment.create(paymentInfo, function (error, payment) {
         if (error)  next(JSON.stringify(error));
         else {
@@ -21,31 +22,48 @@ module.exports.pay = function (req, res, next) {
     var execute_payment_json = {
         "payer_id": req.query.PayerID,
     };
-     paypal.payment.execute(req.query.paymentId, execute_payment_json, function (error, payment) {
-         if (error) next(error);
-         else {
-             var orderId = payment.transactions[0].item_list.items[0].sku;
-             Order.findById(orderId, function(err, dat) {
-                 if(err) next(err);
-                 else {
-                     dat.state = "Processing";
-                     dat.products.forEach(function(dat) {dat.state = "Processing";});
-                     Order.findByIdAndUpdate(orderId, dat, function(err, dat){
-                        if(err) next(err);
+    paypal.payment.execute(req.query.paymentId, execute_payment_json, function (error, payment) {
+        if (error) next(error);
+        else {
+            var orderId = payment.transactions[0].item_list.items[0].sku;
+            Order.findById(orderId, function (err, dat) {
+                if (err) next(err);
+                else {
+                    dat.state = "Processing";
+                    dat.products.forEach(function (dat) {
+                        dat.state = "Processing";
+                    });
+                    Order.findByIdAndUpdate(orderId, dat, function (err, dat) {
+                        if (err) next(err);
                         else res.redirect('/finalitzar?sta=1');
-                     });
-                 }
-             });
-         }
-     });
+                    });
+                }
+            });
+        }
+    });
 };
 
 module.exports.cancel = function (req, res, next) {
     //the order has to be cancelled
-    res.send("token is set to " + req.query.token);
+    if(req.query.orderId) {
+        Order.findById(req.query.orderId, function (err, dat) {
+            if (err) next(err);
+            else {
+                dat.state = "Cancelled";
+                dat.products.forEach(function (dat) {
+                    dat.state = "Cancelled";
+                });
+                Order.findByIdAndUpdate(req.query.orderId, dat, function (err, dat) {
+                    if (err) next(err);
+                    else res.redirect('/finalitzar?sta=0');
+                });
+            }
+        });
+    }
+    else res.status(400).send({ error: {"code":"401", "name":'Bad request'}});
 }
 
-var createPaymentInfo = function (order) {
+var createPaymentInfo = function (order, userToken) {
     var info = {
         "intent": "authorize",
         "payer": {
@@ -53,7 +71,8 @@ var createPaymentInfo = function (order) {
         },
         "redirect_urls": {
             "return_url": "http://localhost:4321/api/payments/paypal/pay",
-            "cancel_url": "http://localhost:4321/finalitzar?sta=0"
+            "cancel_url": "http://localhost:4321/api/payments/paypal/cancel?orderId="
+            + order._id + "&stAccessToken=" + userToken
         },
         "transactions": [{
             "item_list": {
