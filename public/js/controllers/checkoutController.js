@@ -9,7 +9,7 @@ module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope,
 
     this.init = function() {
         $scope.order = CheckoutOrder.getOrder();
-        if($scope.order.state != 'checkout') $location.path('/detalls-comanda'); //we redirect if the user is trying to enter here without an order
+        if($scope.order.state != 'checkout' && $scope.order.state !='finished') $location.path('/detalls-comanda'); //we redirect if the user is trying to enter here without an order
         if(!APIAuth.isLoggedIn()) $('#login-modal').openModal({dismissible: false});
         else SmarterAPI.getProfile().then(function(dat) {$scope.facturationForm.user = dat.facturationInfo;});
     };
