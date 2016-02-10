@@ -13,7 +13,7 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $location) {
         if(!$scope.order.selectedVariations) $scope.order.selectedVariations = {};
         if(!$scope.order.selectedExtras) $scope.order.selectedExtras = {};
         if(!$scope.order.total_price_per_person) $scope.order.total_price_per_person = $scope.order.price;
-
+        console.log($scope.order);
         $scope.products=[];
 
         $scope.$watch('order.numAdults', function (newValue, oldValue) {

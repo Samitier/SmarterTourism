@@ -40,7 +40,14 @@ module.exports = function ($cookies) {
     };
 
     service.createOrderFromActivityArray = function(custom) {
-        var order = {title: "Pack personalizado", price: custom.price, state:"details", activities:custom.activities};
+        var order = {
+            title: "Pack personalizado",
+            price: custom.price,
+            state: "details",
+            activities: custom.activities,
+            initDate: custom.initDate,
+            endDate: custom.endDate
+        };
         $cookies.putObject('order', order);
         return order;
     }
