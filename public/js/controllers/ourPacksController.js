@@ -9,6 +9,9 @@ module.exports = function(SmarterAPI, $scope) {
         SmarterAPI.getPacks().then(function(resp){ $scope.packs = resp;});
         $scope.search = '';
     };
-
     this.init();
+
+    $scope.$on("$destroy", function(){
+        $('#modal1').closeModal();
+    });
 }

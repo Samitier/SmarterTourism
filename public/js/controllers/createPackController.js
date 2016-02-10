@@ -135,5 +135,10 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope, $locati
         $location.path('/detalls-comanda');
     }
 
+    $scope.$on("$destroy", function(){
+        $('#modalDates').closeModal();
+    });
+
+
     this.init();
 }

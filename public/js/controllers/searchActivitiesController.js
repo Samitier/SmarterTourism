@@ -11,6 +11,10 @@ module.exports = function(SmarterAPI, $scope) {
         });
         $scope.search = '';
     };
-
     this.init();
+
+    $scope.$on("$destroy", function(){
+        $('#modal1').closeModal();
+    });
+
 }
