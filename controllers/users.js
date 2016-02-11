@@ -49,3 +49,9 @@ module.exports.updateProfile = function(req ,res, next) {
         res.json(obj);
     });
 };
+
+//Check Request
+module.exports.checkRequest = function(req, res, next) {
+    if(req.body.name && req.body.lastname && req.body.email && req.body.password && req.body.role) next();
+    else res.status(400).send({ error: {"code":"400", "name":'Bad request. The user`s data is inadequate or incomplete.'}});
+}

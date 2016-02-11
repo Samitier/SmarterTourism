@@ -45,3 +45,9 @@ module.exports.delete = function(req, res, next) {
         res.json(obj);
     });
 };
+
+//Check Requests
+module.exports.checkRequest = function(req, res, next) {
+    if(req.body.title && req.body.description && req.body.seller && req.body.variations) next();
+    else res.status(400).send({ error: {"code":"400", "name":'Bad request. The activity`s data is inadequate or incomplete.'}});
+}
