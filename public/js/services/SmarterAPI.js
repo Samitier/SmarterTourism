@@ -57,7 +57,13 @@ module.exports = function ($http, APIAuth, $location) {
         return $http.get(apiURI + "orders").then(function(resp) {
             return resp.data;
         }, tractarErrors);
-    }
+    };
+
+    service.getCategories = function() {
+        return $http.get(apiURI + "packs/categories").then(function(resp) {
+            return resp.data;
+        }, tractarErrors);
+    };
 
     function tractarErrors(err) {
         if(err.status == 403) {

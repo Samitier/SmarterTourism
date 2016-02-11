@@ -1,4 +1,5 @@
 var Pack = require("../models/Pack");
+var Category = require("../models/Category");
 
 module.exports.getAll = function(req, res, next) {
     Pack.find(function (err, obj) {
@@ -36,6 +37,17 @@ module.exports.delete = function(req, res, next) {
         res.json(obj);
     });
 };
+
+module.exports.getCategories = function(req, res, next) {
+    Category.find(function (err, obj) {
+        if (err) return next(err);
+        res.json(obj);
+    });
+}
+
+module.exports.createCategory = function(req, res, next) {
+    res.json({ "jason": "derulo" });
+}
 
 //Check Request
 module.exports.checkRequest = function(req, res, next) {

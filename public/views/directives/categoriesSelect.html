@@ -1,0 +1,17 @@
+<select id="categories" multiple>
+    <option value="" disabled selected>Escull les categories</option>
+    <!--<option value="1">Option 1</option>
+    <option value="2">Option 2</option>
+    <option value="3">Option 3</option>
+    <option value="4">Option 4</option>
+    <option value="4">Option 5</option>
+    <option value="4">Option 6</option>-->
+    <option ng-repeat="category in categories | orderBy:'title'" value="{{category.title}}">{{category.title}}</option>
+</select>
+<label for="categories">Categories</label>
+
+<script>
+    $("#categories").on('change', function() {
+        //console.log($("#categories").val());
+    });
+</script>
