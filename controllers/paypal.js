@@ -4,7 +4,7 @@ var Order = require("../models/Order");
 
 module.exports.createPayment = function (req, res, next) {
     var token = req.body.token || req.query.stAccessToken || req.headers['st-access-token'];
-    var paymentInfo = createPaymentInfo(req.order, token);
+    var paymentInfo = createPaymentInfo(req, token);
     paypal.payment.create(paymentInfo, function (error, payment) {
         if (error)  next(JSON.stringify(error));
         else {
@@ -84,30 +84,30 @@ module.exports.checkRequestCancel = function(req, res, next) {
 //////////// PRIVATE FUNCTIONS ////////////
  */
 
-var createPaymentInfo = function (order, userToken) {
+var createPaymentInfo = function (req, userToken) {
     var info = {
         "intent": "authorize",
         "payer": {
             "payment_method": "paypal"
         },
         "redirect_urls": {
-            "return_url": "http://localhost:4321/api/payments/paypal/pay",
-            "cancel_url": "http://localhost:4321/api/payments/paypal/cancel?orderId="
-            + order._id + "&stAccessToken=" + userToken
+            "return_url": req.protocol + '://' + req.get('host') + "/api/payments/paypal/pay",
+            "cancel_url": req.protocol + '://' + req.get('host') + "/api/payments/paypal/cancel?orderId="
+            + req.order._id + "&stAccessToken=" + userToken
         },
         "transactions": [{
             "item_list": {
                 "items": [{
-                    "name": order.title,
-                    "sku": order._id,
-                    "price": order.finalPrice,
+                    "name": req.order.title,
+                    "sku": req.order._id,
+                    "price": req.order.finalPrice,
                     "currency": "EUR",
                     "quantity": 1
                 }]
             },
             "amount": {
                 "currency": "EUR",
-                "total": order.finalPrice
+                "total": req.order.finalPrice
             },
             "description": "Una compra de paquets turístics mitjançant Smarter Tourism Plataforma Integral."
         }]
