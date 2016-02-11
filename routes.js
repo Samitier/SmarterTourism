@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
 /* Acivities */
 router.route('/activities')
         .get(ctrl.activities.getAll)
-        .post(ctrl.auth.authenticate,ctrl.activities.create);
+        .post(ctrl.auth.authenticate, ctrl.activities.checkRequest, ctrl.activities.create);
 router.route('/activities/:id')
         .get(ctrl.activities.getSingle)
         .put(ctrl.auth.authenticate,ctrl.activities.update)
@@ -21,7 +21,7 @@ router.route('/activities/:id')
 /* Packs */
 router.route('/packs')
         .get(ctrl.packs.getAll)
-        .post(ctrl.auth.authenticate,ctrl.packs.create);
+        .post(ctrl.auth.authenticate, ctrl.packs.checkRequest, ctrl.packs.create);
 router.route('/packs/:id')
         .get(ctrl.packs.getSingle)
         .put(ctrl.auth.authenticate,ctrl.packs.update)
@@ -30,7 +30,7 @@ router.route('/packs/:id')
 /* Users */
 router.route('/users')
     .get(ctrl.auth.authenticate, ctrl.users.getAll)
-    .post(ctrl.auth.authenticate, ctrl.users.create);
+    .post(ctrl.auth.authenticate, ctrl.users.checkRequest, ctrl.users.create);
 router.route('/users/:id')
     .get(ctrl.auth.authenticate,ctrl.users.getSingle)
     .put(ctrl.auth.authenticate,ctrl.users.update)
