@@ -5,10 +5,15 @@ module.exports = function() {
             scope.categories = [];
             setTimeout(function() {
                 $('select', elem).material_select();
-            }, 1000);
+            }, 2000);
         },
         controller: function($scope, SmarterAPI) {
             SmarterAPI.getCategories().then(function(resp){ $scope.categories = resp; });
+
+            $scope.cats = [];
+            $scope.change = function() { console.log($scope.cats);
+                $scope.$apply();
+            }
         },
         controllerAs: "categoriesSelectCtrl"
     };

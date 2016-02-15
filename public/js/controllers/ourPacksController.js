@@ -15,13 +15,20 @@ module.exports = function(SmarterAPI, $scope) {
         $('#modal1').closeModal();
     });
 
-    $scope.filtrarCategories = function(item) {
-        if($("#categories").val().length == 0) return true;
-        else if(!item.category) return false;
-        else {
-            //console.log($("#categories").val());
-            console.log("1");
-            return $.inArray(item.category, $("#categories").val());
+    $scope.catselected = false;
+    $scope.filtrarCategories = function() {
+        return function(item) {
+            var categories = $("#categories").val();
+            if (!categories) categories = [];
+            if (categories.length == 0) {
+                $scope.catselected = false;
+                return true;
+            }
+            else if (!item.category) return false;
+            else {
+                $scope.catselected = true;
+                return (categories.indexOf(item.category) >= 0);
+            }
         }
     }
 }
