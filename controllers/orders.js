@@ -1,7 +1,7 @@
 var Order = require("../models/Order");
 var User = require("../models/User");
 var paypal = require("./paypal");
-var mail = require("../config/email");
+var email = require('../utils/email');
 
 module.exports.getAll = function(req,res,next) {
     Order.find({buyer: req.decoded._id}, function (err, obj) {
@@ -45,7 +45,7 @@ module.exports.create = function(req,res,next) {
                 name: "",
                 value: "",
             },
-            total:10,
+            total:10, //TODO: hardcoded. The price needs to be the price of the activity or the proportional price paid
             dates: [req.body.order.activities[i].initDate,  req.body.order.activities[i].endDate]
         }
         if(req.body.order.selectedExtras[req.body.order.activities[i]]){
@@ -57,7 +57,7 @@ module.exports.create = function(req,res,next) {
     Order.create(order, function (err, dat) {
         if (err) return next(err);
         req.order = dat;
-        //TODO: redirect to the payment platform slected
+        //TODO: redirect to the payment platform selected
         paypal.createPayment(req,res,next);
     });
 }
@@ -73,9 +73,8 @@ module.exports.pay = function(req,res,next) {
             });
             Order.findByIdAndUpdate(req.orderId, dat, function (err, dat) {
                 if (err) next(err);
-                //TODO: send email to client
-                mail.sendToId(dat.seller, "processingOrder", dat);
-                //TODO: send email to providers
+                email.sendToId(dat.buyer, "processingOrder", dat);
+                //TODO: send email to all providers
                 if(req.redirect) res.redirect('/finalitzar?sta=1');
                 else res.json({success:true});
             });

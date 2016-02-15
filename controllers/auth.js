@@ -1,6 +1,6 @@
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
-var email = require('../config/email');
+var email = require('../utils/email');
 var path = require('path');
 
 var User = require("../models/User");
