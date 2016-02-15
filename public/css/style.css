@@ -391,3 +391,8 @@ ul.tabs {
 .hidden {
     display: none;
 }
+
+input[name=paymentType]:checked + label img {
+    border: 4px solid #26a69a;
+    border-radius: 4px;
+}
