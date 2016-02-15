@@ -35,7 +35,7 @@ module.exports.signin = function(req,res,next) {
         if (err) return next(err);
         var token = jwt.sign({_id:obj._id, name:obj.name, email:obj.email},
             process.env.SECRET, {expiresIn: (process.env.TOKENEXPIRATION||"14d")});
-        email.send("confirmEmail", obj.email, {name: obj.name, tokenUrl:req.protocol+'://'+req.get('host')+'/api/confirm-email/'+token});
+        email.send(obj.email, "confirmEmail", {name: obj.name, tokenUrl:req.protocol+'://'+req.get('host')+'/api/confirm-email/'+token});
         res.json({success: true, user: obj.name, token: token});
     });
 }

@@ -26,7 +26,7 @@ mailTemplates.confirmEmail = {
 };
 
 
-module.exports.send = function(mailTemplate, to, params) {
+module.exports.send = function(to, mailTemplate, params) {
     var email = {from:mailTemplates[mailTemplate].from, to:to,
         subject:mailTemplates[mailTemplate].subject, html:mailTemplates[mailTemplate].message(params)};
 
@@ -34,3 +34,7 @@ module.exports.send = function(mailTemplate, to, params) {
         if(error) console.log(error);
     });
 };
+
+module.exports.sendToId = function(userId, mailTemplate, params) {
+
+}

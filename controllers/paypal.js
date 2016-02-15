@@ -1,6 +1,5 @@
 var paypal = require('../config/paypal-config');
-var Order = require("../models/Order");
-
+var orderCtrl = require('./orders');
 
 module.exports.createPayment = function (req, res, next) {
     var token = req.body.token || req.query.stAccessToken || req.headers['st-access-token'];
@@ -25,38 +24,15 @@ module.exports.pay = function (req, res, next) {
     paypal.payment.execute(req.query.paymentId, execute_payment_json, function (error, payment) {
         if (error) next(error);
         else {
-            var orderId = payment.transactions[0].item_list.items[0].sku;
-            Order.findById(orderId, function (err, dat) {
-                if (err) next(err);
-                else {
-                    dat.state = "Processing";
-                    dat.products.forEach(function (dat) {
-                        dat.state = "Processing";
-                    });
-                    Order.findByIdAndUpdate(orderId, dat, function (err, dat) {
-                        if (err) next(err);
-                        else res.redirect('/finalitzar?sta=1');
-                    });
-                }
-            });
+            req.orderId = payment.transactions[0].item_list.items[0].sku;
+            req.redirect = true;
+            orderCtrl.pay(req, res, next);
         }
     });
 };
 
 module.exports.cancel = function (req, res, next) {
-    Order.findById(req.query.orderId, function (err, dat) {
-        if (err) next(err);
-        else {
-            dat.state = "Cancelled";
-            dat.products.forEach(function (dat) {
-                dat.state = "Cancelled";
-            });
-            Order.findByIdAndUpdate(req.query.orderId, dat, function (err, dat) {
-                if (err) next(err);
-                else res.redirect('/finalitzar?sta=0');
-            });
-        }
-    });
+    orderCtrl.cancel(req, res, next);
 }
 
 
@@ -93,7 +69,7 @@ var createPaymentInfo = function (req, userToken) {
         "redirect_urls": {
             "return_url": req.protocol + '://' + req.get('host') + "/api/payments/paypal/pay",
             "cancel_url": req.protocol + '://' + req.get('host') + "/api/payments/paypal/cancel?orderId="
-            + req.order._id + "&stAccessToken=" + userToken
+            + req.order._id + "&stAccessToken=" + userToken + "&redirect=true"
         },
         "transactions": [{
             "item_list": {
