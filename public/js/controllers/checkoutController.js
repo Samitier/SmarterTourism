@@ -45,5 +45,11 @@ module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope,
         else Materialize.toast('Si us plau, omple totes les dades del formulari', 4000);
     };
 
+    $scope.visDadesClient = false;
+    this.continueWithoutAccount = function() {
+        $('#login-modal').closeModal();
+        $scope.visDadesClient = true;
+    };
+
     this.init();
 }

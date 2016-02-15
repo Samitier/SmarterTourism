@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
-var Category = new mongoose.Schema({
+var CategorySchema = new mongoose.Schema({
     title: {type:String, required:true, unique:true}
 });
 
-module.exports = mongoose.model('Category', ActivitySchema);
+module.exports = mongoose.model('Category', CategorySchema);
