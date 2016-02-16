@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
+var shortid = require('shortid');
+
 
 var Variation = new mongoose.Schema({
+    _id: {type: String, unique: true, default: shortid.generate},
     title: {type:String, required:true, unique:true},
     description: {type:String, required:true},
     image: {type:String, default:"placeholder.jpg"},
@@ -8,6 +11,7 @@ var Variation = new mongoose.Schema({
 });
 
 var Extra = new mongoose.Schema({
+    _id: {type: String, unique: true, default: shortid.generate},
     title: {type:String, required:true},
     description: {type:String, required:true},
     image: {type:String, default:"placeholder.jpg"},
@@ -15,9 +19,10 @@ var Extra = new mongoose.Schema({
 });
 
 var ActivitySchema = new mongoose.Schema({
+    _id: {type: String, unique: true, default: shortid.generate},
     title: {type:String, required:true},
     description: {type:String, required:true},
-    seller: {type:mongoose.Schema.Types.ObjectId, ref: 'User' , required:true},
+    seller: {type:String, ref: 'User' , required:true},
     featured: Boolean,
     image: {type:String, default:"placeholder.jpg"},
     price: Number,

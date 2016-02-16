@@ -27,6 +27,8 @@
     "nodemailer": "^1.10.0",
     "paypal-rest-sdk": "^1.6.8",
     "serve-favicon": "~2.3.0",
+    "shortid": "^2.2.4",
+    "swig": "^1.4.2",
     "validator": "^4.4.0"
   },
   "engines": {

@@ -1,7 +1,9 @@
 var mongoose = require('mongoose');
 var validator = require('validator');
+var shortid = require('shortid');
 
 var UserSchema = new mongoose.Schema({
+    _id: {type: String, unique: true, default: shortid.generate},
     name: {type:String, required:true},
     lastname: {type:String, required:true},
     email: {type:String, required:true, unique:true,  validate: [ validator.isEmail, 'Invalid email address' ]},
