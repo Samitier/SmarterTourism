@@ -40,6 +40,12 @@ module.exports = function ($http, APIAuth, $location) {
         }, tractarErrors);
     };
 
+    service.getUser = function(id) {
+        return $http.get(apiURI + "users/" + id).then(function(resp) {
+           return resp.data;
+        }, tractarErrors);
+    }
+
     service.setProfile = function(data) {
         return $http.put(apiURI + "profile", data).then(function(resp) {
             return resp.data;
