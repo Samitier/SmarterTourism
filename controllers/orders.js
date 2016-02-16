@@ -1,6 +1,7 @@
 var Order = require("../models/Order");
 var User = require("../models/User");
 var paypal = require("./paypal");
+var users = require("./users");
 
 module.exports.getAll = function(req,res,next) {
     Order.find({buyer: req.decoded._id}, function (err, obj) {
@@ -13,14 +14,20 @@ module.exports.create = function(req,res,next) {
 
     var user = {};
     user.facturationInfo = req.body.facturationInfo;
-
+    // TODO: Cal buscar una manera de decodificar el id sense que sigui necessari autenticar-se
     if(req.decoded._id) {
-        User.findByIdAndUpdate(req.decoded._id, user, function (err, obj) {
+        User.findByIdAndUpdate(req.decoded._id, user, function (err) {
             if (err) return next(err);
         });
     }
     else {
-        //TODO: if the user is not registered we create him.
+        //if the user is not registered we create him.
+        req.body.clientInfo.password = '';
+        req.body.clientInfo.role = 'Client';
+        req.body.state = 'Inactive';
+        users.create(req.body.clientInfo, function (err) {
+            if (err) return next(err);
+        });
     }
 
     //TODO:re-check the final price to check if the client maliciously modified the request
@@ -44,7 +51,7 @@ module.exports.create = function(req,res,next) {
                 name: "",
                 value: "",
             },
-            total:10,
+            total:10, //TODO: Hardcoded
             dates: [req.body.order.activities[i].initDate,  req.body.order.activities[i].endDate]
         }
         if(req.body.order.selectedExtras[req.body.order.activities[i]]){
