@@ -1,6 +1,7 @@
 var Order = require("../models/Order");
 var User = require("../models/User");
 var paypal = require("./paypal");
+var email = require('../utils/email');
 
 module.exports.getAll = function(req,res,next) {
     Order.find({buyer: req.decoded._id}, function (err, obj) {
@@ -44,7 +45,7 @@ module.exports.create = function(req,res,next) {
                 name: "",
                 value: "",
             },
-            total:10,
+            total:10, //TODO: hardcoded. The price needs to be the price of the activity or the proportional price paid
             dates: [req.body.order.activities[i].initDate,  req.body.order.activities[i].endDate]
         }
         if(req.body.order.selectedExtras[req.body.order.activities[i]]){
@@ -55,14 +56,30 @@ module.exports.create = function(req,res,next) {
 
     Order.create(order, function (err, dat) {
         if (err) return next(err);
-        //TODO: redirect to the payment platform & redirect to "thank you" on success
         req.order = dat;
+        //TODO: redirect to the payment platform selected
         paypal.createPayment(req,res,next);
     });
 }
 
 module.exports.pay = function(req,res,next) {
-    //here should go the logic to execute after a successful payment (setting the state to processing & sending the emails).
+    if(!req.orderId) res.status(400).send({ error: {"code":"400", "name":'Bad request. This resource needs an order.'}});
+    Order.findById(req.orderId, function (err, dat) {
+        if (err) next(err);
+        else {
+            dat.state = "Processing";
+            dat.products.forEach(function (dat) {
+                dat.state = "Processing";
+            });
+            Order.findByIdAndUpdate(req.orderId, dat, function (err, dat) {
+                if (err) next(err);
+                email.sendToId(dat.buyer, "processingOrder", dat);
+                //TODO: send email to all providers
+                if(req.redirect) res.redirect('/finalitzar?sta=1');
+                else res.json({success:true});
+            });
+        }
+    });
 }
 
 module.exports.sendMessage = function(req,res,next) {
@@ -78,7 +95,21 @@ module.exports.complete = function(req,res,next) {
 }
 
 module.exports.cancel = function(req,res,next) {
-   //here should go the logic to execute after a cancelled payment or a cancelation from the provider/client.
+    Order.findById(req.query.orderId, function (err, dat) {
+        if (err) next(err);
+        else {
+            dat.state = "Cancelled";
+            dat.products.forEach(function (dat) {
+                dat.state = "Cancelled";
+            });
+            Order.findByIdAndUpdate(req.query.orderId, dat, function (err, dat) {
+                if (err) next(err);
+                //TODO: send cancellation message?
+                else if(req.query.redirect) res.redirect('/finalitzar?sta=0');
+                else res.json({success:true});
+            });
+        }
+    });
 }
 
 
