@@ -33,7 +33,6 @@ module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope,
     this.sendAction = function() {
         if($scope.facturationForm.$valid) {
             var data = {facturationInfo:$scope.facturationForm.user,  order:$scope.order};
-            console.log($scope.clientForm);
             if($scope.clientForm.user) data.clientInfo = $scope.clientForm.user;
             SmarterAPI.createOrder(data).then(function(dat) {
                 if(dat.success) {

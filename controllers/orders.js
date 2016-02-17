@@ -116,7 +116,6 @@ var createOrderAndPayment = function (req, res, next) {
 }
 
 var calculatePrice = function (req, res, next) {
-    console.log(req.body.order);
     var total = 0;
     if (req.body.order.pack) {
         packs.getPackPrice(req, res, function(price) {
