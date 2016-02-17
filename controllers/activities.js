@@ -46,6 +46,19 @@ module.exports.delete = function(req, res, next) {
     });
 };
 
+module.exports.getActivitiesPrice = function(req, res, next) {
+    var total = 0;
+    Activity.find( {_id: {$in: req.body.order.actvIDs}}, function(err, acts) {
+        if(err) return next(-1, err);
+        else {
+            acts.forEach(function(i, v) {
+                total += v.price;
+            });
+        }
+    });
+    next(total);
+}
+
 //Check Requests
 module.exports.checkRequest = function(req, res, next) {
     if(req.body.title && req.body.description && req.body.seller && req.body.variations) next();

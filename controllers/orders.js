@@ -1,8 +1,10 @@
 var Order = require("../models/Order");
+var Activity = require("../models/Activity");
 var User = require("../models/User");
 var paypal = require("./paypal");
 var users = require("./users");
-var auth = require("./auth");
+var packs = require("./packs");
+var activities = require("./activities");
 
 module.exports.getAll = function (req, res, next) {
     Order.find({buyer: req.decoded._id}, function (err, obj) {
@@ -14,7 +16,6 @@ module.exports.getAll = function (req, res, next) {
 module.exports.create = function (req, res, next) {
     var user = {};
     user.facturationInfo = req.body.facturationInfo;
-    // TODO: Cal buscar una manera de decodificar el id sense que sigui necessari autenticar-se
     if (req.decoded) {
         User.findByIdAndUpdate(req.decoded._id, user, function (err) {
             if (err) return next(err);
@@ -73,7 +74,6 @@ module.exports.checkRequest = function (req, res, next) {
  /////////// PRIVATE FUNCTIONS //////////
  */
 var createOrderAndPayment = function (req, res, next) {
-    //TODO:re-check the final price to check if the client maliciously modified the request
     var order = {
         title: req.body.order.title,
         buyer: req.body.buyerId,
@@ -81,7 +81,7 @@ var createOrderAndPayment = function (req, res, next) {
         numAdults: req.body.order.numAdults,
         numChildren: req.body.order.numChildren,
         numBabies: req.body.order.numBabies,
-        finalPrice: req.body.order.total_price
+        finalPrice: calculatePrice(req, res, next)
     };
 
     for (var i = 0; i < req.body.order.activities.length; ++i) {
@@ -93,13 +93,18 @@ var createOrderAndPayment = function (req, res, next) {
                 name: "",
                 value: "",
             },
-            total: 10, //TODO: Hardcoded
             dates: [req.body.order.activities[i].initDate, req.body.order.activities[i].endDate]
         }
         if (req.body.order.selectedExtras[req.body.order.activities[i]]) {
             productOrder.extra = req.body.order.selectedExtras[req.body.order.activities[i]._id].title;
         }
-        order.products.push(productOrder);
+        getProductPrice(req, res, function(price) {
+            if(price < 0) return next(err);
+            else {
+                productOrder.total = price;
+                order.products.push(productOrder);
+            }
+        });
     }
 
     Order.create(order, function (err, dat) {
@@ -108,4 +113,39 @@ var createOrderAndPayment = function (req, res, next) {
         req.order = dat;
         paypal.createPayment(req, res, next);
     });
+}
+
+var calculatePrice = function (req, res, next) {
+    console.log(req.body.order);
+    var total = 0;
+    if (req.body.order.pack) {
+        packs.getPackPrice(req, res, function(price) {
+            if(price >= 0) {
+                total += price;
+            } else next(this.params[1]);
+        });
+    }
+
+    req.body.order.actvIDs = [];
+    req.body.order.activities.forEach(function(i, v) {
+        req.body.order.actvIDs.push(v._id);
+    });
+    activities.getActivitiesPrice(req, res, function(price) {
+        if(price >= 0) {
+            total += price;
+        } else next(this.params[1]);
+    });
+    return total;
+}
+
+var getProductPrice = function(req, res, next) {
+    var price = 0;
+    Activity.findById(req.body.order.activities[i]._id, function(err, obj) {
+        if(err) return next(-1, err);
+        else price = obj.price;
+    });
+
+    //Lògica necessaria
+
+    next(price);
 }

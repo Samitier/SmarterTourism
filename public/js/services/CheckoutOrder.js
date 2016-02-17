@@ -24,9 +24,8 @@ module.exports = function ($cookies) {
      Creates an order from a pack. Stores it as a cookie and returns it.
      */
     service.createOrderFromPack = function(pack) {
-        var order = {title: pack.title, price: pack.price, activities:[]};
+        var order = {title: pack.title, pack: pack.id, price: pack.price, activities:[]};
         pack.activitiesByPeriod.activities.forEach(function (activity) {
-            //order.activities.push({id: activity._id, title: activity.title});
             order.activities.push({_id: activity._id, title: activity.title});
         });
         $cookies.putObject('order', order);
