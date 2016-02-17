@@ -8,7 +8,32 @@
     </div>
     <div class="row">
         <div class="col l9">
-            <ul class="collapsible popout" data-collapsible="accordion">
+            <ul class="collapsible popout" data-collapsible="expandable">
+                <li ng-if="visDadesClient">
+                    <div class="collapsible-header active">
+                        <i class="material-icons">more</i> Dades del client
+                    </div>
+                    <div class="collapsible-body">
+                        <div style="margin:20px;">
+                            <form name="clientForm" novalidate>
+                                <div class="row">
+                                    <div class="input-field col s6">
+                                        <input ng-model="clientForm.user.name" id="cli-name" type="text" class="validate"  required>
+                                        <label ng-class="{active:clientForm.user.name}" for="cli-name">Nom</label>
+                                    </div>
+                                    <div class="input-field col s6">
+                                        <input  ng-model="clientForm.user.lastname" id="cli-lastname" type="text" class="validate" required>
+                                        <label ng-class="{active:clientForm.user.lastname}" for="cli-lastname">Cognoms</label>
+                                    </div>
+                                    <div class="input-field col s6">
+                                        <input  ng-model="clientForm.user.email" id="cli-email" type="email" class="validate" required>
+                                        <label ng-class="{active:clientForm.user.email}" for="cli-email">E-mail</label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </li>
                 <li>
                     <div class="collapsible-header active">
                         <i class="material-icons">more</i> Dades de facturació
@@ -55,7 +80,7 @@
                     </div>
                 </li>
                 <li>
-                    <div class="collapsible-header">
+                    <div class="collapsible-header active">
                         <i class="material-icons">payment</i> Mètodes de pagament
                     </div>
                     <div class="collapsible-body">
@@ -66,9 +91,10 @@
                             </div>
                             <div class="input-field col s6">
                                 <input ng-model="facturationForm.tpvPayment" name="paymentType" type="radio" id="tpvPayment" />
-                                <label for="tpvPayment"><img class="responsive-img" src="/img/redsysLogo.jpg"></label>
+                                <label for="tpvPayment"><img class="responsive-img payMethod-active" src="/img/redsysLogo.jpg"></label>
                             </div>
                         </div>
+                        <p class="grey-text text-darken-1">*Al clicar "Continuar", vostè serà redirigit/da a la plataforma de pagament sel·leccionada.</p>
                     </div>
                 </li>
             </ul>
@@ -103,6 +129,8 @@
                         Continuar
                     </button><br><br>
                     <p class="right right-align">No tens cap compte? <a href="/signin">Registra't!</a></p>
+                    <br /><br />
+                    <p class="right-align"><a href="javascript:void(0)" class="cursor-pointer" ng-click="checkoutCtrl.continueWithoutAccount()">O segueix sense registrar-te.</a></p>
                 </div>
             </form>
         </div>

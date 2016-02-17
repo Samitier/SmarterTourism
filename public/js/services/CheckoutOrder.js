@@ -47,6 +47,7 @@ module.exports = function ($cookies) {
             title: "Pack personalizado",
             price: custom.price,
             state: "details",
+            activities: [],
             initDate: custom.initDate,
             endDate: custom.endDate
         };

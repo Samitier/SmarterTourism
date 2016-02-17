@@ -22,6 +22,9 @@ router.route('/activities/:id')
 router.route('/packs')
         .get(ctrl.packs.getAll)
         .post(ctrl.auth.authenticate, ctrl.packs.checkRequest, ctrl.packs.create);
+router.route('/packs/categories')
+    .get(ctrl.packs.getCategories)
+    .post(ctrl.auth.authenticate, ctrl.packs.checkRequest, ctrl.packs.createCategory);
 router.route('/packs/:id')
         .get(ctrl.packs.getSingle)
         .put(ctrl.auth.authenticate,ctrl.packs.update)

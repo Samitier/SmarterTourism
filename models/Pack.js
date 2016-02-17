@@ -21,6 +21,14 @@ var PackSchema = new mongoose.Schema({
         periods: [Date],
         activities:[{ type:String, ref: 'Activity' }]
     },
+    comments: {
+        user:{
+            name: String,
+            id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+        },
+        message: String,
+        rating: Number
+    },
     coords: [Number]
 });
 
