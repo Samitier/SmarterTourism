@@ -15,7 +15,6 @@ module.exports.getAll = function (req, res, next) {
 module.exports.create = function (req, res, next) {
     var user = {};
     user.facturationInfo = req.body.facturationInfo;
-    // TODO: Cal buscar una manera de decodificar el id sense que sigui necessari autenticar-se
     if (req.decoded) {
         User.findByIdAndUpdate(req.decoded._id, user, function (err) {
             if (err) return next(err);
