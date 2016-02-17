@@ -21,6 +21,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api', api);
 
+//TODO: (debug) This must return a way of showing the emails to the people for the buttons "show on  web"
+app.use('/mails/', function(req, res) {
+    var swig  = require('swig');
+    var a = swig.renderFile('templates/confirmation-email.html', {
+        name: 'Paquito Martinez',
+        hostRoute: req.protocol + '://' + req.get('host')+ "/",
+        confirmationUrl: "",
+        morePacksUrl: 'els-nostres-paquets'
+    });
+    res.end(a);
+});
+
 app.use(function(req, res) {
     res.sendFile(__dirname + '/public/index.html');
 });
