@@ -106,6 +106,14 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
             needsLogin:true
         })
 
+        .when("/perfil/:id",{
+            title: "Pàgina de perfil",
+            templateUrl: '/views/yourProfile.html',
+            controller: 'yourProfileController',
+            controllerAs: 'yourProfileCtrl',
+            needsLogin:true
+        })
+
         .when("/finalitzar",{
             title: "Finalitzar comanda",
             templateUrl: function(urlattr) {

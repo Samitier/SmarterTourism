@@ -15,7 +15,11 @@ module.exports.create = function(req, res, next) {
 };
 
 module.exports.getSingle = function(req, res, next) {
-    User.findById(req.params.id, function (err, obj) {
+    var excl = {};
+    if(req.params.id == req.decoded._id) {
+        excl = { password: 0, facturationInfo: 0, state: 0 };
+    }
+    User.findById(req.params.id, excl, function (err, obj) {
         if (err) return next(err);
         res.json(obj);
     });
@@ -48,6 +52,13 @@ module.exports.updateProfile = function(req ,res, next) {
         if (err) return next(err);
         res.json(obj);
     });
+};
+
+module.exports.newUser = function(req, res, next) {
+    req.body.clientInfo.password = '-';
+    req.body.clientInfo.role = 'Client';
+    req.body.clientInfo.state = 'Inactive';
+    User.create(req.body.clientInfo, next);
 };
 
 //Check Request

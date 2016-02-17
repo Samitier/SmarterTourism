@@ -58,6 +58,24 @@ module.exports.authenticate = function(req,res,next) {
     }
 }
 
+module.exports.authenticateOrGuest = function(req,res,next) {
+    var token = req.body.token || req.query.stAccessToken || req.headers['st-access-token'];
+    if (token) {
+        jwt.verify(token, process.env.SECRET, function(err, decoded) {
+            if (err) {
+                return res.status(403).send({ error: {"code":"403", "name":'Access denied. Invalid token.'}});
+            }
+            else {
+                req.decoded = decoded;
+                next();
+            }
+        });
+    }
+    else {
+        next();
+    }
+}
+
 module.exports.confirmEmail = function(req,res,next) {
     var token = req.params.token;
     if (token) {
