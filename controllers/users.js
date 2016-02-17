@@ -54,6 +54,13 @@ module.exports.updateProfile = function(req ,res, next) {
     });
 };
 
+module.exports.newUser = function(req, res, next) {
+    req.body.clientInfo.password = '-';
+    req.body.clientInfo.role = 'Client';
+    req.body.clientInfo.state = 'Inactive';
+    User.create(req.body.clientInfo, next);
+};
+
 //Check Request
 module.exports.checkRequest = function(req, res, next) {
     if(req.body.name && req.body.lastname && req.body.email && req.body.password && req.body.role) next();
