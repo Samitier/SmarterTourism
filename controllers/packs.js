@@ -46,7 +46,17 @@ module.exports.getCategories = function(req, res, next) {
 }
 
 module.exports.createCategory = function(req, res, next) {
-    res.json({ "jason": "derulo" });
+    Category.create(req.body, function (err, obj) {
+        if (err) return next(err);
+        res.json(obj);
+    });
+}
+
+module.exports.getPackPrice = function(req, res, next) {
+    Pack.findById(req.body.order.pack, function (err, obj) {
+        if (err) return next(-1, err);
+        next(obj.price);
+    });
 }
 
 //Check Request

@@ -1,9 +1,11 @@
 var Order = require("../models/Order");
+var Activity = require("../models/Activity");
 var User = require("../models/User");
 var paypal = require("./paypal");
 var email = require('../utils/email');
 var users = require("./users");
-
+var packs = require("./packs");
+var activities = require("./activities");
 
 module.exports.getAll = function (req, res, next) {
     Order.find({buyer: req.decoded._id}, function (err, obj) {
@@ -26,7 +28,6 @@ module.exports.create = function (req, res, next) {
     }
     else {
         //if the user is not registered we create him.
-
         users.newUser(req, res, function (err, obj) {
             if (err) return next(err);
             else {
@@ -73,15 +74,14 @@ module.exports.checkRequest = function (req, res, next) {
  /////////// PRIVATE FUNCTIONS //////////
  */
 var createOrderAndPayment = function (req, res, next) {
-    //TODO:re-check the final price to check if the client maliciously modified the request
+
     var order = {
         title: req.body.order.title,
         buyer: req.body.buyerId,
         products: [],
         numAdults: req.body.order.numAdults,
         numChildren: req.body.order.numChildren,
-        numBabies: req.body.order.numBabies,
-        finalPrice: req.body.order.total_price
+        numBabies: req.body.order.numBabies
     };
 
     for (var i = 0; i < req.body.order.activities.length; ++i) {
@@ -93,21 +93,54 @@ var createOrderAndPayment = function (req, res, next) {
                 name: "",
                 value: "",
             },
-            total:10, //TODO: hardcoded. The price needs to be the price of the activity or the proportional price paid
-            dates: [req.body.order.activities[i].initDate,  req.body.order.activities[i].endDate]
+            dates: [req.body.order.activities[i].initDate, req.body.order.activities[i].endDate]
         }
         if (req.body.order.selectedExtras[req.body.order.activities[i]]) {
             productOrder.extra = req.body.order.selectedExtras[req.body.order.activities[i]._id].title;
         }
-        order.products.push(productOrder);
+        getProductPrice(req, res, function(price) {
+            if(price < 0) return next(err);
+            else {
+                productOrder.total = price;
+                order.products.push(productOrder);
+            }
+        });
     }
 
-    Order.create(order, function (err, dat) {
-        if (err) return next(err);
-        req.order = dat;
-        //TODO: redirect to the payment platform selected
-        paypal.createPayment(req,res,next);
+    calculatePrice(req, res, function(price) {
+        if(price < 0) return next(this.params[1]);
+        else {
+            order.finalPrice = price;
+            Order.create(order, function (err, dat) {
+                if (err) return next(err);
+                //TODO: redirect to the payment platform & redirect to "thank you" on success
+                req.order = dat;
+                paypal.createPayment(req, res, next);
+            });
+        }
     });
+}
+
+var calculatePrice = function (req, res, next) {
+    var total = 0;
+    if (req.body.order.pack) {
+        packs.getPackPrice(req, res, function(price) {
+            if(price >= 0) {
+                total += price;
+            } else next(this.params[1]);
+        });
+    }
+
+    req.body.order.actvIDs = [];
+    req.body.order.activities.forEach(function(i, v) {
+        req.body.order.actvIDs.push(v._id);
+    });
+    activities.getActivitiesPrice(req, res, function(price) {
+        if(price >= 0) {
+            total += price;
+        } else return next(-1, this.params[1]);
+    });
+    next(total);
 }
 
 module.exports.pay = function(req,res,next) {
@@ -165,8 +198,19 @@ module.exports.cancel = function(req,res,next) {
  /////////// CHECK REQUESTS //////////
  */
 module.exports.checkRequest = function(req, res, next) {
-    if(req.body.facturationInfo && req.body.order && req.body.order.title && req.body.order.numAdults && req.body.order.total_price
+    if (req.body.facturationInfo && req.body.order && req.body.order.title && req.body.order.numAdults && req.body.order.total_price
         && req.body.order.activities && req.body.order.selectedVariations) next();
-    else res.status(400).send({ error: {"code":"400", "name":'Bad request. This resource needs an order.'}});
+    else res.status(400).send({error: {"code": "400", "name": 'Bad request. This resource needs an order.'}});
+}
 
+var getProductPrice = function(req, res, next) {
+    var price = 0;
+    Activity.findById(req.body.order.activities[i]._id, function(err, obj) {
+        if(err) return next(-1, err);
+        else price = obj.price;
+    });
+
+    //Lògica necessaria
+
+    next(price);
 }
