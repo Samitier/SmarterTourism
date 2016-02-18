@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Neopolitan Invoice Email</title>
+    <title>Confirmació de la comanda</title>
     <!-- Designed by https://github.com/kaytcat -->
     <!-- Robot header image designed by Freepik.com -->
 
@@ -97,9 +97,9 @@
         }
     </style>
 </head>
-<body class="body" style="padding:0; margin:0; display:block; background:#ffffff; -webkit-text-size-adjust:none"
+<body class="body" style="padding:0; margin:0; display:block; background:#BBBBBB; -webkit-text-size-adjust:none"
       bgcolor="#ffffff">
-<table align="center" cellpadding="0" cellspacing="0" class="force-full-width" height="100%">
+<table align="center" cellpadding="0" cellspacing="0" width="100%" height="100%">
     <tr>
         <td align="center" valign="top" bgcolor="#ffffff" width="100%">
             <center>
@@ -107,30 +107,26 @@
                     <tr>
                         <td align="center" valign="top">
 
-                            <table style="margin: 0 auto;" cellpadding="0" cellspacing="0" class="force-full-width"
+                            <table style="margin: 0 auto;" cellpadding="0" cellspacing="0" width="100%"
                                    style="margin:0 auto;">
                                 <tr>
-                                    <td style="font-size: 30px; text-align:center;">
+                                    <td style="background-color:#FFFFFF;font-size: 30px; text-align:center;">
                                         <br>
-                                        Awesome Co
+                                        <a href="{{hostRoute}}">
+                                            <img src="{{hostRoute}}/img/main-logo.png" width="200px" alt="Logo Smarter Tourism">
+                                        </a>
                                         <br>
                                         <br>
                                     </td>
                                 </tr>
                             </table>
 
-                            <table style="margin: 0 auto;" cellpadding="0" cellspacing="0" class="force-full-width"
+                            <table style="margin: 0 auto;" cellpadding="0" cellspacing="0" width="100%"
                                    bgcolor="#4dbfbf">
                                 <tr>
-                                    <td>
+                                    <td class="headline" style=" color: #ffffff; font-size: 36px;">
                                         <br>
-                                        <img src="https://www.filepicker.io/api/file/TjmeNWS5Q2SFmtJlUGLf" width="224"
-                                             height="240" alt="robot picture">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="headline">
-                                        Your invoice is ready!
+                                        Confirmació de la comanda
                                     </td>
                                 </tr>
                                 <tr>
@@ -141,15 +137,15 @@
                                                 <tr>
                                                     <td style="color:#187272;">
                                                         <br>
-                                                        Feel free to review your invoice below or click the button to
-                                                        view you account.
+                                                        Hola {{user.name}},<br><br>
+                                                        La teva comanda amb identificador <b>{{order._id}}</b> ja està llesta. A continuació en desglossarem els detalls.<br>
+                                                        Pots anar a l'apartat de les teves comandes per a fer un seguiment de la teva compra.
                                                         <br>
                                                         <br>
                                                     </td>
                                                 </tr>
                                             </table>
                                         </center>
-
                                     </td>
                                 </tr>
                                 <tr>
@@ -162,9 +158,9 @@
                                                 <w:anchorlock/>
                                                 <center>
                                             <![endif]-->
-                                            <a href="http://"
-                                               style="background-color:#178f8f;border-radius:4px;color:#ffffff;display:inline-block;font-family:Helvetica, Arial, sans-serif;font-size:16px;font-weight:bold;line-height:50px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;">My
-                                                Account</a>
+                                            <a href="{{hostRoute}}{{yourOrdersUrl}}"
+                                               style="background-color:#178f8f;border-radius:4px;color:#ffffff;display:inline-block;font-family:Helvetica, Arial, sans-serif;font-size:16px;font-weight:bold;line-height:50px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;">Les teves comandes
+                                            </a>
                                             <!--[if mso]>
                                             </center>
                                             </v:roundrect>
@@ -175,29 +171,28 @@
                                 </tr>
                             </table>
 
-                            <table style="margin: 0 auto;" cellpadding="0" cellspacing="0" class="force-full-width"
-                                   bgcolor="#f5774e">
+                            <table style="background-color: #00838f; margin: 0 auto;" cellpadding="0" cellspacing="0" class="force-full-width"
+                                   bgcolor="#00838f">
                                 <tr>
-                                    <td style="background-color:#f5774e;">
+                                    <td >
 
                                         <center>
                                             <table style="margin:0 auto;" cellspacing="0" cellpadding="0"
                                                    class="force-width-80">
                                                 <tr>
-                                                    <td style="text-align:left; color:#933f24">
+                                                    <td style="text-align:left; color:#333131;">
                                                         <br>
                                                         <br>
-                                                        <span style="color:#ffffff;">Bob Erlicious</span> <br>
-                                                        123 Flower Drive <br>
-                                                        Victoria, BC <br>
-                                                        V9P 2E8 <br>
-                                                        1(250)222-2232
+                                                        <span style="color:#7FE5EF;">{{user.facturationInfo.name}} {{user.facturationInfo.lastname}}</span> <br>
+                                                        {{user.facturationInfo.address}} <br>
+                                                        {{user.facturationInfo.postalCode}} {{user.facturationInfo.city}}<br>
+                                                        {{user.facturationInfo.country}} <br>
                                                     </td>
-                                                    <td style="text-align:right; vertical-align:top; color:#933f24">
+                                                    <td style="text-align:right; vertical-align:top; color:#333131;">
                                                         <br>
                                                         <br>
-                                                        <span style="color:#ffffff;">Invoice: 00234</span> <br>
-                                                        April 3, 2014
+                                                        <span style="color:#7FE5EF;">Identificador: {{order._id}}</span> <br>
+                                                        {{order.dateOfOrder}}
                                                     </td>
                                                 </tr>
                                             </table>
@@ -212,12 +207,12 @@
 
                                                         <table cellspacing="0" cellpadding="0" class="force-full-width">
                                                             <tr>
-                                                                <td style="color:#ffffff; background-color:#ac4d2f; padding: 10px 0px;">
-                                                                    Plan
+                                                                <td style="color:#ffffff; background-color:#02575F; padding: 10px 0px;">
+                                                                    Activitat
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="color:#933f24; padding:10px 0px; background-color: #f7a084;">
+                                                                <td style="color:#02535A; padding:10px 0px; background-color: #18AFBD;">
                                                                     Silver Plan
                                                                 </td>
                                                             </tr>
@@ -229,12 +224,12 @@
 
                                                         <table cellspacing="0" cellpadding="0" class="force-full-width">
                                                             <tr>
-                                                                <td style="color:#ffffff; background-color:#ac4d2f; padding: 10px 0px;">
-                                                                    Period
+                                                                <td style="color:#ffffff; background-color:#02575F; padding: 10px 0px;">
+                                                                    Data
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="color:#933f24; padding:10px 0px; background-color: #f7a084;">
+                                                                <td style="color:#02535A; padding:10px 0px; background-color: #18AFBD;">
                                                                     August
                                                                 </td>
                                                             </tr>
@@ -246,12 +241,12 @@
 
                                                         <table cellspacing="0" cellpadding="0" class="force-full-width">
                                                             <tr>
-                                                                <td style="color:#ffffff; background-color:#ac4d2f; padding: 10px 0px;">
-                                                                    Amount
+                                                                <td style="color:#ffffff; background-color:#02575F; padding: 10px 0px;">
+                                                                    Total
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="color:#933f24; padding:10px 0px; background-color: #f7a084;">
+                                                                <td style="color:#02535A; padding:10px 0px; background-color: #18AFBD;">
                                                                     $50.00
                                                                 </td>
                                                             </tr>
@@ -264,11 +259,10 @@
                                             <table style="margin: 0 auto;" cellspacing="0" cellpadding="0"
                                                    class="force-width-80">
                                                 <tr>
-                                                    <td style="color:#933f24; text-align:left; border-bottom:1px solid #933f24;">
+                                                    <td style="color:#333131; text-align:left; border-bottom:1px solid #333131;">
                                                         <br>
                                                         <br>
-                                                        The amount of $50.00 CAD has been charged on the credit card
-                                                        ending with 0123.
+                                                        El total de  <b>{{order.total_price}}€</b> ha sigut pagat mitjançant {{order.paymentMethod}}.
                                                         <br>
                                                         <br>
                                                     </td>
@@ -279,14 +273,18 @@
                                             <table style="margin: 0 auto;" cellspacing="0" cellpadding="0"
                                                    class="force-width-80">
                                                 <tr>
-                                                    <td style="text-align:left; color:#933f24;">
+                                                    <td style="text-align:center; color:#333131;">
                                                         <br>
-                                                        Thank you for your business. Please <a style="color:#ffffff;"
-                                                                                               href="#">contact us</a>
-                                                        with any questions regarding this invoice.
+                                                        Moltes gràcies per la vostre compra. Per a qualsevol pregunta o reclamació, estem a la vostre
+                                                        disposició a <b>{{contactEmail}}</b> o al telèfon <b>{{contactTelephone}}</b>.<br>
+                                                        Gràcies per confiar amb nosaltres! Bon viatge.
                                                         <br>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:right; color:#333131;">
                                                         <br>
-                                                        Awesome Inc
+                                                        Smarter Tourism Plataforma Integral
                                                         <br>
                                                         <br>
                                                         <br>
@@ -294,15 +292,13 @@
                                                 </tr>
                                             </table>
                                         </center>
-
-
                                     </td>
                                 </tr>
 
 
                             </table>
 
-                            <table style="margin: 0 auto;" cellpadding="0" cellspacing="0" class="force-full-width"
+                            <table style="margin: 0 auto;" width="100%" cellpadding="0" cellspacing="0" class="force-full-width"
                                    bgcolor="#414141" style="margin: 0 auto">
                                 <tr>
                                     <td style="background-color:#414141;">
@@ -326,7 +322,7 @@
                                 </tr>
                                 <tr>
                                     <td style="color:#bbbbbb; font-size:12px;">
-                                        © 2014 All Rights Reserved
+                                        © 2016 Smarter Tourism Plataforma Integral
                                         <br>
                                         <br>
                                     </td>

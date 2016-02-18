@@ -38,10 +38,6 @@ module.exports.create = function (req, res, next) {
     }
 }
 
-module.exports.pay = function (req, res, next) {
-    //here should go the logic to execute after a successful payment (setting the state to processing & sending the emails).
-}
-
 module.exports.sendMessage = function (req, res, next) {
 
 }
@@ -54,19 +50,53 @@ module.exports.complete = function (req, res, next) {
     //maybe automatic
 }
 
-module.exports.cancel = function (req, res, next) {
-    //here should go the logic to execute after a cancelled payment or a cancelation from the provider/client.
+
+module.exports.pay = function(req,res,next) {
+    if(!req.orderId) res.status(400).send({ error: {"code":"400", "name":'Bad request. This resource needs an order.'}});
+    Order.findById(req.orderId, function (err, dat) {
+        if (err) next(err);
+        else {
+            dat.state = "Processing";
+            dat.products.forEach(function (dat) {
+                dat.state = "Processing";
+            });
+            Order.findByIdAndUpdate(req.orderId, dat, function (err, dat) {
+                if (err) next(err);
+                email.sendToId(dat.buyer, "processingOrder", {order:dat, protocol:req.protocol, host: req.get('host')});
+                //TODO: send email to all providers
+                if(req.redirect) res.redirect('/finalitzar?sta=1');
+                else res.json({success:true});
+            });
+        }
+    });
+}
+
+module.exports.cancel = function(req,res,next) {
+    Order.findById(req.query.orderId, function (err, dat) {
+        if (err) next(err);
+        else {
+            dat.state = "Cancelled";
+            dat.products.forEach(function (dat) {
+                dat.state = "Cancelled";
+            });
+            Order.findByIdAndUpdate(req.query.orderId, dat, function (err, dat) {
+                if (err) next(err);
+                //TODO: send cancellation message?
+                else if(req.query.redirect) res.redirect('/finalitzar?sta=0');
+                else res.json({success:true});
+            });
+        }
+    });
 }
 
 
 /*
  /////////// CHECK REQUESTS //////////
  */
-module.exports.checkRequest = function (req, res, next) {
+module.exports.checkRequest = function(req, res, next) {
     if (req.body.facturationInfo && req.body.order && req.body.order.title && req.body.order.numAdults && req.body.order.total_price
         && req.body.order.activities && req.body.order.selectedVariations) next();
     else res.status(400).send({error: {"code": "400", "name": 'Bad request. This resource needs an order.'}});
-
 }
 
 
@@ -101,12 +131,12 @@ var createOrderAndPayment = function (req, res, next) {
         getProductPrice(req, res, function(price) {
             if(price < 0) return next(err);
             else {
+                //TODO: this callback will not work
                 productOrder.total = price;
                 order.products.push(productOrder);
             }
         });
     }
-
     calculatePrice(req, res, function(price) {
         if(price < 0) return next(this.params[1]);
         else {
@@ -119,6 +149,19 @@ var createOrderAndPayment = function (req, res, next) {
             });
         }
     });
+}
+
+var getProductPrice = function(req, res, next) {
+    var price = 0;
+    //TODO: this function throws exception: i is not defined
+    Activity.findById(req.body.order.activities[i]._id, function(err, obj) {
+        if(err) return next(-1, err);
+        else price = obj.price;
+    });
+
+    //Lògica necessaria
+
+    next(price);
 }
 
 var calculatePrice = function (req, res, next) {
@@ -139,78 +182,7 @@ var calculatePrice = function (req, res, next) {
         if(price >= 0) {
             total += price;
         } else return next(-1, this.params[1]);
+        //TODO: this calback will not work
     });
     next(total);
-}
-
-module.exports.pay = function(req,res,next) {
-    if(!req.orderId) res.status(400).send({ error: {"code":"400", "name":'Bad request. This resource needs an order.'}});
-    Order.findById(req.orderId, function (err, dat) {
-        if (err) next(err);
-        else {
-            dat.state = "Processing";
-            dat.products.forEach(function (dat) {
-                dat.state = "Processing";
-            });
-            Order.findByIdAndUpdate(req.orderId, dat, function (err, dat) {
-                if (err) next(err);
-                email.sendToId(dat.buyer, "processingOrder", dat);
-                //TODO: send email to all providers
-                if(req.redirect) res.redirect('/finalitzar?sta=1');
-                else res.json({success:true});
-            });
-        }
-    });
-}
-
-module.exports.sendMessage = function(req,res,next) {
-
-}
-
-module.exports.accept = function(req,res,next) {
-
-}
-
-module.exports.complete = function(req,res,next) {
-    //maybe automatic
-}
-
-module.exports.cancel = function(req,res,next) {
-    Order.findById(req.query.orderId, function (err, dat) {
-        if (err) next(err);
-        else {
-            dat.state = "Cancelled";
-            dat.products.forEach(function (dat) {
-                dat.state = "Cancelled";
-            });
-            Order.findByIdAndUpdate(req.query.orderId, dat, function (err, dat) {
-                if (err) next(err);
-                //TODO: send cancellation message?
-                else if(req.query.redirect) res.redirect('/finalitzar?sta=0');
-                else res.json({success:true});
-            });
-        }
-    });
-}
-
-
-/*
- /////////// CHECK REQUESTS //////////
- */
-module.exports.checkRequest = function(req, res, next) {
-    if (req.body.facturationInfo && req.body.order && req.body.order.title && req.body.order.numAdults && req.body.order.total_price
-        && req.body.order.activities && req.body.order.selectedVariations) next();
-    else res.status(400).send({error: {"code": "400", "name": 'Bad request. This resource needs an order.'}});
-}
-
-var getProductPrice = function(req, res, next) {
-    var price = 0;
-    Activity.findById(req.body.order.activities[i]._id, function(err, obj) {
-        if(err) return next(-1, err);
-        else price = obj.price;
-    });
-
-    //Lògica necessaria
-
-    next(price);
 }

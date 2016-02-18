@@ -24,11 +24,19 @@ app.use('/api', api);
 //TODO: (debug) This must return a way of showing the emails to the people for the buttons "show on  web"
 app.use('/mails/', function(req, res) {
     var swig  = require('swig');
-    var a = swig.renderFile('templates/confirmation-email.html', {
+    /*var a = swig.renderFile('templates/confirmation-email.html', {
         name: 'Paquito Martinez',
         hostRoute: req.protocol + '://' + req.get('host')+ "/",
         confirmationUrl: "",
         morePacksUrl: 'els-nostres-paquets'
+    });*/
+    var a = swig.renderFile('templates/order-completed.html', {
+        user: {name:"Blai", facturationInfo:{name:"Blai", lastname:"Samitier", address:"Valladolid 26 3r 1a", postalCode:"08014", city:"Barcelona", country:"Spain"}},
+        order: {_id:"aF34esw2Q", total_price:"30.00", dateOfOrder:"26-03-2016", paymentMethod:"Targeta de crèdit"},
+        hostRoute: req.protocol + '://' + req.get('host')+ "/",
+        yourOrdersUrl:"les-teves-comandes",
+        contactEmail:"info@smartertourism.com",
+        contactTelephone:"93 345 56 67"
     });
     res.end(a);
 });
