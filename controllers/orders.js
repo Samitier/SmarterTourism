@@ -27,7 +27,6 @@ module.exports.create = function (req, res, next) {
     }
     else {
         //if the user is not registered we create him.
-
         users.newUser(req, res, function (err, obj) {
             if (err) return next(err);
             else {
@@ -74,14 +73,14 @@ module.exports.checkRequest = function (req, res, next) {
  /////////// PRIVATE FUNCTIONS //////////
  */
 var createOrderAndPayment = function (req, res, next) {
+
     var order = {
         title: req.body.order.title,
         buyer: req.body.buyerId,
         products: [],
         numAdults: req.body.order.numAdults,
         numChildren: req.body.order.numChildren,
-        numBabies: req.body.order.numBabies,
-        finalPrice: calculatePrice(req, res, next)
+        numBabies: req.body.order.numBabies
     };
 
     for (var i = 0; i < req.body.order.activities.length; ++i) {
@@ -107,11 +106,17 @@ var createOrderAndPayment = function (req, res, next) {
         });
     }
 
-    Order.create(order, function (err, dat) {
-        if (err) return next(err);
-        //TODO: redirect to the payment platform & redirect to "thank you" on success
-        req.order = dat;
-        paypal.createPayment(req, res, next);
+    calculatePrice(req, res, function(price) {
+        if(price < 0) return next(this.params[1]);
+        else {
+            order.finalPrice = price;
+            Order.create(order, function (err, dat) {
+                if (err) return next(err);
+                //TODO: redirect to the payment platform & redirect to "thank you" on success
+                req.order = dat;
+                paypal.createPayment(req, res, next);
+            });
+        }
     });
 }
 
@@ -132,9 +137,9 @@ var calculatePrice = function (req, res, next) {
     activities.getActivitiesPrice(req, res, function(price) {
         if(price >= 0) {
             total += price;
-        } else next(this.params[1]);
+        } else return next(-1, this.params[1]);
     });
-    return total;
+    next(total);
 }
 
 var getProductPrice = function(req, res, next) {
