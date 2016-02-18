@@ -2,6 +2,7 @@ var transport = require('../config/email-config');
 var User = require("../models/User");
 var swig  = require('swig');
 
+
 module.exports.send = function(to, mailTemplate, params) {
     var email = {from:mailTemplates[mailTemplate].from, to:to,
         subject:mailTemplates[mailTemplate].subject, html:mailTemplates[mailTemplate].message(params), text:mailTemplates[mailTemplate].plainText(params)};
@@ -31,6 +32,7 @@ mailTemplates.confirmEmail = {
     from: 'Smarter Tourism <noreply@smartertourism.es>',
     subject: 'Benvingut a Smarter Tourism. Confirmeu el vostre email.',
     message: function (params) {
+        //{product.dates[0].getDate()}}/{{product.dates[0].getMonth()+1}}/{{product.dates[0].getFullYear()}}
         return swig.renderFile('templates/confirmation-email.html', {
             name: params.name,
             hostRoute: params.protocol + '://' + params.host + "/",
@@ -57,17 +59,17 @@ mailTemplates.processingOrder = {
         return swig.renderFile('templates/order-completed.html', {
             user: params.user,
             order: params.order,
-            hostRoute: req.protocol + '://' + req.get('host')+ "/",
+            hostRoute: params.protocol + '://' + params.host + "/",
             yourOrdersUrl:"les-teves-comandes",
             contactEmail:"info@smartertourism.com",
             contactTelephone:"93 345 56 67"
         });
     },
-    plainText:    function (params) {
+    plainText: function (params) {
         return "Hola "+ params.user.name +","+
             "Moltes gràcies per viatjar amb nosaltres." +
             "Estem processant la teva comanda amb identificador #" + params.order._id +". Per un resum de la teva compra ves a l'apartat de les teves comandes a (" +
-            req.protocol + '://' + req.get('host')+ "/les-teves-comandes)" +
+            params.protocol + '://' + params.host + "/les-teves-comandes)" +
             "Gràcies i bon viatge.";
     }
 };

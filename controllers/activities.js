@@ -47,16 +47,7 @@ module.exports.delete = function(req, res, next) {
 };
 
 module.exports.getActivitiesPrice = function(req, res, next) {
-    var total = 0;
-    Activity.find( {_id: {$in: req.body.order.actvIDs}}, function(err, acts) {
-        if(err) return next(-1, err);
-        else {
-            acts.forEach(function(i, v) {
-                total += v.price;
-            });
-        }
-    });
-    next(total);
+    Activity.find( {_id: {$in: req.body.order.activitiesIDs}}, next);
 }
 
 //Check Requests

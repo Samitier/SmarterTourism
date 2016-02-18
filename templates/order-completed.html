@@ -212,9 +212,11 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
+                                                                {% for product in order.products %}
                                                                 <td style="color:#02535A; padding:10px 0px; background-color: #18AFBD;">
-                                                                    Silver Plan
+                                                                    {{product.title}}
                                                                 </td>
+                                                                {% endfor %}
                                                             </tr>
                                                         </table>
                                                     </td>
@@ -229,9 +231,11 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
+                                                                {% for product in order.products %}
                                                                 <td style="color:#02535A; padding:10px 0px; background-color: #18AFBD;">
-                                                                    August
+                                                                    {{product.dates[0]}}
                                                                 </td>
+                                                                {% endfor %}
                                                             </tr>
                                                         </table>
                                                     </td>
@@ -246,9 +250,11 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
+                                                                {% for product in order.products %}
                                                                 <td style="color:#02535A; padding:10px 0px; background-color: #18AFBD;">
-                                                                    $50.00
+                                                                    {{product.total}}€
                                                                 </td>
+                                                                {% endfor %}
                                                             </tr>
                                                         </table>
                                                     </td>
@@ -262,7 +268,7 @@
                                                     <td style="color:#333131; text-align:left; border-bottom:1px solid #333131;">
                                                         <br>
                                                         <br>
-                                                        El total de  <b>{{order.total_price}}€</b> ha sigut pagat mitjançant {{order.paymentMethod}}.
+                                                        El total de  <b>{{order.finalPrice}}€</b> ha sigut pagat mitjançant {{order.paymentMethod}}.
                                                         <br>
                                                         <br>
                                                     </td>

@@ -5,7 +5,7 @@ var paypal = require("./paypal");
 var email = require('../utils/email');
 var users = require("./users");
 var packs = require("./packs");
-var activities = require("./activities");
+var Activities = require("./activities");
 
 module.exports.getAll = function (req, res, next) {
     Order.find({buyer: req.decoded._id}, function (err, obj) {
@@ -114,75 +114,51 @@ var createOrderAndPayment = function (req, res, next) {
         numBabies: req.body.order.numBabies
     };
 
-    for (var i = 0; i < req.body.order.activities.length; ++i) {
-        var productOrder = {
-            seller: req.body.order.activities[i].seller,
-            title: req.body.order.activities[i].title,
-            variation: req.body.order.selectedVariations[req.body.order.activities[i]._id].title,
-            discount: {
-                name: "",
-                value: "",
-            },
-            dates: [req.body.order.activities[i].initDate, req.body.order.activities[i].endDate]
-        }
-        if (req.body.order.selectedExtras[req.body.order.activities[i]]) {
-            productOrder.extra = req.body.order.selectedExtras[req.body.order.activities[i]._id].title;
-        }
-        getProductPrice(req, res, function(price) {
-            if(price < 0) return next(err);
-            else {
-                //TODO: this callback will not work
-                productOrder.total = price;
+    req.body.order.activitiesIDs = [];
+    req.body.order.activities.forEach(function(a) {
+        req.body.order.activitiesIDs.push(a._id);
+    });
+    Activities.getActivitiesPrice(req, res, function(err, dat) {
+        if(err) next(err);
+        else {
+            var totalPrice = 0;
+            for (var i = 0; i < req.body.order.activities.length; ++i) {
+                for (var j = 0; j < dat.length; ++j) {
+                    if(dat[j]._id === req.body.order.activities[i]._id) {
+                        req.body.order.activities[i].total = dat[j].price;
+                        break;
+                    }
+                };
+                var productOrder = {
+                    seller: req.body.order.activities[i].seller,
+                    title: req.body.order.activities[i].title,
+                    variation: req.body.order.selectedVariations[req.body.order.activities[i]._id].title,
+                    discount: {
+                        name: "",
+                        value: "",
+                    },
+                    total: req.body.order.activities[i].total,
+                    dates: [req.body.order.activities[i].initDate, req.body.order.activities[i].endDate]
+                }
+                if (req.body.order.selectedExtras[req.body.order.activities[i]]) {
+                    //TODO: might be more than one extra selected
+                    productOrder.extra = req.body.order.selectedExtras[req.body.order.activities[i]._id].title;
+                }
+                totalPrice += productOrder.total; //TODO: plus variation price, plus extras price, plus num travelers
                 order.products.push(productOrder);
             }
-        });
-    }
-    calculatePrice(req, res, function(price) {
-        if(price < 0) return next(this.params[1]);
-        else {
-            order.finalPrice = price;
-            Order.create(order, function (err, dat) {
-                if (err) return next(err);
-                //TODO: redirect to the payment platform & redirect to "thank you" on success
-                req.order = dat;
-                paypal.createPayment(req, res, next);
-            });
+            if(totalPrice != req.body.order.total_price) {
+                res.status(400).send({error: {"code": "400", "name": 'Bad request. There was a problem with your data.'}});
+            }
+            else {
+                order.finalPrice = totalPrice;
+                Order.create(order, function (err, dat) {
+                    if (err) return next(err);
+                    //TODO: redirect to the payment platform & redirect to "thank you" on success
+                    req.order = dat;
+                    paypal.createPayment(req, res, next);
+                });
+            }
         }
     });
-}
-
-var getProductPrice = function(req, res, next) {
-    var price = 0;
-    //TODO: this function throws exception: i is not defined
-    Activity.findById(req.body.order.activities[i]._id, function(err, obj) {
-        if(err) return next(-1, err);
-        else price = obj.price;
-    });
-
-    //Lògica necessaria
-
-    next(price);
-}
-
-var calculatePrice = function (req, res, next) {
-    var total = 0;
-    if (req.body.order.pack) {
-        packs.getPackPrice(req, res, function(price) {
-            if(price >= 0) {
-                total += price;
-            } else next(this.params[1]);
-        });
-    }
-
-    req.body.order.actvIDs = [];
-    req.body.order.activities.forEach(function(i, v) {
-        req.body.order.actvIDs.push(v._id);
-    });
-    activities.getActivitiesPrice(req, res, function(price) {
-        if(price >= 0) {
-            total += price;
-        } else return next(-1, this.params[1]);
-        //TODO: this calback will not work
-    });
-    next(total);
 }
