@@ -6,7 +6,7 @@ var path = require('path');
 var User = require("../models/User");
 
 module.exports.login = function(req,res,next) {
-    User.findOne({email: req.body.email},'name email password' , function (err, user) {
+    User.findOne({email: req.body.email, state: {$ne: "Inactive"}},'name email password' , function (err, user) {
         if (err) {
             return next(err);
         }

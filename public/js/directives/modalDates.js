@@ -5,8 +5,16 @@ module.exports = function() {
             var modal = $(elem).children().first();
 
             modal.openModal({
-                dismissible: false
+                dismissible: true,
+                complete: scope.onModalClose
             });
+        },
+        controller: function($scope) {
+            $scope.onModalClose = function() {
+                if(!$scope.order.initDate || !$scope.order.endDate) {
+                    window.location.href ="/";
+                }
+            }
         }
     };
 }
