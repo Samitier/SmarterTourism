@@ -45,7 +45,7 @@
                 <div class="col s12">
                     <div class="section">
                         <h5>Valoració mitja</h5>
-                        <p>[valoració mitja per extrelles]</p>
+                        <p><span class="stars">{{avg}}</span></p>
                     </div>
                     <div class="divider"></div>
                     <div class="section">
@@ -80,7 +80,16 @@
     </div>
 </div>
 <script>
+    $.fn.extend({
+        stars: function () {
+            return $(this).each(function () {
+                $(this).html($('<span />').width(Math.max(0, (Math.min(5, parseFloat($(this).html())))) * 16));
+            });
+        }
+    });
+
     $(document).ready(function(){
         $('ul.tabs').tabs();
+        $('span.stars').stars();
     });
 </script>

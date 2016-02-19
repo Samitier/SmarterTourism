@@ -25,7 +25,15 @@ var ActivitySchema = new mongoose.Schema({
     variations: [Variation],
     extras: [Extra],
     timetable: String,
-    coords: [Number]
+    coords: [Number],
+    comments: {
+        user:{
+            name: String,
+            id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+        },
+        message: String,
+        rating: Number
+    },
 });
 
 module.exports = mongoose.model('Activity', ActivitySchema);

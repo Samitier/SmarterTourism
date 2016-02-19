@@ -17,4 +17,5 @@ require('angular').module('SmarterTourism')
     .directive('ptTabs', require('./ptTabs'))
     .directive('addActivity', require('./addActivityModal'))
     .directive('modalDates', ['$location', require('./modalDates')])
-    .directive('categoriesSelect', require('./categoriesSelect'));
+    .directive('categoriesSelect', require('./categoriesSelect'))
+    .directive('starRating', require('./starRating'));
