@@ -36,9 +36,9 @@ var mailTemplates = {};
 
 //Confirm email. Parameters: name -> user name, confirmationUrl -> mail confirmation url.
 mailTemplates.confirmEmail = function (params) {
+    params.order.paymentMethod = params.order.paymentMethod==="paypal" ? "Paypal" : "Targeta de crèdit";
     return {
         subject: 'Benvingut a Smarter Tourism. Confirmeu el vostre email.',
-        //{product.dates[0].getDate()}}/{{product.dates[0].getMonth()+1}}/{{product.dates[0].getFullYear()}}
         html: swig.renderFile('templates/confirmation-email.html', {
             name: params.name,
             hostRoute: params.protocol + '://' + params.host + "/",
@@ -57,6 +57,7 @@ mailTemplates.confirmEmail = function (params) {
 
 //Processing order. Params: user -> all user model, order-> all order model
 mailTemplates.processingOrder = function (params) {
+    params.order.paymentMethod = params.order.paymentMethod==="paypal" ? "Paypal" : "Targeta de crèdit";
     return {
         subject: 'Resum de la vostra comanda amb identificador ' + params.order._id,
         html: swig.renderFile('templates/order-completed.html', {
@@ -78,6 +79,7 @@ mailTemplates.processingOrder = function (params) {
 
 //New order. Params: user -> all user model, order-> all order model
 mailTemplates.newOrder = function (params) {
+    params.order.paymentMethod = params.order.paymentMethod==="paypal" ? "Paypal" : "Targeta de crèdit";
     return {
         subject: 'Avís de nova reserva a "' + params.product.title + '"',
         html: swig.renderFile('templates/notification-new-order.html', {

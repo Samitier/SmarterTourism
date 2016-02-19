@@ -192,7 +192,7 @@
                                                         <br>
                                                         <br>
                                                         <span style="color:#7FE5EF;">Identificador: {{order._id}}</span> <br>
-                                                        {{order.dateOfOrder}}
+                                                        {{order.dateOfOrder | date('d-m-Y')}}
                                                     </td>
                                                 </tr>
                                             </table>
@@ -233,7 +233,7 @@
                                                             <tr>
                                                                 {% for product in order.products %}
                                                                 <td style="color:#02535A; padding:10px 0px; background-color: #18AFBD;">
-                                                                    {{product.dates[0]}}
+                                                                    {{product.dates[0]| date('d-m-Y')}}
                                                                 </td>
                                                                 {% endfor %}
                                                             </tr>
