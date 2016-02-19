@@ -125,6 +125,10 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope, $locati
     }
 
     this.checkout = function() {
+        $("button[type=submit]").attr("disabled", "true");
+        $("button[type=submit]").addClass("disabled");
+        $("button[type=submit] span").toggleClass("hidden");
+
         var order = {};
         order.initDate = $scope.days[0];
         order.endDate = $scope.days[$scope.days.length-1];

@@ -13,6 +13,10 @@ module.exports = function($routeParams, SmarterAPI, $location, CheckoutOrder, $s
     };
 
     this.sendAction = function(orderDate) {
+        $("button[type=submit]").attr("disabled", "true");
+        $("button[type=submit]").addClass("disabled");
+        $("button[type=submit] span").toggleClass("hidden");
+
         CheckoutOrder.setOrderDate(this.activity, $scope.order, orderDate);
         $location.path('/detalls-comanda');
     };

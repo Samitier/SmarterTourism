@@ -32,6 +32,10 @@ module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope,
 
     this.sendAction = function() {
         if($scope.facturationForm.$valid) {
+            $("button[type=submit]").attr("disabled", "true");
+            $("button[type=submit]").addClass("disabled");
+            $("button[type=submit] span").toggleClass("hidden");
+
             var data = {facturationInfo:$scope.facturationForm.user,  order:$scope.order};
             if($scope.clientForm.user) data.clientInfo = $scope.clientForm.user;
             SmarterAPI.createOrder(data).then(function(dat) {
