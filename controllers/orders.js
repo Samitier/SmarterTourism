@@ -118,6 +118,7 @@ var createOrderAndPayment = function (req, res, next) {
     req.body.order.activities.forEach(function(a) {
         req.body.order.activitiesIDs.push(a._id);
     });
+
     Activities.getActivitiesPrice(req, res, function(err, dat) {
         if(err) next(err);
         else {
@@ -154,9 +155,11 @@ var createOrderAndPayment = function (req, res, next) {
                 order.finalPrice = totalPrice;
                 Order.create(order, function (err, dat) {
                     if (err) return next(err);
-                    //TODO: redirect to the payment platform & redirect to "thank you" on success
                     req.order = dat;
-                    paypal.createPayment(req, res, next);
+                    if(req.body.paymentMethod == "paypal") {
+                            paypal.createPayment(req, res, next);
+                    }
+                    else res.status(400).send({error: {"code": "400", "name": 'Error. TPV service is unavaliable.'}});
                 });
             }
         }

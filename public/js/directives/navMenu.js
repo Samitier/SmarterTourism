@@ -4,7 +4,7 @@
  */
 module.exports = function() {
     return {
-        restrict: 'E',
+        restrict: 'A',
         templateUrl: '/views/directives/navMenu.html',
         controller: function() {
             this.menuOptions = [

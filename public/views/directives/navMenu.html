@@ -1,22 +1,20 @@
-<header>
-    <nav>
-        <div class="nav-wrapper">
-            <a href="/" class="brand-logo"><img style="width:95px;margin:10px;" src="/img/main-logo-s.png"></a>
-            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+<nav>
+    <div class="nav-wrapper">
+        <a href="/" class="brand-logo"><img style="width:95px;margin:10px;" src="/img/main-logo-s.png"></a>
+        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 
-            <ul class="right hide-on-med-and-down">
-                <li ng-repeat="option in navMenuCtrl.menuOptions">
-                    <a ng-href="{{option.url}}">{{option.name}}</a>
-                </li>
-                <user-menu dropdown-id="desktop-dropdown" username="$root.userAuthenticated"></user-menu>
-            </ul>
+        <ul class="right hide-on-med-and-down">
+            <li ng-repeat="option in navMenuCtrl.menuOptions">
+                <a ng-href="{{option.url}}">{{option.name}}</a>
+            </li>
+            <user-menu dropdown-id="desktop-dropdown" username="$root.userAuthenticated"></user-menu>
+        </ul>
 
-            <ul class="side-nav" id="mobile-demo">
-                <li ng-repeat="option in navMenuCtrl.menuOptions">
-                    <a ng-href="{{option.url}}">{{option.name}}</a>
-                </li>
-                <user-menu dropdown-id="mobile-dropdown" username="$root.userAuthenticated"></user-menu>
-            </ul>
-        </div>
-    </nav>
-</header>
+        <ul class="side-nav" id="mobile-demo">
+            <li ng-repeat="option in navMenuCtrl.menuOptions">
+                <a ng-href="{{option.url}}">{{option.name}}</a>
+            </li>
+            <user-menu dropdown-id="mobile-dropdown" username="$root.userAuthenticated"></user-menu>
+        </ul>
+    </div>
+</nav>
