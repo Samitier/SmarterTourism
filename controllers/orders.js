@@ -60,10 +60,12 @@ module.exports.pay = function(req,res,next) {
             dat.products.forEach(function (dat) {
                 dat.state = "Processing";
             });
-            Order.findByIdAndUpdate(req.orderId, dat, function (err, dat) {
+            Order.findByIdAndUpdate(req.orderId, dat).populate('buyer').exec(function(err, dat) {
                 if (err) next(err);
-                email.sendToId(dat.buyer, "processingOrder", {order:dat, protocol:req.protocol, host: req.get('host')});
-                //TODO: send email to all providers
+                email.send(dat.buyer.email, "processingOrder", {order:dat, protocol:req.protocol, host: req.get('host')});
+                dat.products.forEach(function(product) {
+                    email.sendToId(product.seller, "newOrder", {order:dat, product: product, protocol:req.protocol, host: req.get('host')});
+                });
                 if(req.redirect) res.redirect('/finalitzar?sta=1');
                 else res.json({success:true});
             });
