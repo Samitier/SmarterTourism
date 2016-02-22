@@ -25,7 +25,7 @@ var PackSchema = new mongoose.Schema({
         user:{
             name: String,
             id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-            image: {type:String, default:"placeholder.jpg"}
+            image: {type:String, default:"placeholder.png"}
         },
         message: String,
         rating: Number

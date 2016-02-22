@@ -1,4 +1,4 @@
-<pt-slider fullwidth="true" slider-height:"350" images=""></pt-slider>
+<pt-slider fullwidth="true" slider-height="350" images=""></pt-slider>
 <div class="container">
     <div class="row">
         <div class="col s9">
@@ -52,7 +52,7 @@
                         <h5>Comentaris</h5>
                         <ul class="collection comment-list">
                             <li class="collection-item avatar" ng-repeat="comment in activity.comments">
-                                <img src="/img/users/John_Doe.jpg" alt="" class="circle responsive-img  z-depth-1">
+                                <img src="/img/users/{{comment.user.image}}" alt="" class="circle responsive-img  z-depth-1">
                                 <a ng-href="/perfil/{{comment.user.id}}"><span>{{comment.user.name}}</span></a>
                                 <p>{{comment.message}}</p>
                             </li>
