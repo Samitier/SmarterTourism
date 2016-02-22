@@ -3,6 +3,7 @@ var orderCtrl = require('./orders');
 
 module.exports.createPayment = function (req, res, next) {
     var token = req.body.token || req.query.stAccessToken || req.headers['st-access-token'];
+    if(!token) token = auth.getUserToken(req.order.buyer);
     var paymentInfo = createPaymentInfo(req, token);
     paypal.payment.create(paymentInfo, function (error, payment) {
         if (error)  next(JSON.stringify(error));

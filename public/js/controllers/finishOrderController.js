@@ -6,7 +6,10 @@
 module.exports = function(CheckoutOrder, APIAuth, $location, $scope, $routeParams) {
     this.init = function() {
         $scope.order = CheckoutOrder.getOrder();
-        if ($scope.order.state != 'finished' || !APIAuth.isLoggedIn()) {
+        if(!$scope.order) {
+            $location.path('/');
+        }
+        else if ($scope.order.state != 'finished') {
             $location.path('/'); //we redirect if the user is trying to enter here without a finished order
         }
         else if ($routeParams.sta==0) {

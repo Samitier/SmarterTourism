@@ -94,6 +94,12 @@ module.exports.confirmEmail = function(req,res,next) {
     }
 }
 
+module.getToken = function(userid) {
+    return jwt.sign({_id:userid}, process.env.SECRET, {
+        expiresIn: (process.env.TOKENEXPIRATION||"14d")
+    });
+}
+
 module.exports.isProvider = function(req,res,next) {
     //si el usuari de req.decoded.id és de tipus "Provider", "Agency" o "Admin"
     //deixo passar la request a next, sinó retorno un 403
