@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Confirmació de la comanda</title>
+    <title>Avís de nova reserva</title>
     <!-- Designed by https://github.com/kaytcat -->
     <!-- Robot header image designed by Freepik.com -->
 
@@ -126,7 +126,7 @@
                                 <tr>
                                     <td class="headline" style=" color: #ffffff; font-size: 36px;">
                                         <br>
-                                        Confirmació de la comanda
+                                        Nova reserva realitzada!
                                     </td>
                                 </tr>
                                 <tr>
@@ -138,8 +138,8 @@
                                                     <td style="color:#187272;">
                                                         <br>
                                                         Hola {{user.name}},<br><br>
-                                                        La teva comanda amb identificador <b>{{order._id}}</b> ja està llesta. A continuació en desglossarem els detalls.<br>
-                                                        Pots anar a l'apartat de les teves comandes per a fer un seguiment de la teva compra.
+                                                        Has rebut una nova reserva amb identificador <b>{{order._id}}</b>. A continuació en desglossarem els detalls.<br>
+                                                        Pots anar a l'apartat de les teves reserves per a fer-ne un seguiment i comunicar-te amb el teu client.
                                                         <br>
                                                         <br>
                                                     </td>
@@ -159,7 +159,7 @@
                                                 <center>
                                             <![endif]-->
                                             <a href="{{hostRoute}}{{yourOrdersUrl}}"
-                                               style="background-color:#178f8f;border-radius:4px;color:#ffffff;display:inline-block;font-family:Helvetica, Arial, sans-serif;font-size:16px;font-weight:bold;line-height:50px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;">Les teves comandes
+                                               style="background-color:#178f8f;border-radius:4px;color:#ffffff;display:inline-block;font-family:Helvetica, Arial, sans-serif;font-size:16px;font-weight:bold;line-height:50px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;">Les teves reserves
                                             </a>
                                             <!--[if mso]>
                                             </center>
@@ -183,16 +183,15 @@
                                                     <td style="text-align:left; color:#333131;">
                                                         <br>
                                                         <br>
-                                                        <span style="color:#7FE5EF;">{{user.facturationInfo.name}} {{user.facturationInfo.lastname}}</span> <br>
-                                                        {{user.facturationInfo.address}} <br>
-                                                        {{user.facturationInfo.postalCode}} {{user.facturationInfo.city}}<br>
-                                                        {{user.facturationInfo.country}} <br>
+                                                        <span style="color:#7FE5EF;">Informació del client</span> <br>
+                                                        {{order.buyer.name}} {{order.buyer.lastname}}<br>
+                                                        {{order.buyer.email}}<br>
                                                     </td>
                                                     <td style="text-align:right; vertical-align:top; color:#333131;">
                                                         <br>
                                                         <br>
                                                         <span style="color:#7FE5EF;">Identificador: {{order._id}}</span> <br>
-                                                        {{order.dateOfOrder | date('d-m-Y')}}
+                                                        Data de compra: {{order.dateOfOrder | date('d-m-Y')}}
                                                     </td>
                                                 </tr>
                                             </table>
@@ -212,11 +211,11 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                {% for product in order.products %}
                                                                 <td style="color:#02535A; padding:10px 0px; background-color: #18AFBD;">
-                                                                    {{product.title}}
+                                                                    {{activity.title}}
+                                                                    ({{activity.variation}})
+                                                                    {% if activity.extra %}+ {{activity.extra}} {% endif %}
                                                                 </td>
-                                                                {% endfor %}
                                                             </tr>
                                                         </table>
                                                     </td>
@@ -227,15 +226,35 @@
                                                         <table cellspacing="0" cellpadding="0" class="force-full-width">
                                                             <tr>
                                                                 <td style="color:#ffffff; background-color:#02575F; padding: 10px 0px;">
-                                                                    Data
+                                                                    Data reserva
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                {% for product in order.products %}
                                                                 <td style="color:#02535A; padding:10px 0px; background-color: #18AFBD;">
-                                                                    {{product.dates[0] | date('d-m-Y')}}
+                                                                    {% if activity.dates[0]  == activity.dates[1] %}
+                                                                    {{activity.dates[0] | date('d-m-Y')}}
+                                                                    {% else %}
+                                                                    De {{activity.dates[0] | date('d-m-Y')}}
+                                                                    a {{activity.dates[0] | date('d-m-Y')}}
+                                                                    {% endif %}
                                                                 </td>
-                                                                {% endfor %}
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    <td class="mobile-block">
+                                                        <br>
+                                                        <br>
+
+                                                        <table cellspacing="0" cellpadding="0" class="force-full-width">
+                                                            <tr>
+                                                                <td style="color:#ffffff; background-color:#02575F; padding: 10px 0px;">
+                                                                    Persones
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="color:#02535A; padding:10px 0px; background-color: #18AFBD;">
+                                                                    {{order.numAdults}} <br>
+                                                                </td>
                                                             </tr>
                                                         </table>
                                                     </td>
@@ -250,11 +269,9 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                {% for product in order.products %}
                                                                 <td style="color:#02535A; padding:10px 0px; background-color: #18AFBD;">
-                                                                    {{product.total}}€
+                                                                    {{activity.total}}€ <br>
                                                                 </td>
-                                                                {% endfor %}
                                                             </tr>
                                                         </table>
                                                     </td>

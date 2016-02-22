@@ -60,10 +60,12 @@ module.exports.pay = function(req,res,next) {
             dat.products.forEach(function (dat) {
                 dat.state = "Processing";
             });
-            Order.findByIdAndUpdate(req.orderId, dat, function (err, dat) {
+            Order.findByIdAndUpdate(req.orderId, dat).populate('buyer').exec(function(err, dat) {
                 if (err) next(err);
-                email.sendToId(dat.buyer, "processingOrder", {order:dat, protocol:req.protocol, host: req.get('host')});
-                //TODO: send email to all providers
+                email.send(dat.buyer.email, "processingOrder", {order:dat, protocol:req.protocol, host: req.get('host')});
+                dat.products.forEach(function(product) {
+                    email.sendToId(product.seller, "newOrder", {order:dat, product: product, protocol:req.protocol, host: req.get('host')});
+                });
                 if(req.redirect) res.redirect('/finalitzar?sta=1');
                 else res.json({success:true});
             });
@@ -118,6 +120,7 @@ var createOrderAndPayment = function (req, res, next) {
     req.body.order.activities.forEach(function(a) {
         req.body.order.activitiesIDs.push(a._id);
     });
+
     Activities.getActivitiesPrice(req, res, function(err, dat) {
         if(err) next(err);
         else {
@@ -152,11 +155,14 @@ var createOrderAndPayment = function (req, res, next) {
             }
             else {
                 order.finalPrice = totalPrice;
+                order.paymentMethod = req.body.paymentMethod;
                 Order.create(order, function (err, dat) {
                     if (err) return next(err);
-                    //TODO: redirect to the payment platform & redirect to "thank you" on success
                     req.order = dat;
-                    paypal.createPayment(req, res, next);
+                    if(req.body.paymentMethod == "paypal") {
+                            paypal.createPayment(req, res, next);
+                    }
+                    else res.status(400).send({error: {"code": "400", "name": 'Error. TPV service is unavaliable.'}});
                 });
             }
         }
