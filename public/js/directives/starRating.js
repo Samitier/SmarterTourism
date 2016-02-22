@@ -8,30 +8,36 @@ module.exports = function () {
         scope: {
             comments: "="
         },
-        link: function () {
-            $('span.stars').stars();
+        link: function (scope) {
         },
         controller: function($scope) {
-            //calculate average rating
-            if($scope.comments) {
-                var suma = 0;
-                $scope.comments.forEach(function (i, v) {
-                    suma += v.rating;
-                });
-                $scope.avg = suma / ($scope.comments.length);
-            } else $scope.avg = 0.0;
+            setTimeout(function() {
+                //calculate average rating
+                if($scope.comments) {
+                    var suma = 0;
+                    $scope.comments.forEach(function (v, i) {
+                        suma += v.rating;
+                    });
+                    $scope.avg = suma / ($scope.comments.length);
+                } else $scope.avg = -1.0;
+                $('span.stars').stars();
+            }, 1000);
 
             $.fn.extend({
                 stars: function () {
                     return $(this).each(function() {
                         // Get the value
                         var val = parseFloat($scope.avg);
-                        // Make sure that the value is in 0 - 5 range, multiply to get width
-                        var size = Math.max(0, (Math.min(5, val))) * 16;
-                        // Create stars holder
-                        var $span = $('<span />').css({ 'width': size+'px' });
-                        // Replace the numerical value with stars
-                        $(this).html($span);
+                        if(isNaN(val)) {
+                            $(this).parent().html("<p>No s\'ha trobat cap puntuació.");
+                        } else {
+                            // Make sure that the value is in 0 - 5 range, multiply to get width
+                            var size = Math.max(0, (Math.min(5, val))) * 16;
+                            // Create stars holder
+                            var $span = $('<span />').css({'width': size + 'px'});
+                            // Replace the numerical value with stars
+                            $(this).html($span);
+                        }
                     });
                 }
             });
