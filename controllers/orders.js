@@ -116,7 +116,7 @@ var createOrderAndPayment = function (req, res, next) {
         numBabies: req.body.order.numBabies
     };
 
-    Activities.getActivitiesPriceFromOrder(req, res, function(err, dat) {
+    Activities.getActivitiesPriceFromOrder(req, res, function(err, total_price) {
         if(err) next(err);
         else {
             var totalPrice = 0;
@@ -139,7 +139,7 @@ var createOrderAndPayment = function (req, res, next) {
                 totalPrice += productOrder.total; //TODO: plus variation price, plus extras price, plus num travelers
                 order.products.push(productOrder);
             }
-            if(totalPrice != req.body.order.total_price) {
+            if(totalPrice != total_price) {
                 res.status(400).send({error: {"code": "400", "name": 'Bad request. There was a problem with your data.'}});
             }
             else {
