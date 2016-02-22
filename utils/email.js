@@ -85,7 +85,7 @@ mailTemplates.newOrder = function (params) {
         html: swig.renderFile('templates/notification-new-order.html', {
             user: params.user,
             order: params.order,
-            activity: params.activity,
+            activity: params.product,
             hostRoute: params.protocol + '://' + params.host + "/",
             yourOrdersUrl: "les-teves-reserves",
             contactEmail: "info@smartertourism.com",
