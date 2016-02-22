@@ -1,7 +1,10 @@
 var mongoose = require('mongoose');
 var validator = require('validator');
+var shortid = require('shortid');
+
 
 var PackSchema = new mongoose.Schema({
+    _id: {type: String, unique: true, default: shortid.generate},
     title: {type:String, required:true, unique:true},
     description: String,
     additional_info: String,
@@ -16,7 +19,7 @@ var PackSchema = new mongoose.Schema({
     activities:[],
     activitiesByPeriod: {
         periods: [Date],
-        activities:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Activity' }]
+        activities:[{ type:String, ref: 'Activity' }]
     },
     comments: {
         user:{

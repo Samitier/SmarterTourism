@@ -1,6 +1,6 @@
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
-var email = require('../config/email');
+var email = require('../utils/email');
 var path = require('path');
 
 var User = require("../models/User");
@@ -35,7 +35,7 @@ module.exports.signin = function(req,res,next) {
         if (err) return next(err);
         var token = jwt.sign({_id:obj._id, name:obj.name, email:obj.email},
             process.env.SECRET, {expiresIn: (process.env.TOKENEXPIRATION||"14d")});
-        email.send("confirmEmail", obj.email, {name: obj.name, tokenUrl:req.protocol+'://'+req.get('host')+'/api/confirm-email/'+token});
+        email.send(obj.email, "confirmEmail", {name: obj.name, protocol:req.protocol, host: req.get('host'), tokenUrl:'api/confirm-email/'+token});
         res.json({success: true, user: obj.name, token: token});
     });
 }

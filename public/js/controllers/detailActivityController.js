@@ -10,17 +10,14 @@ module.exports = function($routeParams, SmarterAPI, $location, CheckoutOrder, $s
             $scope.activity = data;
             //we create an order for the user
             $scope.order = CheckoutOrder.createOrderFromActivity($scope.activity);
-
-            //calculate average rating
-            var suma = 0;
-            $scope.activity.comments.forEach(function(i, v) {
-                suma += v.rating;
-            });
-            $scope.avg = suma/($scope.activity.comments.length);
         });
     };
 
     this.sendAction = function(orderDate) {
+        $("button[type=submit]").attr("disabled", "true");
+        $("button[type=submit]").addClass("disabled");
+        $("button[type=submit] span").toggleClass("hidden");
+
         CheckoutOrder.setOrderDate(this.activity, $scope.order, orderDate);
         $location.path('/detalls-comanda');
     };

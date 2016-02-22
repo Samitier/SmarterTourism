@@ -36,7 +36,7 @@
                         </div>
                     </div>
                 </li>
-                <li>
+                <li ng-if="product.variations.length > 1">
                     <div class="collapsible-header"><i class="material-icons">mode_edit</i> Personalitza les activitats</div>
                     <div class="collapsible-body">
                         <div style="margin:20px;display:inline-block;">
@@ -55,7 +55,7 @@
                         </div>
                     </div>
                 </li>
-                <li>
+                <li ng-if="product.extras.length > 0">
                     <div class="collapsible-header"><i class="material-icons">weekend</i> Extres</div>
                     <div class="collapsible-body">
                         <div style="margin:20px;display:inline-block;">

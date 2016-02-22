@@ -17,10 +17,6 @@ module.exports = function() {
         },
         controller: function($scope) {
             this.sendForm = function() {
-                $("button[type=submit]").attr("disabled", "true");
-                $("button[type=submit]").addClass("disabled");
-                $("button[type=submit] span").toggleClass("hidden");
-
                 if ($scope.showForm) {
                     var date = $scope.priceCardForm.initDate.split('/');
                     date = new Date(date[2], date[1], date[0]);

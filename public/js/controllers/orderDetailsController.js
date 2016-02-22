@@ -32,6 +32,10 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $location) {
 
     this.sendAction = function() {
         if($scope.order.numAdults > 0) {
+            $("button[type=submit]").attr("disabled", "true");
+            $("button[type=submit]").addClass("disabled");
+            $("button[type=submit] span").toggleClass("hidden");
+
             $scope.order.state="checkout";
             CheckoutOrder.setOrder($scope.order);
             $location.path('/checkout');

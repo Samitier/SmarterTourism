@@ -31,8 +31,16 @@ module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope,
     });
 
     this.sendAction = function() {
-        if(((!$scope.clientForm.user) || $scope.clientForm.$valid) && $scope.facturationForm.$valid) {
-            var data = {facturationInfo:$scope.facturationForm.user,  order:$scope.order};
+        var clientValid = true;
+        if($scope.visDadesClient) clientValid = $scope.clientForm.$valid;
+        if($scope.facturationForm.$valid && clientValid && $scope.paymentMethod) {
+            $("button[type=submit]").attr("disabled", "true");
+            $("button[type=submit]").addClass("disabled");
+            $("button[type=submit] span").toggleClass("hidden");
+
+            var data = {facturationInfo:$scope.facturationForm.user,  order:$scope.order,
+                paymentMethod:$scope.paymentMethod};
+
             if($scope.clientForm.user) data.clientInfo = $scope.clientForm.user;
             SmarterAPI.createOrder(data).then(function(dat) {
                 if(dat.success) {
@@ -44,7 +52,8 @@ module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope,
                 else Materialize.toast('Hi ha hagut algun error inesperat. Torna-ho a provar més tard.', 4000);
             });
         }
-        else Materialize.toast('Si us plau, omple totes les dades del formulari', 4000);
+        else if(!$scope.facturationForm.$valid || !clientValid) Materialize.toast('Si us plau, omple totes les dades del formulari', 4000);
+        else Materialize.toast('Si us plau, seleccioni un mètode de pagament', 4000);
     };
 
     $scope.visDadesClient = false;

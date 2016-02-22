@@ -15,7 +15,7 @@ module.exports = function () {
                 //calculate average rating
                 if($scope.comments) {
                     var suma = 0;
-                    $scope.comments.forEach(function (v, i) {
+                    $scope.comments.forEach(function (v) {
                         suma += v.rating;
                     });
                     $scope.avg = suma / ($scope.comments.length);
@@ -28,7 +28,7 @@ module.exports = function () {
                     return $(this).each(function() {
                         // Get the value
                         var val = parseFloat($scope.avg);
-                        if(isNaN(val)) {
+                        if(val < 0 || isNaN(val)) {
                             $(this).parent().html("<p>No s\'ha trobat cap puntuació.");
                         } else {
                             // Make sure that the value is in 0 - 5 range, multiply to get width
