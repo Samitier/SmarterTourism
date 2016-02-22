@@ -46,30 +46,18 @@
                 <div class="col s12">
                     <div class="section">
                         <h5>Valoració mitja</h5>
-                        <p>[valoració mitja per extrelles]</p>
+                        <p><star-rating comments="pack.comments"></star-rating></p>
                     </div>
                     <div class="divider"></div>
                     <div class="section">
                         <h5>Comentaris</h5>
                         <ul class="collection comment-list">
-                            <li class="collection-item avatar">
+                            <li class="collection-item avatar" ng-repeat="comment in pack.comments">
                                 <img src="/img/users/John_Doe.jpg" alt="" class="circle responsive-img  z-depth-1">
-                                <span>John Doe</span>
-                                <p>Lorem ipsum dolor sit amet, dis ipsum morbi neque, lectus maecenas, amet non consequat ac mollis metus nullam. Amet vulputate et tincidunt, aenean massa dolor lectus vulputate vitae, sed sapien magna pretium facilisi dui quam. Sit quisque quisque vel sodales wisi, venenatis ullamcorper pulvinar odio sit morbi amet.
-                                </p>
+                                <a ng-href="/perfil/{{comment.user.id}}"><span>{{comment.user.name}}</span></a>
+                                <p>{{comment.message}}</p>
                             </li>
-                            <li class="collection-item avatar">
-                                <img src="/img/users/John_Doe.jpg" alt="" class="circle responsive-img  z-depth-1">
-                                <span>John Doe</span>
-                                <p>Lorem ipsum dolor sit amet, dis ipsum morbi neque, lectus maecenas, amet non consequat ac mollis metus nullam. Amet vulputate et tincidunt, aenean massa dolor lectus vulputate vitae, sed sapien magna pretium facilisi dui quam. Sit quisque quisque vel sodales wisi, venenatis ullamcorper pulvinar odio sit morbi amet.
-                                </p>
-                            </li>
-                            <li class="collection-item avatar">
-                                <img src="/img/users/John_Doe.jpg" alt="" class="circle responsive-img  z-depth-1">
-                                <span>John Doe</span>
-                                <p>Lorem ipsum dolor sit amet, dis ipsum morbi neque, lectus maecenas, amet non consequat ac mollis metus nullam. Amet vulputate et tincidunt, aenean massa dolor lectus vulputate vitae, sed sapien magna pretium facilisi dui quam. Sit quisque quisque vel sodales wisi, venenatis ullamcorper pulvinar odio sit morbi amet.
-                                </p>
-                            </li>
+                            <span ng-if="!pack.comments.length">No hi han comentaris disponibles.</span>
                         </ul>
                     </div>
                 </div>
