@@ -86,11 +86,11 @@
                     <div class="collapsible-body">
                         <div style="margin:20px;display:inline-block;">
                             <div class="input-field col s6">
-                                <input ng-model="facturationForm.paypalPayment" name="paymentType" type="radio" id="paypalPayment" />
+                                <input ng-model="paymentMethod" name="paymentType" type="radio" id="paypalPayment" value="paypal"/>
                                 <label for="paypalPayment"><img class="responsive-img" src="/img/paypalLogo.png"></label>
                             </div>
                             <div class="input-field col s6">
-                                <input ng-model="facturationForm.tpvPayment" name="paymentType" type="radio" id="tpvPayment" />
+                                <input ng-model="paymentMethod" name="paymentType" type="radio" id="tpvPayment" value="card"/>
                                 <label for="tpvPayment"><img class="responsive-img payMethod-active" src="/img/redsysLogo.jpg"></label>
                             </div>
                         </div>
@@ -130,7 +130,7 @@
                     </button><br><br>
                     <p class="right right-align">No tens cap compte? <a href="/signin">Registra't!</a></p>
                     <br /><br />
-                    <p class="right-align"><a href="javascript:void(0)" class="cursor-pointer" ng-click="checkoutCtrl.continueWithoutAccount()">O segueix sense registrar-te.</a></p>
+                    <p class="right-align"><a href="#" class="cursor-pointer" ng-click="checkoutCtrl.continueWithoutAccount()">O segueix sense registrar-te.</a></p>
                 </div>
             </form>
         </div>

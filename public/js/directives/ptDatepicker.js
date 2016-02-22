@@ -36,6 +36,11 @@ module.exports = function() {
                     }
                 });
             } else if($(elem).data("date-type") == "unique") $( elem ).datepicker();
+        },
+        controller: function($scope) {
+            $scope.$on("$destroy", function(){
+                $('#ui-datepicker-div').remove();
+            });
         }
     };
 }
