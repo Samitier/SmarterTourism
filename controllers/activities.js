@@ -54,16 +54,38 @@ module.exports.getActivitiesPriceFromOrder = function(req, res, next) {
     Activity.find( {_id: {$in: req.body.order.activitiesIDs}}, function(err, dat) {
         if(err) next(err);
         else {
-            for (var j = 0; j < dat.length; ++j) {
-                if(dat[j]._id === req.body.order.activities[i]._id) {
-                    req.body.order.activities[i].total = dat[j].price;
-                    break;
+            var totalActivitats = 0;
+            dat.forEach(function(v, i) {
+                var p = calculatePrice(v.price, v.variations, v.extras, req.body.order.numAdults);
+
+                totalActivitats += p;
+
+                for (var j = 0; j < req.body.order.activities.length; ++j) {
+                    if(dat[i]._id === req.body.order.activities[j]._id) {
+                        req.body.order.activities[i].total = p;
+                        break;
+                    }
                 }
-            };
-            //TODO: calculem el preu total de l'activitat (contant num persones i extres/variacions)
-            next(false, dat);
+            });
+            next(false, totalActivitats);
         }
     });
+}
+
+var calculatePrice = module.exports.calculatePrice = function(base, variations, extras, nAdults) {
+    var p = base;
+
+    for(var i = 1; i < variations.length -1; i++) {
+        p += variations[i].priceIncr;
+    }
+    if(extras) {
+        for (var i = 0; i < extras.length; i++) {
+            p += extras[i].priceIncr;
+        }
+    }
+    p *= nAdults;
+
+    return p;
 }
 
 //Check Requests

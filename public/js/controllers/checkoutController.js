@@ -31,6 +31,7 @@ module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope,
     });
 
     this.sendAction = function() {
+        console.log($scope.order);
         var clientValid = true;
         if($scope.visDadesClient) clientValid = $scope.clientForm.$valid;
         if($scope.facturationForm.$valid && clientValid && $scope.paymentMethod) {

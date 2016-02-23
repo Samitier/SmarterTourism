@@ -1,13 +1,14 @@
 var mongoose = require('mongoose');
 var validator = require('validator');
 var shortid = require('../utils/shortid62chars');
+var Extra = require('./Extra');
 
 var productOrder = new  mongoose.Schema({
     _id: {type: String, unique: true, default: shortid.generate62chars},
     seller: {type:String, ref: 'User' , required:true},
     title: {type: String, required:true},
     variation: {type: String, required:true},
-    extra: {type: String},
+    extras: [{type: String}],
     discount:{
         name: {type: String},
         value: {type: String},

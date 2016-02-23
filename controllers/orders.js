@@ -132,11 +132,14 @@ var createOrderAndPayment = function (req, res, next) {
                     total: req.body.order.activities[i].total,
                     dates: [req.body.order.activities[i].initDate, req.body.order.activities[i].endDate]
                 }
-                if (req.body.order.selectedExtras[req.body.order.activities[i]]) {
-                    //TODO: might be more than one extra selected
-                    productOrder.extra = req.body.order.selectedExtras[req.body.order.activities[i]._id].title;
+                if (req.body.order.selectedExtras[req.body.order.activities[i]._id] && req.body.order.selectedExtras[req.body.order.activities[i]._id].length) {
+                    productOrder.extras = [];
+                    req.body.order.selectedExtras[req.body.order.activities[i]._id].forEach(function(dat) {
+                        productOrder.extras.push(dat.title);
+                    });
                 }
-                totalPrice += productOrder.total; //TODO: plus variation price, plus extras price, plus num travelers
+                var p = Activities.calculatePrice(productOrder.total, req.body.order.selectedVariations[req.body.order.activities[i]._id], req.body.order.selectedExtras[req.body.order.activities[i]], req.body.order.numAdults);
+                totalPrice += p;
                 order.products.push(productOrder);
             }
             if(totalPrice != total_price) {
@@ -145,6 +148,7 @@ var createOrderAndPayment = function (req, res, next) {
             else {
                 order.finalPrice = totalPrice;
                 order.paymentMethod = req.body.paymentMethod;
+
                 Order.create(order, function (err, dat) {
                     if (err) return next(err);
                     req.order = dat;

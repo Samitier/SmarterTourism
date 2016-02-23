@@ -6,6 +6,29 @@
  */
 module.exports = function($scope, CheckoutOrder, SmarterAPI, $location) {
 
+    $scope.visVariations = false;
+    $scope.visExtras = false;
+    $scope.showVariations = function(L) {
+        if(L > 1) {
+            $scope.visVariations = true;
+        }
+    }
+    $scope.showExtras = function() {
+        $scope.visExtras = true;
+    }
+
+    $scope.extraInArray = function(array, id) {
+        if(typeof(array) == "undefined" || !array.length) return false;
+        var r = false;
+        array.forEach(function(v){
+            if(v._id == id) {
+                r = true;
+                return;
+            }
+        });
+        return r;
+    }
+
     this.init = function() {
         $scope.order = CheckoutOrder.getOrder();
         $scope.order.numAdults = 1;
@@ -52,12 +75,37 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $location) {
 
     this.extrasSelect = function(extra) {
         if($scope.order.selectedExtras[extra.activity]) {
-            $scope.order.total_price_per_person -= $scope.order.selectedExtras[extra.activity].priceIncr;
+            $scope.order.selectedExtras[extra.activity].push(extra.product);
+        } else {
+            $scope.order.selectedExtras[extra.activity] = [extra.product];
         }
-        $scope.order.selectedExtras[extra.activity] = extra.product;
-        $scope.order.total_price_per_person += $scope.order.selectedExtras[extra.activity].priceIncr;
+        $scope.order.total_price_per_person += extra.product.priceIncr;
         $scope.order.total_price = $scope.order.numAdults*$scope.order.total_price_per_person;
     }
 
+    this.unselectExtra = function(extra) {
+        //Find index
+        var i = -1;
+        for(var j = 0; j < $scope.order.selectedExtras[extra.activity].length; j++) {
+            if($scope.order.selectedExtras[extra.activity][j]._id == extra.product._id) {
+                i = j;
+                break;
+            }
+        }
+        /////////////
+        if(i >= 0) {
+            $scope.order.total_price_per_person -= $scope.order.selectedExtras[extra.activity][i].priceIncr;
+            $scope.order.selectedExtras[extra.activity].splice(i, 1);
+
+            $scope.order.total_price = $scope.order.numAdults*$scope.order.total_price_per_person;
+        }
+    }
+
     this.init();
+
+    $scope.$on("$destroy", function(){
+        $('.modal').each(function() {
+            if($(this).css('opacity') == 1) $(this).closeModal();
+        });
+    });
 }
