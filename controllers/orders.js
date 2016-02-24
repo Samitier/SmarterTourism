@@ -138,7 +138,8 @@ var createOrderAndPayment = function (req, res, next) {
                         productOrder.extras.push(dat.title);
                     });
                 }
-                var p = Activities.calculatePrice(productOrder.total, req.body.order.selectedVariations[req.body.order.activities[i]._id], req.body.order.selectedExtras[req.body.order.activities[i]], req.body.order.numAdults);
+                //console.log(req.body.order.selectedExtras[req.body.order.activities[i]]);
+                var p = Activities.calculatePrice(productOrder.total, req.body.order.selectedVariations[req.body.order.activities[i]._id], req.body.order.selectedExtras[req.body.order.activities[i]], 1);
                 totalPrice += p;
                 order.products.push(productOrder);
             }
