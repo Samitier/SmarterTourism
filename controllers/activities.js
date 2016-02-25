@@ -56,7 +56,13 @@ module.exports.getActivitiesPriceFromOrder = function(req, res, next) {
         else {
             var totalActivitats = 0;
             dat.forEach(function(v, i) {
-                var p = calculatePrice(v.price, v.variations, v.extras, req.body.order.numAdults);
+                var extrasArray = [];
+                v.extras.forEach(function(v2) {
+                    req.body.order.selectedExtras[dat[i]._id].forEach(function(v3) {
+                        if(v2._id == v3._id) extrasArray.push(v2);
+                    });
+                });
+                var p = calculatePrice(v.price, req.body.order.selectedVariations[dat[i]._id], extrasArray, req.body.order.numAdults);
 
                 totalActivitats += p;
 

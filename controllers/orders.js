@@ -38,10 +38,6 @@ module.exports.create = function (req, res, next) {
     }
 }
 
-module.exports.sendMessage = function (req, res, next) {
-
-}
-
 module.exports.accept = function (req, res, next) {
 
 }
@@ -138,9 +134,8 @@ var createOrderAndPayment = function (req, res, next) {
                         productOrder.extras.push(dat.title);
                     });
                 }
-                //console.log(req.body.order.selectedExtras[req.body.order.activities[i]]);
-                var p = Activities.calculatePrice(productOrder.total, req.body.order.selectedVariations[req.body.order.activities[i]._id], req.body.order.selectedExtras[req.body.order.activities[i]], 1);
-                totalPrice += p;
+                //var p = Activities.calculatePrice(productOrder.total, req.body.order.selectedVariations[req.body.order.activities[i]._id], req.body.order.selectedExtras[req.body.order.activities[i]._id], 1);
+                totalPrice += productOrder.total;
                 order.products.push(productOrder);
             }
             if(totalPrice != total_price) {

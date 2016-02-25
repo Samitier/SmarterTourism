@@ -23,8 +23,8 @@
                         <li ng-repeat="product in order.products"><b>{{product.title}}</b></li>
                     </ul></div>
                     <p>
-                        <a class="waves-effect waves-light btn">Deixa un comentari</a>
-                        <a class="waves-effect waves-light btn">Contacta amb el proveïdor</a>
+                        <a ng-href="/activitats/{{product.activity}}#valorations" class="waves-effect waves-light btn" ng-if="product.activity">Deixa un comentari</a>
+                        <a ng-href="/perfil/{{product.seller}}" class="waves-effect waves-light btn">Contacta amb el proveïdor</a>
                     </p>
                 </div>
             </li>
