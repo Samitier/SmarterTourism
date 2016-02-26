@@ -56,7 +56,6 @@ router.route('/orders')
     .post(ctrl.auth.authenticateOrGuest, ctrl.orders.checkRequest, ctrl.orders.create);
 
 router.put('/orders/:id/pay', ctrl.orders.pay);
-router.put('/orders/:id/message', ctrl.orders.sendMessage);
 router.put('/orders/:id/accept', ctrl.orders.accept); //only providers & up
 router.put('/orders/:id/cancel', ctrl.orders.cancel); //only providers & up
 

@@ -19,13 +19,15 @@
                     <b class="right inline-block" style="font-size: 1.5em; padding: 20px;">{{order.finalPrice}} €</b>
                     <div style="padding-left: 2em;">
                         <span>Inclou:</span>
-                        <ul style="margin-left: 3rem;">
-                        <li ng-repeat="product in order.products"><b>{{product.title}}</b></li>
-                    </ul></div>
-                    <p>
-                        <a ng-href="/activitats/{{product.activity}}#valorations" class="waves-effect waves-light btn" ng-if="product.activity">Deixa un comentari</a>
-                        <a ng-href="/perfil/{{product.seller}}" class="waves-effect waves-light btn">Contacta amb el proveïdor</a>
-                    </p>
+                    <!--<ul style="margin-left: 3rem;">-->
+                        <ul class="collection collection-inception-fix">
+                            <li class="collection-item" ng-repeat="product in order.products">
+                                {{product.title}}
+                                    <a ng-href="/activitats/{{product.activity}}#valorations" class="waves-effect waves-light btn secondary-content" style="margin: -7px 0 0 10px;" ng-if="product.activity">Deixa un comentari</a>
+                                    <a ng-href="/perfil/{{product.seller}}" class="waves-effect waves-light btn secondary-content" style="margin: -7px 0 0 10px;">Contacta amb el proveïdor</a>
+                            </li>
+                        </ul><br />
+                    </div>
                 </div>
             </li>
         </ul>

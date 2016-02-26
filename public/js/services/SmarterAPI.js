@@ -23,9 +23,7 @@ module.exports = function ($http, APIAuth, $location) {
     };
 
     service.getActivities = function() {
-        return $http.get(apiURI + "activities").then(function(resp) {
-            return resp.data;
-        }, tractarErrors);
+        return $http.get(apiURI + "activities").$promise;
     }
 
     service.getActivity = function(id) {

@@ -462,3 +462,8 @@ span.stars span {
     line-height: 2rem;
     margin-top: 0.5rem;
 }
+
+.collection-inception-fix {
+    border: 1px solid #e0e0e0 !important;
+    margin: 0.5rem 0 1rem 0 !important;
+}

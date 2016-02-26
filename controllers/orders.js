@@ -118,6 +118,7 @@ var createOrderAndPayment = function (req, res, next) {
             var totalPrice = 0;
             for (var i = 0; i < req.body.order.activities.length; ++i) {
                 var productOrder = {
+                    activity: req.body.order.activities[i]._id,
                     seller: req.body.order.activities[i].seller,
                     title: req.body.order.activities[i].title,
                     variation: req.body.order.selectedVariations[req.body.order.activities[i]._id].title,

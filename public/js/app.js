@@ -49,10 +49,17 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
             title: "Les nostres activitats",
             templateUrl: '/views/detail-activity.html',
             controller: 'detailActivityController',
-            controllerAs: 'detailActivityCtrl'
+            controllerAs: 'detailActivityCtrl',
+            resolve: {
+                act: function(SmarterAPI, $routeParams) {
+                    var p = SmarterAPI.getActivity($routeParams.id);
+                    console.log("asdfa");
+                    return p;
+                }
+            }
         })
 
-        .when("/detalls-comanda",{
+        .when("/detalls-comanda", {
             title: "Complementa el teu paquet",
             templateUrl: '/views/order-details.html',
             controller: 'orderDetailsController',
