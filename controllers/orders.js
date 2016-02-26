@@ -2,6 +2,7 @@ var Order = require("../models/Order");
 var Activity = require("../models/Activity");
 var User = require("../models/User");
 var paypal = require("./paypal");
+var redsys = require("./redsys");
 var email = require('../utils/email');
 var users = require("./users");
 var packs = require("./packs");
@@ -162,7 +163,7 @@ var createOrderAndPayment = function (req, res, next) {
                     if(req.body.paymentMethod == "paypal") {
                             paypal.createPayment(req, res, next);
                     }
-                    else res.status(400).send({error: {"code": "400", "name": 'Error. TPV service is unavaliable.'}});
+                    else redsys.createPayment(req, res, next);
                 });
             }
         }
