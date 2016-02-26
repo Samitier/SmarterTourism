@@ -10,6 +10,7 @@ module.exports.createPayment = function (req, res, next) {
 }
 
 module.exports.pay = function (req, res, next) {
+    console.log(res.body);
     var execute_payment_json = {
         "payer_id": req.query.PayerID,
     };
@@ -57,7 +58,8 @@ var createPaymentInfo = function (req, userToken) {
         "finalPrice": Math.floor(req.order.finalPrice*100),
         "_id":req.order._id,
         "notificationUrl":req.protocol + '://' + req.get('host') + "/api/payments/redsys/pay",
-        "urlOK": req.protocol + '://' + req.get('host') + "/api/payments/redsys/pay",
-        "urlKO": req.protocol + '://' + req.get('host') + "/api/payments/redsys/cancel"
+        "urlOK": req.protocol + '://' + req.get('host') + "/finalitzar?sta=1",
+        "urlKO": req.protocol + '://' + req.get('host') + "/api/payments/redsys/cancel?orderId="
+        + req.order._id + "&stAccessToken=" + userToken + "&redirect=true"
     };
 }
