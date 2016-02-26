@@ -10,19 +10,27 @@ module.exports.createPayment = function (req, res, next) {
 }
 
 module.exports.pay = function (req, res, next) {
-    console.log(res.body);
-    var execute_payment_json = {
-        "payer_id": req.query.PayerID,
-    };
-    paypal.payment.execute(req.query.paymentId, execute_payment_json, function (error, payment) {
-        if (error) next(error);
-        else {
-            req.orderId = payment.transactions[0].item_list.items[0].sku;
-            req.redirect = true;
-            orderCtrl.pay(req, res, next);
-        }
-    });
+    var signature = req.query.Ds_Signature;
+    if(checkResponseSignature(signature)) {
+        var params = redsys.parseResponse(req.query.Ds_MerchantParameters);
+        req.orderId = params.Ds_Merchant_Order;
+        req.redirect = true;
+        orderCtrl.pay(req, res, next);
+    }
+    else res.status(400).send({error:"Bad signature"});
 };
+
+module.exports.payNotification = function (req, res, next) {
+    var signature = req.body.Ds_Signature;
+    if(checkResponseSignature(signature)) {
+        var params = redsys.parseResponse(req.body.Ds_MerchantParameters);
+        req.orderId = params.Ds_Merchant_Order;
+        req.redirect = false;
+        orderCtrl.pay(req, res, next);
+    }
+    else res.status(400).send({error:"Bad signature"});
+};
+
 
 module.exports.cancel = function (req, res, next) {
     orderCtrl.cancel(req, res, next);
@@ -33,7 +41,12 @@ module.exports.cancel = function (req, res, next) {
  /////////// CHECK REQUESTS //////////
  */
 module.exports.checkRequestPay = function(req, res, next) {
-    if(req.query.PayerID && req.query.paymentId) next();
+    if(req.body.Ds_MerchantParameters && req.body.Ds_Signature) next();
+    else res.status(400).send({ error: {"code":"400", "name":'Bad request. This resource needs a PayerID and paymentId.'}});
+}
+
+module.exports.checkRequestPay = function(req, res, next) {
+    if(req.query.Ds_MerchantParameters && req.query.Ds_Signature) next();
     else res.status(400).send({ error: {"code":"400", "name":'Bad request. This resource needs a PayerID and paymentId.'}});
 }
 
@@ -57,8 +70,8 @@ var createPaymentInfo = function (req, userToken) {
     return {
         "finalPrice": Math.floor(req.order.finalPrice*100),
         "_id":req.order._id,
-        "notificationUrl":req.protocol + '://' + req.get('host') + "/api/payments/redsys/pay",
-        "urlOK": req.protocol + '://' + req.get('host') + "/finalitzar?sta=1",
+        "notificationUrl":req.protocol + '://' + req.get('host') + "/api/payments/redsys/pay-notificaton",
+        "urlOK": req.protocol + '://' + req.get('host') + "/api/payments/redsys/pay",
         "urlKO": req.protocol + '://' + req.get('host') + "/api/payments/redsys/cancel?orderId="
         + req.order._id + "&stAccessToken=" + userToken + "&redirect=true"
     };

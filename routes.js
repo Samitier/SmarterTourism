@@ -65,6 +65,7 @@ router.get('/payments/paypal/pay', ctrl.paypal.checkRequestPay, ctrl.paypal.pay)
 router.get('/payments/paypal/cancel', ctrl.auth.authenticate, ctrl.paypal.checkRequestCancel, ctrl.paypal.cancel);
 
 router.get('/payments/redsys/pay', ctrl.redsys.checkRequestPay, ctrl.redsys.pay);
+router.post('/payments/redsys/pay-notification', ctrl.redsys.checkRequestPayNotification, ctrl.redsys.payNotification);
 router.get('/payments/redsys/cancel', ctrl.auth.authenticate, ctrl.redsys.checkRequestCancel, ctrl.redsys.cancel);
 
 /* Not found, for every other route */
