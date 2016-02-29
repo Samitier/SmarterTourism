@@ -4,7 +4,7 @@
      calculating the final price.
      This is the controller for the order details view .
  */
-module.exports = function($scope, CheckoutOrder, SmarterAPI, $location) {
+module.exports = function($scope, CheckoutOrder, SmarterAPI, $location, order) {
 
     $scope.visVariations = false;
     $scope.visExtras = false;
@@ -30,9 +30,8 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $location) {
     }
 
     this.init = function() {
-        $scope.order = CheckoutOrder.getOrder();
+        $scope.order = order;
         $scope.order.numAdults = 1;
-        if($scope.order.state != 'checkout' && $scope.order.state!='details') $location.path("/");//we redirect if the user is trying to enter here without an order
         if(!$scope.order.selectedVariations) $scope.order.selectedVariations = {};
         if(!$scope.order.selectedExtras) $scope.order.selectedExtras = {};
         if(!$scope.order.total_price_per_person) $scope.order.total_price_per_person = $scope.order.price;

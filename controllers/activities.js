@@ -19,7 +19,10 @@ module.exports.getSingle = function(req, res, next) {
         .populate({ path: 'seller', select: 'name' })
         .exec(function (err, obj) {
             if (err) return next(err);
-            res.json(obj);
+            else {
+                if(obj) res.json(obj);
+                else res.status(404).send({message:"This activity does not exist"});
+            }
         });
 };
 

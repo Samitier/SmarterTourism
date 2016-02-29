@@ -3,26 +3,11 @@
      Gets and shows the selected activity data.
      This is the controller for the detail activity view .
  */
-module.exports = ["$scope", "$routeParams", "SmarterAPI", "$location", "CheckoutOrder", "act", function($scope, $routeParams, SmarterAPI, $location, CheckoutOrder, act) {
-    /*this.resolve = {
-        datos: ['SmarterAPI', 'CheckoutOrder', '$routeParams', '$q', function (SmarterAPI, CheckoutOrder, $routeParams, $q) {
-                var p = $q.defer();
-                SmarterAPI.getActivity($routeParams.id).then(function (data) {
-                    var obj = {};
-                    obj.activity = data;
-                    //we create an order for the user
-                    obj.order = CheckoutOrder.createOrderFromActivity($scope.activity);
-                    p.resolve(obj);
-                }, function() { p.reject(); });
-                return p.promise();
-            }
-        ]
-    }*/
+module.exports = function($scope, $routeParams, SmarterAPI, $location, CheckoutOrder, resolveData) {
 
     this.init = function() {
-        $scope.activity = act;
-        console.log("12");
-        $scope.order = CheckoutOrder.createOrderFromActivity(act);
+        $scope.activity = resolveData.data;
+        $scope.order = CheckoutOrder.createOrderFromActivity($scope.activity);
     };
 
     this.sendAction = function(orderDate) {
@@ -35,4 +20,4 @@ module.exports = ["$scope", "$routeParams", "SmarterAPI", "$location", "Checkout
     };
 
     this.init();
-}];
+};

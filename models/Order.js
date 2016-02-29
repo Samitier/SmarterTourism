@@ -7,7 +7,7 @@ var productOrder = new  mongoose.Schema({
     _id: { type: String, unique: true, default: shortid.generate62chars },
     seller: { type:String, ref: 'User', required:true },
     title: { type: String, required:true },
-    activity: { type: mongoose.Schema.Types.ObjectId, ref: 'Activity' },
+    activity: { type: String, ref: 'Activity' },
     variation: { type: String, required:true },
     extras: [{ type: String }],
     discount: {

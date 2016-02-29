@@ -145,7 +145,7 @@ var createOrderAndPayment = function (req, res, next) {
             else {
                 order.finalPrice = totalPrice;
                 order.paymentMethod = req.body.paymentMethod;
-
+                console.log(order);
                 Order.create(order, function (err, dat) {
                     if (err) return next(err);
                     req.order = dat;

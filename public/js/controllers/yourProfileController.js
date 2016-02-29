@@ -3,22 +3,12 @@
      Gets and shows the profile of the user and lets him edit it.
      This is the controller for the profile view .
  */
-module.exports = function($scope, SmarterAPI, $routeParams) {
+module.exports = function($scope, SmarterAPI, $routeParams, resolveData) {
     this.init = function() {
 
-        $scope.yourProfile = false;
-        if($routeParams.id) {
-            SmarterAPI.getUser($routeParams.id).then(function (data) {
-                $scope.profile = data;
-                console.log($scope.profile);
-            });
-        } else {
-            SmarterAPI.getProfile().then(function (data) {
-                $scope.profile = data;
-                $scope.yourProfile = true;
-                //console.log($scope.profile);
-            });
-        }
+        $scope.yourProfile = !($routeParams.id);
+
+        $scope.profile = resolveData.data;
 
         SmarterAPI.getOrders().then(function (data) {
             $scope.orders = data;
