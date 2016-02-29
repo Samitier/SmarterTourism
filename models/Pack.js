@@ -16,7 +16,6 @@ var PackSchema = new mongoose.Schema({
     featured: Boolean,
     category: String,
     date: Date,
-    activities:[],
     activitiesByPeriod: {
         periods: [Date],
         activities:[{ type:String, ref: 'Activity' }]

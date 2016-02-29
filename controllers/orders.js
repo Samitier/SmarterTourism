@@ -116,22 +116,11 @@ var createOrderAndPayment = function (req, res, next) {
         numBabies: req.body.order.numBabies
     };
 
-    req.body.order.activitiesIDs = [];
-    req.body.order.activities.forEach(function(a) {
-        req.body.order.activitiesIDs.push(a._id);
-    });
-
-    Activities.getActivitiesPrice(req, res, function(err, dat) {
+    Activities.getActivitiesPriceFromOrder(req, res, function(err, dat) {
         if(err) next(err);
         else {
             var totalPrice = 0;
             for (var i = 0; i < req.body.order.activities.length; ++i) {
-                for (var j = 0; j < dat.length; ++j) {
-                    if(dat[j]._id === req.body.order.activities[i]._id) {
-                        req.body.order.activities[i].total = dat[j].price;
-                        break;
-                    }
-                };
                 var productOrder = {
                     seller: req.body.order.activities[i].seller,
                     title: req.body.order.activities[i].title,

@@ -46,8 +46,22 @@ module.exports.delete = function(req, res, next) {
     });
 };
 
-module.exports.getActivitiesPrice = function(req, res, next) {
-    Activity.find( {_id: {$in: req.body.order.activitiesIDs}}, next);
+module.exports.getActivitiesPriceFromOrder = function(req, res, next) {
+    req.body.order.activitiesIDs = [];
+    req.body.order.activities.forEach(function(a) {
+        req.body.order.activitiesIDs.push(a._id);
+    });
+    Activity.find( {_id: {$in: req.body.order.activitiesIDs}}, function(err, dat) {
+        //assegurat que axo faci falta o no
+        for (var j = 0; j < dat.length; ++j) {
+            if(dat[j]._id === req.body.order.activities[i]._id) {
+                req.body.order.activities[i].total = dat[j].price;
+                break;
+            }
+        };
+        //calculem el preu total de l'activitat (contant num persones i extres/variacions)
+        next(dat);
+    });
 }
 
 //Check Requests
