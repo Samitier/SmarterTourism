@@ -5,8 +5,8 @@
         will popup if they are not logged in.
 */
 
-module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope, $window, order) {
 
+module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope, $window, order) {
     this.init = function() {
         $scope.order = order;
         if(!APIAuth.isLoggedIn()) $('#login-modal').openModal({dismissible: false});
@@ -47,7 +47,12 @@ module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope,
                     Materialize.toast('Redirigint a la plataforma de pagament...', 4000);
                     $scope.order.state="finished";
                     CheckoutOrder.setOrder($scope.order);
-                    $window.location.href = dat.url;
+                    if($scope.paymentMethod=="paypalPayment") $window.location.href = dat.url;
+                    else {
+                        var form = $.parseHTML(dat.form);
+                        $('#redsys-form').append(form);
+                        $('#redsys-form > form').submit();
+                    }
                 }
                 else Materialize.toast('Hi ha hagut algun error inesperat. Torna-ho a provar més tard.', 4000);
             });
