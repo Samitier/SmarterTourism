@@ -11,22 +11,35 @@ module.exports.createPayment = function (req, res, next) {
 
 module.exports.pay = function (req, res, next) {
     var signature = req.query.Ds_Signature;
-    if(checkResponseSignature(signature)) {
+    var params = req.query.Ds_MerchantParameters;
+    if(redsys.checkResponseSignature(signature, params)) {
         var params = redsys.parseResponse(req.query.Ds_MerchantParameters);
-        req.orderId = params.Ds_Merchant_Order;
-        req.redirect = true;
-        orderCtrl.pay(req, res, next);
+        if(params.Ds_Response.toString()>=0 && params.Ds_Response.toString()<=99) {
+            req.orderId = params.Ds_Order;
+            req.redirect = true;
+            orderCtrl.pay(req, res, next);
+        }
+        else {
+            res.status(400).send({error:"There was some problem with your bank account and it was impossible to proccess your payment." +
+            " Try again later."});
+        }
     }
     else res.status(400).send({error:"Bad signature"});
 };
 
 module.exports.payNotification = function (req, res, next) {
     var signature = req.body.Ds_Signature;
-    if(checkResponseSignature(signature)) {
+    if(redsys.checkResponseSignature(signature)) {
         var params = redsys.parseResponse(req.body.Ds_MerchantParameters);
-        req.orderId = params.Ds_Merchant_Order;
-        req.redirect = false;
-        orderCtrl.pay(req, res, next);
+        if(params.Ds_Response.toString()>=0 && params.Ds_Response.toString()<=99) {
+            req.orderId = params.Ds_Order;
+            req.redirect = true;
+            orderCtrl.pay(req, res, next);
+        }
+        else {
+            res.status(400).send({error:"There was some problem with your bank account and it was impossible to proccess your payment." +
+            " Try again later."});
+        };
     }
     else res.status(400).send({error:"Bad signature"});
 };
@@ -40,14 +53,14 @@ module.exports.cancel = function (req, res, next) {
 /*
  /////////// CHECK REQUESTS //////////
  */
-module.exports.checkRequestPay = function(req, res, next) {
+module.exports.checkRequestPayNotification = function(req, res, next) {
     if(req.body.Ds_MerchantParameters && req.body.Ds_Signature) next();
-    else res.status(400).send({ error: {"code":"400", "name":'Bad request. This resource needs a PayerID and paymentId.'}});
+    else res.status(400).send({ error: {"code":"400", "name":'Bad request. This resource needs Ds_MerchantParameters and Ds_Signature.'}});
 }
 
 module.exports.checkRequestPay = function(req, res, next) {
     if(req.query.Ds_MerchantParameters && req.query.Ds_Signature) next();
-    else res.status(400).send({ error: {"code":"400", "name":'Bad request. This resource needs a PayerID and paymentId.'}});
+    else res.status(400).send({ error: {"code":"400", "name":'Bad request. This resource needs Ds_MerchantParameters and Ds_Signature.'}});
 }
 
 module.exports.checkRequestCreatePayment = function(req, res, next) {
