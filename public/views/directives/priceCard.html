@@ -13,7 +13,11 @@
                     <li class="right-align">Preu base: {{order.price}}€</li>
                     <li><br></li>
                     <li class="right-align" ng-repeat="(key, value) in order.selectedVariations" ng-if="value.priceIncr>0" style="font-size:88%">{{value.title}}: +{{value.priceIncr}}€</li>
-                    <li class="right-align" ng-repeat="(key, value) in order.selectedExtras" ng-if="value.priceIncr>0" style="font-size:88%">{{value.title}}: +{{value.priceIncr}}€</li>
+                    <li class="right-align" ng-repeat="(key, value) in order.selectedExtras" style="font-size:88%">
+                        <div ng-repeat="extra in value">
+                            {{extra.title}}: +{{extra.priceIncr}}€
+                        </div>
+                    </li>
                     <li><br></li>
                     <li class="right-align" ng-show="order.numAdults">x{{order.numAdults}} adults</li>
                     <li class="right-align" ng-show="order.numChildren">x{{order.numChildren}} nens</li>

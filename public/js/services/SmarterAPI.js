@@ -1,6 +1,4 @@
-/*
-    SMARTER API SERVICE
-        The calls to the Smarter Tourism API.
+ /*       The calls to the Smarter Tourism API.
  */
 module.exports = function ($http, APIAuth, $location) {
     var service={};
@@ -26,7 +24,7 @@ module.exports = function ($http, APIAuth, $location) {
         return $http.get(apiURI + "activities").then(function(resp) {
             return resp.data;
         }, tractarErrors);
-    }
+    };
 
     service.getActivity = function(id) {
         return $http.get(apiURI + "activities/" + id).then(function(resp) {

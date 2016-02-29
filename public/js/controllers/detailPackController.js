@@ -3,14 +3,12 @@
      Gets and shows the selected pack data.
      This is the controller for the detail pack view .
  */
-module.exports = function(CheckoutOrder, $routeParams, SmarterAPI, $location, $scope) {
+module.exports = function(CheckoutOrder, $routeParams, SmarterAPI, $location, $scope, resolveData) {
 
     this.init = function() {
-        SmarterAPI.getPack($routeParams.id).then(function(resp){
-            $scope.pack = resp;
-            //we create an order for the user
-            $scope.order = CheckoutOrder.createOrderFromPack($scope.pack);
-        });
+        $scope.pack = resolveData.data;
+        //we create an order for the user
+        $scope.order = CheckoutOrder.createOrderFromPack($scope.pack);
     };
 
     this.sendAction = function(orderDate) {

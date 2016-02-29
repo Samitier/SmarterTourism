@@ -5,11 +5,10 @@
         will popup if they are not logged in.
 */
 
-module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope, $window) {
+module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope, $window, order) {
 
     this.init = function() {
-        $scope.order = CheckoutOrder.getOrder();
-        if($scope.order.state != 'checkout' && $scope.order.state !='finished') $location.path('/detalls-comanda'); //we redirect if the user is trying to enter here without an order
+        $scope.order = order;
         if(!APIAuth.isLoggedIn()) $('#login-modal').openModal({dismissible: false});
         else SmarterAPI.getProfile().then(function(dat) {$scope.facturationForm.user = dat.facturationInfo;});
     };
@@ -31,6 +30,7 @@ module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope,
     });
 
     this.sendAction = function() {
+        console.log($scope.order);
         var clientValid = true;
         if($scope.visDadesClient) clientValid = $scope.clientForm.$valid;
         if($scope.facturationForm.$valid && clientValid && $scope.paymentMethod) {

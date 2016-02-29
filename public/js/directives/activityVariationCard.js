@@ -18,7 +18,9 @@ module.exports = function() {
             variation:"=",
             selected:"=",
             cardAction:"&",
-            activity:"="
+            unselectAction:"&",
+            activity:"=",
+            type:"@"
         },
         link: function(scope, elem){
             $(elem).children().first().click(function() {

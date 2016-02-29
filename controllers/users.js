@@ -21,7 +21,10 @@ module.exports.getSingle = function(req, res, next) {
     }
     User.findById(req.params.id, excl, function (err, obj) {
         if (err) return next(err);
-        res.json(obj);
+        else {
+            if(obj) res.json(obj);
+            else res.status(404).send({message:"This user does not exist"});
+        }
     });
 };
 
@@ -42,7 +45,10 @@ module.exports.delete = function(req, res, next) {
 module.exports.getProfile = function(req ,res, next) {
     User.findById(req.decoded._id, "-_id -password", function (err, obj) {
         if (err) return next(err);
-        res.json(obj);
+        else {
+            if(obj) res.json(obj);
+            else res.status(404).send({message:"This user does not exist"});
+        }
     });
 };
 

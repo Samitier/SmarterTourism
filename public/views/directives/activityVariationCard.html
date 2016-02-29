@@ -20,7 +20,8 @@
          Per {{variation.priceIncr}}€ més.</p>
     </div>
     <div class="modal-footer">
-        <a href="#" ng-click="cardAction({param:{activity:activity, product: variation}})" class="green-text modal-action modal-close waves-effect waves-green btn-flat">Seleccionar</a>
+        <a href="#" ng-hide="type='extra' && selected" ng-click="cardAction({param:{activity:activity, product: variation}})" class="green-text modal-action modal-close waves-effect waves-green btn-flat">Seleccionar</a>
+        <a href="#" ng-show="type='extra' && selected" ng-click="unselectAction({param:{activity:activity, product: variation}})" class="red-text modal-action modal-close waves-effect waves-red btn-flat">Desseleccionar</a>
         <a href="#" class="red-text modal-action modal-close waves-effect waves-green btn-flat">Tancar</a>
     </div>
 </div>

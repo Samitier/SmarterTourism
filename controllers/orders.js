@@ -38,10 +38,6 @@ module.exports.create = function (req, res, next) {
     }
 }
 
-module.exports.sendMessage = function (req, res, next) {
-
-}
-
 module.exports.accept = function (req, res, next) {
 
 }
@@ -116,12 +112,13 @@ var createOrderAndPayment = function (req, res, next) {
         numBabies: req.body.order.numBabies
     };
 
-    Activities.getActivitiesPriceFromOrder(req, res, function(err, dat) {
+    Activities.getActivitiesPriceFromOrder(req, res, function(err, total_price) {
         if(err) next(err);
         else {
             var totalPrice = 0;
             for (var i = 0; i < req.body.order.activities.length; ++i) {
                 var productOrder = {
+                    activity: req.body.order.activities[i]._id,
                     seller: req.body.order.activities[i].seller,
                     title: req.body.order.activities[i].title,
                     variation: req.body.order.selectedVariations[req.body.order.activities[i]._id].title,
@@ -132,19 +129,23 @@ var createOrderAndPayment = function (req, res, next) {
                     total: req.body.order.activities[i].total,
                     dates: [req.body.order.activities[i].initDate, req.body.order.activities[i].endDate]
                 }
-                if (req.body.order.selectedExtras[req.body.order.activities[i]]) {
-                    //TODO: might be more than one extra selected
-                    productOrder.extra = req.body.order.selectedExtras[req.body.order.activities[i]._id].title;
+                if (req.body.order.selectedExtras[req.body.order.activities[i]._id] && req.body.order.selectedExtras[req.body.order.activities[i]._id].length) {
+                    productOrder.extras = [];
+                    req.body.order.selectedExtras[req.body.order.activities[i]._id].forEach(function(dat) {
+                        productOrder.extras.push(dat.title);
+                    });
                 }
-                totalPrice += productOrder.total; //TODO: plus variation price, plus extras price, plus num travelers
+                //var p = Activities.calculatePrice(productOrder.total, req.body.order.selectedVariations[req.body.order.activities[i]._id], req.body.order.selectedExtras[req.body.order.activities[i]._id], 1);
+                totalPrice += productOrder.total;
                 order.products.push(productOrder);
             }
-            if(totalPrice != req.body.order.total_price) {
+            if(totalPrice != total_price) {
                 res.status(400).send({error: {"code": "400", "name": 'Bad request. There was a problem with your data.'}});
             }
             else {
                 order.finalPrice = totalPrice;
                 order.paymentMethod = req.body.paymentMethod;
+                console.log(order);
                 Order.create(order, function (err, dat) {
                     if (err) return next(err);
                     req.order = dat;

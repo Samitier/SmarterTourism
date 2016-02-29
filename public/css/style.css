@@ -453,3 +453,17 @@ span.stars, span.stars span {
 span.stars span {
     background-position: 0 0;
 }
+
+.state.badge {
+    background-color: #26a69a;
+    color: #fff;
+    font-size: 0.8rem;
+    max-height: 2rem;
+    line-height: 2rem;
+    margin-top: 0.5rem;
+}
+
+.collection-inception-fix {
+    border: 1px solid #e0e0e0 !important;
+    margin: 0.5rem 0 1rem 0 !important;
+}

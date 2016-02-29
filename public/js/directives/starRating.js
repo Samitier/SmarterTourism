@@ -4,7 +4,7 @@
 module.exports = function () {
     return {
         restrict: 'E',
-        templateUrl: '/views/directives/starRating.html',
+        template: '<span class="stars"></span>',
         scope: {
             comments: "="
         },
