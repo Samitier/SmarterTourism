@@ -98,6 +98,9 @@
                     </div>
                 </li>
             </ul>
+            <button ng-click="checkoutCtrl.sendAction()" class="waves-effect waves-light btn" type="submit" name="action" style="width: 100%;">
+                <span>Continuar</span><span class="loading hidden">Enviant<span class="hidden">.</span><span class="hidden">.</span><span class="hidden">.</span></span>
+            </button>
         </div>
         <div class="col l3">
             <price-card order="order" show-form="false" card-action="checkoutCtrl.sendAction()"></price-card>
