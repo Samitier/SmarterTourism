@@ -36,7 +36,7 @@
                     </div>
                     <h3>Activitats</h3>
                     <div class="row">
-                        <div class="col m2" ng-repeat="activity in custom.activities | orderBy:'title' | filter: { when: JSON.stringify(days[selectedDay]) }">
+                        <div class="col m2" ng-repeat="activity in custom.activities | orderBy:'title' | filter: { when: days[selectedDay] }">
                             <activity-card activity='activity'></activity-card>
                         </div>
                         <div class="col m2">
@@ -47,7 +47,7 @@
                     </div>
                     <h3>Àpats</h3>
                     <!--Àpats-->
-                    <div class="col m2" ng-repeat="activity in custom.meals | orderBy:'title' | filter: { when: JSON.stringify(days[selectedDay]) }">
+                    <div class="col m2" ng-repeat="activity in custom.meals | orderBy:'title' | filter: { when: days[selectedDay] }">
                         <activity-card activity='activity'></activity-card>
                     </div>
                     <div class="col m2">
@@ -65,7 +65,9 @@
                     <div>
                         <span class="card-title">El teu paquet:<br></span>
                         <ul>
+                            <li ng-repeat="act in custom.stay"><b>{{act.title}}</b>&nbsp;&nbsp;{{act.price}} €</li>
                             <li ng-repeat="act in custom.activities"><b>{{act.title}}</b>&nbsp;&nbsp;{{act.price}} €</li>
+                            <li ng-repeat="act in custom.meals"><b>{{act.title}}</b>&nbsp;&nbsp;{{act.price}} €</li>
                         </ul>
                         <p><br>Preu total (per persona): <span>{{total}}€</span></p>
                     </div>
