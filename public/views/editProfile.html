@@ -26,14 +26,8 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="location" type="text" class="validate" value="">
+                            <input ng-model="personalForm.city" id="location" type="text" class="validate" value="">
                             <label for="location" ng-class="{active: false}">Població</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="birthday" type="text" class="validate" value="">
-                            <label for="birthday" ng-class="{active: false}">Data de naixement</label>
                         </div>
                     </div>
                     <div class="row">
@@ -48,9 +42,7 @@
                             <label for="password2">Repeteix la contrasenya</label>
                         </div>
                     </div>
-                    <button type="submit" class="btn waves-effect waves-light right" name="action">Aplicar
-                        <i class="material-icons right">send</i>
-                    </button>
+                    <button type="submit" class="btn waves-effect waves-light right" name="action">Aplicar</button>
                 </form>
                 <form id="pagament" name="pagamentForm" class="col s12" ng-submit="pagament.$valid && editProfileCtrl.sendFormPagament()" novalidate>
                     <div class="row">
@@ -95,9 +87,7 @@
                             <label for="country_pay">País</label>
                         </div>
                     </div>
-                    <button class="btn waves-effect waves-light right" type="submit" name="action">Aplicar
-                        <i class="material-icons right">send</i>
-                    </button>
+                    <button class="btn waves-effect waves-light right" type="submit" name="action">Aplicar</button>
                 </form>
 
     </div>
