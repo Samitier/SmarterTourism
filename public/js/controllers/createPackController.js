@@ -53,13 +53,16 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope, $locati
                         initDate: $scope.days[$scope.selectedDay],
                         endDate: dat
                     };
+                    $scope.total += obj.price = data.price * d.stay.numNights;
                 } else {
                     Materialize.toast("El número de nits superen l'estada!", 4000);
                     return;
                 }
-            } else obj.when = $scope.days[$scope.selectedDay];
+            } else {
+                obj.when = $scope.days[$scope.selectedDay];
+                $scope.total += data.price;
+            }
             eval("$scope.custom."+ d.tipus +".push(obj)");
-            $scope.total += data.price;
         });
     });
 
