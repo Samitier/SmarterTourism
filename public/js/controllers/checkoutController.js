@@ -47,7 +47,9 @@ module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope,
                     Materialize.toast('Redirigint a la plataforma de pagament...', 4000);
                     $scope.order.state="finished";
                     CheckoutOrder.setOrder($scope.order);
-                    if($scope.paymentMethod=="paypalPayment") $window.location.href = dat.url;
+                    if($scope.paymentMethod=="paypal") {
+                        $window.location.href = dat.url;
+                    }
                     else {
                         var form = $.parseHTML(dat.form);
                         $('#redsys-form').append(form);
