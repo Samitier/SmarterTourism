@@ -111,6 +111,7 @@ module.exports = function($scope, CheckoutOrder, SmarterAPI, $rootScope, $locati
         $scope.order = order;
 
         if(order.initDate && order.endDate) {
+            $scope.total = order.total;
             $scope.dateRangeSelected = true;
             this.getRangeOfDays(order);
             $.each(order.activities, function(i, v) {
