@@ -17,8 +17,12 @@ module.exports = function() {
         },
         controller: function($scope) {
             this.sendForm = function() {
-                var date = new Date($scope.priceCardForm.initDate);
-                $scope.cardAction({param:date});
+                if ($scope.showForm) {
+                    var date = $scope.priceCardForm.initDate.split('/');
+                    date = new Date(date[2], date[1], date[0]);
+                    $scope.cardAction({param: date});
+                }
+                else $scope.cardAction();
             }
         },
         controllerAs: "priceCardCtrl",

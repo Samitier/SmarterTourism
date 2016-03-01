@@ -5,6 +5,39 @@
         </div>
     </div>
     <div class="row">
+        <ul class="collapsible popout" data-collapsible="accordion">
+            <li class="col s12" ng-repeat="order in orders | orderBy: 'dateOfOrder':true">
+                <div class="collapsible-header" style="position: relative;">
+                    <i class="material-icons">view_compact</i>{{order.title}}&nbsp;
+                    <small class="grey-text">{{order.dateOfOrder | date:'dd/MM/yyyy'}}</small>
+                    <span class="state badge" ng-class="{'red': order.state == 'Canceled',
+                                                                       'lime': order.state == 'PaymentPending' || order.state == 'Processing',
+                                                                       'green': order.state == 'Accepted' || order.state == 'Completed'}">{{order.state}}</span>
+                </div>
+                <div class="collapsible-body">
+                    <p class="inline-block">{{order.numAdults}} adult<span ng-if="order.numAdults > 1">s</span><span ng-if="order.numChildren > 0">, {{order.numChildren}} nen<span ng-if="order.numChildren > 1">s</span></span><span ng-if="order.numBabies > 0">, {{order.numBabies}} bebè<span ng-if="order.numBabies > 1">s</span></span>.</p>
+                    <b class="right inline-block" style="font-size: 1.5em; padding: 20px;">{{order.finalPrice}} €</b>
+                    <div style="padding-left: 2em;">
+                        <span>Inclou:</span>
+                    <!--<ul style="margin-left: 3rem;">-->
+                        <ul class="collection collection-inception-fix">
+                            <li class="collection-item" ng-repeat="product in order.products">
+                                {{product.title}}
+                                    <a ng-href="/activitats/{{product.activity}}#valorations" class="waves-effect waves-light btn secondary-content" style="margin: -7px 0 0 10px;" ng-if="product.activity">Deixa un comentari</a>
+                                    <a ng-href="/perfil/{{product.seller}}" class="waves-effect waves-light btn secondary-content" style="margin: -7px 0 0 10px;">Contacta amb el proveïdor</a>
+                            </li>
+                        </ul><br />
+                    </div>
+                </div>
+            </li>
+        </ul>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        $('.collapsible').collapsible({
+            accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+        });
+    });
+</script>
 

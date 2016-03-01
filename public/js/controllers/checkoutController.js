@@ -5,11 +5,10 @@
         will popup if they are not logged in.
 */
 
-module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope) {
 
+module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope, $window, order) {
     this.init = function() {
-        $scope.order = CheckoutOrder.getOrder();
-        if($scope.order.state != 'checkout') $location.path('/detalls-comanda'); //we redirect if the user is trying to enter here without an order
+        $scope.order = order;
         if(!APIAuth.isLoggedIn()) $('#login-modal').openModal({dismissible: false});
         else SmarterAPI.getProfile().then(function(dat) {$scope.facturationForm.user = dat.facturationInfo;});
     };
@@ -31,19 +30,41 @@ module.exports = function(CheckoutOrder, SmarterAPI, APIAuth, $location, $scope)
     });
 
     this.sendAction = function() {
-        if($scope.facturationForm.$valid) {
-            SmarterAPI.createOrder({facturationInfo:$scope.facturationForm.user,  order:$scope.order}).then(function(dat) {
+        console.log($scope.order);
+        var clientValid = true;
+        if($scope.visDadesClient) clientValid = $scope.clientForm.$valid;
+        if($scope.facturationForm.$valid && clientValid && $scope.paymentMethod) {
+            $("button[type=submit]").attr("disabled", "true");
+            $("button[type=submit]").addClass("disabled");
+            $("button[type=submit] span").toggleClass("hidden");
+
+            var data = {facturationInfo:$scope.facturationForm.user,  order:$scope.order,
+                paymentMethod:$scope.paymentMethod};
+
+            if($scope.clientForm.user) data.clientInfo = $scope.clientForm.user;
+            SmarterAPI.createOrder(data).then(function(dat) {
                 if(dat.success) {
-                    $scope.order.state="finishedOK";
+                    Materialize.toast('Redirigint a la plataforma de pagament...', 4000);
+                    $scope.order.state="finished";
                     CheckoutOrder.setOrder($scope.order);
-                    //send the payment form to the tpv or paypal, depending where the user send it
-                    //redirect to thank you page when the order is completed
-                    $location.path("/finalitzar");
+                    if($scope.paymentMethod=="paypalPayment") $window.location.href = dat.url;
+                    else {
+                        var form = $.parseHTML(dat.form);
+                        $('#redsys-form').append(form);
+                        $('#redsys-form > form').submit();
+                    }
                 }
                 else Materialize.toast('Hi ha hagut algun error inesperat. Torna-ho a provar més tard.', 4000);
             });
         }
-        else Materialize.toast('Si us plau, omple totes les dades del formulari', 4000);
+        else if(!$scope.facturationForm.$valid || !clientValid) Materialize.toast('Si us plau, omple totes les dades del formulari', 4000);
+        else Materialize.toast('Si us plau, seleccioni un mètode de pagament', 4000);
+    };
+
+    $scope.visDadesClient = false;
+    this.continueWithoutAccount = function() {
+        $('#login-modal').closeModal();
+        $scope.visDadesClient = true;
     };
 
     this.init();

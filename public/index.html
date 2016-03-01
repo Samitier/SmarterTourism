@@ -11,15 +11,15 @@
 </head>
 <body>
 
-    <nav-menu></nav-menu>
+    <header id="header" nav-menu></header>
 
-    <main>
+    <main id="content">
         <div ng-view class="view-animate"></div>
     </main>
 
-    <footer-menu></footer-menu>
+    <footer class="page-footer cyan darken-3" footer-menu></footer>
 
+    <script async src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="/bundle.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js"></script>
-
+    <script src="/js/materialize.min.js"></script>
 </body>

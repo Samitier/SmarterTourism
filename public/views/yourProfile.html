@@ -8,21 +8,33 @@
                 </div>
                 <div class="card-content">
                     <h3 class="inline-block">{{ profile.name }} {{ profile.lastname }}
-                        <a href="/perfil/edit"><i class="material-icons right cursor-pointer">settings</i></a></h3>
+                        <a ng-if="yourProfile" href="/perfil/edit"><i class="material-icons right cursor-pointer">settings</i></a></h3>
 
                     <div class="grey-text text-darken-1">
-                        <h6><i class="tiny material-icons">my_location</i>&nbsp;Santa Eugènia de Berga</h6>
-                        <h6><i class="tiny material-icons">today</i>&nbsp;23/06/1996</h6>
+                        <div ng-if="profile.role == 'Client'">
+                            <h6 ng-if="profile.contactInfo.address"><i class="tiny material-icons">store</i>&nbsp;{{profile.contactInfo.address}}</h6>
+                            <h6 ng-if="profile.contactInfo.town"><i class="tiny material-icons">my_location</i>&nbsp;{{profile.contactInfo.postalCode}} {{profile.contactInfo.town}}</h6>
+                            <h6 ng-if="profile.contactInfo.phone"><i class="tiny material-icons">call</i>&nbsp;profile.contactInfo.phone</h6>
+                            <h6 ng-if="profile.contactInfo.web"><i class="tiny material-icons">language</i>&nbsp;profile.contactInfo.web</h6>
+                        </div>
+                        <div ng-if="profile.role == 'Provider'">
+                            <h6 ng-if="profile.businessInfo.name"><i class="tiny material-icons">domain</i>&nbsp;{{profile.businessInfo.name}}</h6>
+                            <h6 ng-if="profile.businessInfo.nif"><i class="tiny material-icons">info</i>&nbsp;{{profile.businessInfo.nif}}</h6>
+                            <h6 ng-if="profile.businessInfo.raosocial"><i class="tiny material-icons">group</i>&nbsp;{{profile.businessInfo.raosocial}}</h6>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col m8">
+        <div class="col m8" ng-if="yourProfile">
             <div class="card teal" ng-if="!hideConfirmationMail && profile.state == 'Unconfirmed'">
                 <div class="white-text card-content">
                     <span class="alert-card-text">El teu compte no està confirmat. T'hem enviat un mail de confirmació a {{ profile.email }}.</span>
                     <i class="material-icons right cursor-pointer" ng-click="hcm()">close</i>
                 </div>
+            </div>
+            <div class="row">
+                <pt-spinner ng-if="!orders" class="col m12 center-align"></pt-spinner>
             </div>
             <div class="blankslate" ng-show="orders.length == 0">
                 <span>Encara no has comprat cap paquet.</span>
@@ -34,7 +46,7 @@
                 <li ng-repeat="order in orders | limitTo: 3">
                     <div class="collapsible-header">
                         <i class="material-icons">receipt</i>
-                        {{ order.product.title }} <small class="grey-text">{{ order.product.variation }}</small>
+                        {{ order.title }}
                     </div>
                     <div class="collapsible-body">
                         <div style="padding: 2rem">

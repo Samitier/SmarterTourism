@@ -1,11 +1,11 @@
-<pt-slider fullwidth="true" slider-height:"350" images=""></pt-slider>
+<pt-slider fullwidth="true" slider-height="350" images=""></pt-slider>
 <div class="container">
     <div class="row">
         <div class="col s9">
             <h3>
                 {{activity.title}}
                 <small style="font-size:50%; padding-left:0.5em;">
-                    <a ng-href="/perfil/{{activity.seller.id}}">{{activity.seller.name}}</a>
+                    <a ng-href="/perfil/{{activity.seller._id}}">{{activity.seller.name}}</a>
                 </small>
             </h3>
             <br>
@@ -25,13 +25,13 @@
                     </div>
                     <div class="divider"></div>
                     <div class="section">
-                        <h5>Informació adicional</h5>
+                        <h5>Informació addicional</h5>
                         <p>{{activity.additional_info}}</p>
                     </div>
                     <div class="divider"></div>
                     <div class="section">
                         <h5>Localització</h5>
-                        <googlemap coords="[41.3759069,2.1333681]"></googlemap>
+                        <googlemap coordsx="{{activity.coords[0]}}" coordsy="{{activity.coords[1]}}"></googlemap>
                     </div>
                     <div class="divider"></div>
                     <div class="section">
@@ -45,30 +45,18 @@
                 <div class="col s12">
                     <div class="section">
                         <h5>Valoració mitja</h5>
-                        <p>[valoració mitja per extrelles]</p>
+                        <p><star-rating comments="activity.comments"></star-rating></p>
                     </div>
                     <div class="divider"></div>
                     <div class="section">
                         <h5>Comentaris</h5>
                         <ul class="collection comment-list">
-                            <li class="collection-item avatar">
-                                <img src="/img/users/John_Doe.jpg" alt="" class="circle responsive-img  z-depth-1">
-                                <span>John Doe</span>
-                                <p>Lorem ipsum dolor sit amet, dis ipsum morbi neque, lectus maecenas, amet non consequat ac mollis metus nullam. Amet vulputate et tincidunt, aenean massa dolor lectus vulputate vitae, sed sapien magna pretium facilisi dui quam. Sit quisque quisque vel sodales wisi, venenatis ullamcorper pulvinar odio sit morbi amet.
-                                </p>
+                            <li class="collection-item avatar" ng-repeat="comment in activity.comments">
+                                <img src="/img/users/{{comment.user.image}}" alt="" class="circle responsive-img  z-depth-1">
+                                <a ng-href="/perfil/{{comment.user.id}}"><span>{{comment.user.name}}</span></a>
+                                <p>{{comment.message}}</p>
                             </li>
-                            <li class="collection-item avatar">
-                                <img src="/img/users/John_Doe.jpg" alt="" class="circle responsive-img  z-depth-1">
-                                <span>John Doe</span>
-                                <p>Lorem ipsum dolor sit amet, dis ipsum morbi neque, lectus maecenas, amet non consequat ac mollis metus nullam. Amet vulputate et tincidunt, aenean massa dolor lectus vulputate vitae, sed sapien magna pretium facilisi dui quam. Sit quisque quisque vel sodales wisi, venenatis ullamcorper pulvinar odio sit morbi amet.
-                                </p>
-                            </li>
-                            <li class="collection-item avatar">
-                                <img src="/img/users/John_Doe.jpg" alt="" class="circle responsive-img  z-depth-1">
-                                <span>John Doe</span>
-                                <p>Lorem ipsum dolor sit amet, dis ipsum morbi neque, lectus maecenas, amet non consequat ac mollis metus nullam. Amet vulputate et tincidunt, aenean massa dolor lectus vulputate vitae, sed sapien magna pretium facilisi dui quam. Sit quisque quisque vel sodales wisi, venenatis ullamcorper pulvinar odio sit morbi amet.
-                                </p>
-                            </li>
+                            <span ng-if="!activity.comments.length">No hi han comentaris disponibles.</span>
                         </ul>
                     </div>
                 </div>
@@ -80,7 +68,16 @@
     </div>
 </div>
 <script>
+    $.fn.extend({
+        stars: function () {
+            return $(this).each(function () {
+                $(this).html($('<span />').width(Math.max(0, (Math.min(5, parseFloat($(this).html())))) * 16));
+            });
+        }
+    });
+
     $(document).ready(function(){
         $('ul.tabs').tabs();
+        $('span.stars').stars();
     });
 </script>

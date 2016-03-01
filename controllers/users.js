@@ -15,9 +15,16 @@ module.exports.create = function(req, res, next) {
 };
 
 module.exports.getSingle = function(req, res, next) {
-    User.findById(req.params.id, function (err, obj) {
+    var excl = {};
+    if(req.params.id == req.decoded._id) {
+        excl = { password: 0, facturationInfo: 0, state: 0 };
+    }
+    User.findById(req.params.id, excl, function (err, obj) {
         if (err) return next(err);
-        res.json(obj);
+        else {
+            if(obj) res.json(obj);
+            else res.status(404).send({message:"This user does not exist"});
+        }
     });
 };
 
@@ -38,7 +45,10 @@ module.exports.delete = function(req, res, next) {
 module.exports.getProfile = function(req ,res, next) {
     User.findById(req.decoded._id, "-_id -password", function (err, obj) {
         if (err) return next(err);
-        res.json(obj);
+        else {
+            if(obj) res.json(obj);
+            else res.status(404).send({message:"This user does not exist"});
+        }
     });
 };
 
@@ -49,3 +59,16 @@ module.exports.updateProfile = function(req ,res, next) {
         res.json(obj);
     });
 };
+
+module.exports.newUser = function(req, res, next) {
+    req.body.clientInfo.password = '-';
+    req.body.clientInfo.role = 'Client';
+    req.body.clientInfo.state = 'Inactive';
+    User.create(req.body.clientInfo, next);
+};
+
+//Check Request
+module.exports.checkRequest = function(req, res, next) {
+    if(req.body.name && req.body.lastname && req.body.email && req.body.password && req.body.role) next();
+    else res.status(400).send({ error: {"code":"400", "name":'Bad request. The user`s data is inadequate or incomplete.'}});
+}

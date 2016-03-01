@@ -1,6 +1,4 @@
-/*
-    SMARTER API SERVICE
-        The calls to the Smarter Tourism API.
+ /*       The calls to the Smarter Tourism API.
  */
 module.exports = function ($http, APIAuth, $location) {
     var service={};
@@ -26,7 +24,7 @@ module.exports = function ($http, APIAuth, $location) {
         return $http.get(apiURI + "activities").then(function(resp) {
             return resp.data;
         }, tractarErrors);
-    }
+    };
 
     service.getActivity = function(id) {
         return $http.get(apiURI + "activities/" + id).then(function(resp) {
@@ -40,6 +38,12 @@ module.exports = function ($http, APIAuth, $location) {
         }, tractarErrors);
     };
 
+    service.getUser = function(id) {
+        return $http.get(apiURI + "users/" + id).then(function(resp) {
+           return resp.data;
+        }, tractarErrors);
+    }
+
     service.setProfile = function(data) {
         return $http.put(apiURI + "profile", data).then(function(resp) {
             return resp.data;
@@ -47,6 +51,7 @@ module.exports = function ($http, APIAuth, $location) {
     };
 
     service.createOrder = function(data) {
+        console.log(data);
         return $http.post(apiURI + "orders", data).then(function(resp) {
             return resp.data;
         }, tractarErrors);
@@ -56,7 +61,13 @@ module.exports = function ($http, APIAuth, $location) {
         return $http.get(apiURI + "orders").then(function(resp) {
             return resp.data;
         }, tractarErrors);
-    }
+    };
+
+    service.getCategories = function() {
+        return $http.get(apiURI + "packs/categories").then(function(resp) {
+            return resp.data;
+        }, tractarErrors);
+    };
 
     function tractarErrors(err) {
         if(err.status == 403) {

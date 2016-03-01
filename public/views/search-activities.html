@@ -4,24 +4,27 @@
             <br><br>
             <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Buscar activitats</a>
         </div>
-        <div class="col s8 left">
-            <br><br>
+    </div>
+
+    <div class="row" ng-hide="search || catselected">
+        <div class="col s12">
             <h3>Activitats destacades:</h3>
         </div>
-    </div>
-    <div class="row">
+        <pt-spinner ng-if="!activities" class="col m12 center-align"></pt-spinner>
         <div class="col m2" ng-repeat="activity in activities | limitTo:3" ng-if="activity.featured">
             <activity-card activity='activity'></activity-card>
         </div>
     </div>
     <div class="row">
         <div class="col s12">
-            <br><br>
+            <br ng-if="!search"><br ng-if="!search">
             <h3>Totes les activitats:</h3>
         </div>
-        <div class="col m2" ng-repeat="activity in activities | orderBy:'title'">
+        <pt-spinner ng-if="!activities" class="col m12 center-align"></pt-spinner>
+        <div class="col m2" ng-repeat="activity in Activities = (activities | orderBy:'title' | filter: search | filter: filtrarCategories() | limitTo:10:ptPaginatorCtrl.numPag*10)" ng-init="ptPaginatorCtrl.numElem = Activities.length">
             <activity-card activity='activity'></activity-card>
         </div>
+        <span ng-if="!Activities.length">No s'ha trobat cap activitat.</span>
         <pt-paginator></pt-paginator>
     </div>
 </div>
@@ -30,32 +33,17 @@
 <!-- Modal Structure -->
 <div id="modal1" style="overflow-y: initial;max-height: 60%;" class="modal bottom-sheet">
     <div class="modal-content">
-        <h4>Buscar Paquets</h4>
+        <h4>Buscar activitats</h4>
         <div class="row">
             <form>
                 <div class="input-field col m6">
-                    <input id="last_name" type="text" class="validate">
+                    <input id="last_name" type="text" class="validate" ng-model="search">
                     <label for="last_name">Nom del paquet</label>
                 </div>
                 <div class="input-field col m6">
-                    <select id="categories" multiple>
-                        <option value="" disabled selected>Escull les categories</option>
-                        <option value="1">Option 1</option>
-                        <option value="2">Option 2</option>
-                        <option value="3">Option 3</option>
-                        <option value="4">Option 4</option>
-                        <option value="4">Option 5</option>
-                        <option value="4">Option 6</option>
-
-                    </select>
-                    <label for="categories">Categories</label>
+                    <categories-select></categories-select>
                 </div>
             </form>
-            <div class=" col s12">
-                <div class="modal-footer">
-                    <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Buscar</a>
-                </div>
-            </div>
         </div>
     </div>
 </div>

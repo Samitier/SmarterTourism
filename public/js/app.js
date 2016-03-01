@@ -1,13 +1,11 @@
 'use strict';
 
-window.$ = require('jquery');
-window.jQuery = require("jquery");
+window.$ = window.jQuery = require('jquery');
 
 var angular = require('angular');
 require('angular-route');
 require('angular-animate');
 require('angular-cookies');
-$.getScript("/js/materialize.min.js");
 require('jquery-ui/datepicker');
 
 angular.module('SmarterTourism', ['ngRoute', "ngCookies", "ngAnimate"]).
@@ -25,7 +23,7 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
             title: 'Crear Paquet',
             templateUrl: '/views/create-pack.html',
             controller: 'createPackController',
-            controllerAs: 'crearPackCtrl'
+            controllerAs: 'createPackCtrl'
         })
         .when("/els-nostres-paquets",{
             title: "Els nostres paquets",
@@ -44,28 +42,52 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
             title: "Els nostres paquets",
             templateUrl: '/views/detail-pack.html',
             controller: 'detailPackController',
-            controllerAs: 'detailPackCtrl'
+            controllerAs: 'detailPackCtrl',
+            resolve: {
+                resolveData: function(SmarterAPIPromises, $route) {
+                    return SmarterAPIPromises.getPack($route.current.params.id);
+                }
+            }
         })
 
         .when("/activitat/:id",{
             title: "Les nostres activitats",
             templateUrl: '/views/detail-activity.html',
             controller: 'detailActivityController',
-            controllerAs: 'detailActivityCtrl'
+            controllerAs: 'detailActivityCtrl',
+            resolve: {
+                resolveData: function(SmarterAPIPromises, $route) {
+                    return SmarterAPIPromises.getActivity($route.current.params.id);
+                }
+            }
         })
 
-        .when("/detalls-comanda",{
+        .when("/detalls-comanda", {
             title: "Complementa el teu paquet",
             templateUrl: '/views/order-details.html',
             controller: 'orderDetailsController',
-            controllerAs: 'orderDetailsCtrl'
+            controllerAs: 'orderDetailsCtrl',
+            resolve: {
+                order: function(CheckoutOrder, $location) {
+                    var o = CheckoutOrder.getOrder();
+                    if(o.state != 'checkout' && o.state!='details') $location.path("/404");//we redirect if the user is trying to enter here without an order
+                    return o;
+                }
+            }
         })
 
         .when("/checkout",{
             title: "Finalitzar compra",
             templateUrl: '/views/checkout.html',
             controller: 'checkoutController',
-            controllerAs: 'checkoutCtrl'
+            controllerAs: 'checkoutCtrl',
+            resolve: {
+                order: function(CheckoutOrder, $location) {
+                    var o = CheckoutOrder.getOrder();
+                    if(o.state != 'checkout' && o.state !='finished') return $location.path('/404'); //we redirect if the user is trying to enter here without an order
+                    return o;
+                }
+            }
         })
 
         .when("/login",{
@@ -97,7 +119,12 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
             templateUrl: '/views/yourProfile.html',
             controller: 'yourProfileController',
             controllerAs: 'yourProfileCtrl',
-            needsLogin:true
+            needsLogin:true,
+            resolve: {
+                resolveData: function(SmarterAPIPromises) {
+                    return SmarterAPIPromises.getProfile();
+                }
+            }
         })
 
         .when("/perfil/edit",{
@@ -108,18 +135,57 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
             needsLogin:true
         })
 
+        .when("/perfil/:id",{
+            title: "Pàgina de perfil",
+            templateUrl: '/views/yourProfile.html',
+            controller: 'yourProfileController',
+            controllerAs: 'yourProfileCtrl',
+            needsLogin:true,
+            resolve: {
+                resolveData: function(SmarterAPIPromises, $route) {
+                    return SmarterAPIPromises.getUser($route.current.params.id);
+                }
+            }
+        })
+
         .when("/finalitzar",{
-            title: "Gràcies per la teva compra",
-            templateUrl: '/views/thankyou.html',
-            controller: 'thankyouController',
-            controllerAs: 'thankyouCtrl',
+            title: "Finalitzar comanda",
+            templateUrl: function(urlattr) {
+                if(urlattr.sta == 1) return '/views/thankyou.html';
+                else return '/views/orderError.html'
+            },
+            controller: 'finishOrderController',
+            controllerAs: 'finishOrderCtrl',
+            resolve: {
+                order: function(CheckoutOrder, $location, APIAuth, $route) {
+                    var o = CheckoutOrder.getOrder();
+                    if (o.state != 'finished' || !APIAuth.isLoggedIn()) {
+                        $location.path('/404'); //we redirect if the user is trying to enter here without a finished order
+                    }
+                    else if ($route.current.params.sta==0) {
+                        o.state="checkout";
+                        CheckoutOrder.setOrder(o);
+                        // if the order is incomplete, we set the order state to checkout
+                        // so the user can go back and try to pay it again
+                    }
+                    else {
+                        CheckoutOrder.removeOrder(); //we delete the finished order's cookies
+                    }
+                    return o;
+                }
+            }
         })
         .when("/termes-us",{
             title: "Termes d'ús",
             templateUrl: '/views/useTerms.html'
         })
 
-        .otherwise({redirectTo: '/'});
+        .when("/404", {
+            title: "Not found",
+            template:"<div class='container' style='text-align: center'><h3>404 - Pàgina no trobada</h3></div>"
+        })
+
+        .otherwise({redirectTo: '/404'});
 
     $locationProvider.html5Mode(true);
 }])
@@ -146,8 +212,15 @@ config(['$routeProvider','$locationProvider', function($routeProvider, $location
         else if ($rootScope.userAuthenticated && next.needsNoLogin)
             $location.path('/');
     });
+
+    $rootScope.$on('$routeChangeError', function (event, current, previous, error) {
+        if (error.status === 404) {
+            $location.path('/404');
+        }
+    });
 }]);
 
 require('./services');
 require('./controllers');
 require('./directives');
+require('./i18n/angular-locale_ca-ad');

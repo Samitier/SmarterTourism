@@ -9,7 +9,12 @@ module.exports = function(SmarterAPI, $scope) {
         SmarterAPI.getActivities().then(function(data) {
             $scope.activities = data;
         });
+        $scope.search = '';
     };
-
     this.init();
+
+    $scope.$on("$destroy", function(){
+        $('#modal1').closeModal();
+    });
+
 }
