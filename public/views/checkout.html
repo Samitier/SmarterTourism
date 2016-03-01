@@ -112,6 +112,7 @@
         <div class="row">
         <div class="col m12">
             <h4 class="center-align">Entra a Smarter Tourism per a continuar amb la compra</h4>
+            <h5 class="center-align"><a href="#" class="cursor-pointer" ng-click="checkoutCtrl.continueWithoutAccount()">o segueix sense registrar-te.</a></h5>
             <form name="loginForm" ng-submit="loginForm.$valid && checkoutCtrl.sendLoginForm()" novalidate>
                 <div class="input-field col s12">
                     <input ng-model="loginForm.userMail" id="email" type="email" class="validate" required>
@@ -133,7 +134,6 @@
                     </button><br><br>
                     <p class="right right-align">No tens cap compte? <a href="/signin">Registra't!</a></p>
                     <br /><br />
-                    <p class="right-align"><a href="#" class="cursor-pointer" ng-click="checkoutCtrl.continueWithoutAccount()">O segueix sense registrar-te.</a></p>
                 </div>
             </form>
         </div>
