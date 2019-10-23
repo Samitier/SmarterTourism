@@ -22,7 +22,7 @@
     "jquery-ui": "^1.10.5",
     "jsonwebtoken": "^5.4.1",
     "materialize-css": "^0.97.5",
-    "mongoose": "^4.2.9",
+    "mongoose": "^5.7.6",
     "morgan": "~1.6.1",
     "node-redsys-api": "0.0.3",
     "nodemailer": "^1.10.0",
